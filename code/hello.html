@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/qc.js"></script>
+</head>
+<body>
+<div qc-view="myview">
+    <input type="text" qc-value-change="say">
+    <span qc-text="{say}+{person.name}"></span>
+</div>
+</body>
+</html>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.say = "hello";
+        vm.person = {
+            name: "张三"
+        }
+    })
+</script>
+指令:
+qc-view:我们这要指定的建立对应的视图
+qc-view="myview"  和 qc.view("myview" 这里的myview 他们之间是对应关系、
+vm ve：vm是我们放数据操作数据的地方,ve 是我们放事件的地方
+如果对ve还不了解,在事件绑定里有讲解

@@ -1,0 +1,18 @@
+View
+<div qc-view="myview">
+    <input type="text" qc-value-change="say">
+    <span qc-text="{say}+{person.name}"></span>
+    <button qc-click="alert">点击</button>
+</div>
+js
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.say = "hello";
+        vm.person = {
+            name: "张三"
+        }
+        ve.alert = function () {
+            alert("你好");
+        }
+    })
+</script>

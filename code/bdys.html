@@ -1,0 +1,33 @@
+<div qc-view="myview">
+    <div qc-css="color:{c}">你好</div>
+    <input qc-attr="id:'view'+{uid}" type="text" qc-value-change="say">
+    <span qc-text="{uid}+':说'+{say}"></span>
+
+    <div>
+        <ul qc-each="list">
+            <li qc-class="back0:{$key} % 2 ==0;back1:{$index} % 2==1">
+                <span qc-text="{$key}+1"></span>
+                <span>姓名:</span><span qc-text="{name}"></span>---
+                <span>性别:</span><span qc-text="{sex}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [
+            {"name": "张三", "sex": "男"}
+            ,
+            {"name": "李四", "sex": "男"}
+            ,
+            {"name": "王五", "sex": "男"}
+        ];
+        vm.uid = "123";
+        vm.say = "word";
+        vm.c = "red"
+    })
+</script>
+
+说明
+用法请参照绑定API

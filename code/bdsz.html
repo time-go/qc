@@ -1,0 +1,30 @@
+View
+<div qc-view="myview">
+    <div qc-each="list">
+        <div>
+            索引:<span qc-text="{$key}+1"></span>
+            姓名:<span qc-text="{name}"></span>
+            性别:<span qc-text="{sex}"></span>
+        </div>
+    </div>
+</div>
+Js
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+    })
+</script>
+绑定数组指令qc-each
+说明:
+1.数组里面必须是object对象
+2.数组里有个属性$key,是数组的索引
+数组的里面的内容必须包含在一个闭合的标签里
+
+下面写法是错误的
+
+<div qc-each="list">
+        索引:<span qc-text="{$key}+1"></span>
+        姓名:<span qc-text="{name}"></span>
+        性别:<span qc-text="{sex}"></span>
+</div>
+
