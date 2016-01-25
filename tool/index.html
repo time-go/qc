@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工具箱</title>
+    <link href="tool.css" type="text/css" rel="stylesheet">
+    <script src="tool.js"></script>
+</head>
+<body>
+<textarea class="tarea" id="content">&lt;p&gt;请在输入框内贴入你需要转换的HTML代码&lt;/p&gt;
+&lt;p&gt;HTML转换工具，可以将HTML代码转换为JavaScript字符串&lt;/p&gt;
+&lt;p&gt;直接将你所要用程序输出的大串HTML代码贴到输入框中，即可一键生成&lt;/p&gt;</textarea>
+
+<div class="subbtn">
+    <input type="button" onclick="javascript();" value="转换" class="btn">
+</div>
+<textarea class="tarea" id="result">
+
+</textarea>
+</body>
+</html>
+<script>
+    function javascript() {
+        document.getElementById("result").value = htmlToStr(document.getElementById("content").value);
+    }
+</script>
