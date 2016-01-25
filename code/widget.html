@@ -1,0 +1,28 @@
+<demo data-name="person.name" sex="男"></demo>
+"data-"开头的值 是绑定父元素的值
+没有"data-"的值 不绑定数据
+<script>
+    //创建控件
+    qc.createWidget("demo", {
+        templete: "<div><span qc-text='{name}'></span></div>",
+        view: function (vm, ve) {
+            vm.name = "hello"
+            window.console && console.log(this.props);
+            var _this = this;
+            setTimeout(function () {
+                _this.updateParent("name", "张三");//更新父元素"name" 对应data-name 的name，此处
+                //父元素person.name的值变为张三
+            }, 3000)
+        },
+        load: function () {
+            window.console && console.log("控件加载完毕...");
+            this.getElement()//获取控件的element元素
+        },
+        update: function () {
+            //此控件绑定了 父元素 person.name,当  person.name 变化时
+            //此函数被调用
+            window.console && console.log(this.props);
+            this.props//获取父元素 属性上绑定的值 即从父元素传来的值
+        }
+    });
+</script>

@@ -1,20 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head lang="zh">
-    <meta charset="UTF-8">
-    <title>class style绑定</title>
-    <script src="../js/qc.js"></script>
-    <style>
-        .back0 {
-            background-color: coral;
-        }
-
-        .back1 {
-            background-color: forestgreen;
-        }
-    </style>
-</head>
-<body>
 <div qc-view="myview">
     <div qc-css="color:{c}">你好</div>
     <input qc-attr="id:'view'+{uid}" type="text" qc-value-change="say">
@@ -30,8 +13,7 @@
         </ul>
     </div>
 </div>
-</body>
-</html>
+
 <script>
     qc.view("myview", function (vm, ve) {
         vm.list = [
@@ -46,3 +28,6 @@
         vm.c = "red"
     })
 </script>
+
+说明
+用法请参照绑定API

@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <script src="../js/qc.js"></script>
-</head>
-<body>
+视图
 <div qc-view="myview">
     书名：<span qc-text="{book.name}"></span><br>
     价格:<span qc-text="{book.price}"></span>元<br>
     <button qc-click="change">改变价格</button>
-    <button qc-click="changeAll">更换书籍</button><br>
+    <button qc-click="changeAll">更换书籍</button>
+    <br>
     <button qc-click="add">增加数组</button>
     (<span qc-text="{list.length}"></span>)
 
@@ -22,8 +16,7 @@
         </div>
     </div>
 </div>
-</body>
-</html>
+Js
 <script>
     qc.view("myview", function (vm, ve) {
         vm.book = {
@@ -45,3 +38,20 @@
         }
     })
 </script>
+数组更新
+xxxpush()    同数组push()方法
+xxxpop()    同数组pop()
+xxxshift()    同数组shift()
+xxxunshift()    同数组unshift()方法
+xxxsplice()    同数组splice()方法
+xxxconcat()    同数组concat()方法
+
+setValue
+每个对象都一个setValue
+用法1：
+setValue(属性名,值);
+用法2：
+setValue({
+属性名1:值,
+属性名2:值
+})

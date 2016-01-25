@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <script src="../js/qc.js"></script>
-</head>
-<body>
+视图
 <div qc-view="myview">
     <div>
         <input qc-radio="name" type="radio" value="张三">
@@ -25,8 +18,7 @@
         </select>
     </div>
 </div>
-</body>
-</html>
+Js
 <script>
     qc.view("myview", function (vm, ve) {
         vm.name = "李四";
@@ -36,3 +28,6 @@
 
     })
 </script>
+radio 当绑定的值和value 值相等的时候 绑定
+checkbox 当绑定值得为true的时候绑定
+select 选中的值 为绑定的值

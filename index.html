@@ -1,62 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title></title>
-    <script src="js/qc.js"></script>
-    <script src="js/event.js"></script>
-    <script src="demo/widget/test.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>简明教程</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/base.css">
+    <script src="js/common.js"></script>
 </head>
 <body>
-<div qc-view="test">
-
-        <span qc-css="color:{person.name}===['张三','李四']?['red','green'];font-size:{person.name}===['张三','李四']?['20px','30px']"
-              qc-text="{person.name}"></span>
-    <textarea qc-prop="disabled:{person.name}==='张三'" qc-value-change="person.name"></textarea>
-
-    <div qc-visible="{person.name}!=='李四'">
-        <div>oooooo</div>
-        <input type="text" qc-visible="{person.name}!=='张三'" qc-value-change="person.name"/>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li><a href="/">QC教程</a></li>
+        </ul>
     </div>
-    <select qc-select="person.name">
-        <option value="张三">张三</option>
-        <option value="李四">李四</option>
-    </select>
-    <demo data-name="person.name"></demo>
-    张三:<input type="radio" qc-radio="person.name" value="张三"><br>
-    李四:<input type="radio" qc-radio="person.name" value="李四"><br>
-    <test id="test"></test>
-    <button qc-click="add">增加</button>
-    <div qc-visible="{person.name}!=='张三'" qc-each="person.list">
-        <div>
-            (<span qc-text="{$key}+1"></span>)
-            <span qc-text="({v}%3)===[0,1,2]?['呵呵','哈哈','吼吼']"></span>
-            <input type="text" qc-value-change="str">
-            <button qc-click="change">+</button>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <ul id="learn-sider" class="list-group">
+                <li data-index="introduce" data-type="html" class="list-group-item active">
+                    QC介绍<i class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="hello" class="list-group-item">hello word!<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="bdsj" class="list-group-item">绑定事件<i class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="bdsz" class="list-group-item">绑定数组<i class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="gxst" class="list-group-item">更新视图<i class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="rcs" class="list-group-item">radio checkbox select<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="bdys" class="list-group-item">属性绑定<i class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="sxbd" data-type="html" class="list-group-item">属性绑定API<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="expression" data-type="html" class="list-group-item">表达式与函数调用<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="watch" class="list-group-item">变量监控<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="self" class="list-group-item">$self参数<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="intelligent" class="list-group-item">数据智能匹配<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="event" data-type="html" class="list-group-item">事件系统<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="widget" class="list-group-item">控件<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+                <li data-index="component" class="list-group-item">组件<i
+                        class="glyphicon glyphicon-chevron-right"></i></li>
+            </ul>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            说明
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre id="txt-code" style="background:#ffffff"></pre>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div id="compent"></div>
+</div>
 </body>
 </html>
 <script>
-    var test = qc.view("test", function (vm, ve) {
-        vm.person = {
-            sex: "男"
+    (function () {
+        function htmlEncode(value) {
+            return $('<div/>').text(value).html();
         }
-        ve.change = function ($self) {
-            $self.setValue("v", 4);
+
+        function htmlDecode(value) {
+            return $('<div/>').html(value).text();
         }
-        ve.$watch("person.list.v", function (newValue, oldValue) {
-            window.console && console.log(newValue, oldValue);
-        })
-        ve.add = function () {
-            vm.person.listpush({v: 0, str: "增加"});
+
+        function init(fname, type) {
+            var _intTxt = require("./code/" + fname + ".html!text");
+            if (type !== undefined && type === "html") {
+                $("#txt-code").html(_intTxt);
+            } else {
+                $("#txt-code").html(htmlEncode(_intTxt));
+            }
         }
-    })
-    qc.UIComponent({
-        id: "compent",
-        name: "list",
-        data: "王五"
-    });
+
+        init("introduce", "html");//初始化;
+        $("#learn-sider").on("click", ">li", function () {
+            if (!$(this).hasClass("active")) {
+                $("#learn-sider").find(">li").removeClass("active");
+                $(this).addClass("active");
+                init($(this).attr("data-index"), $(this).attr("data-type"))
+            }
+        });
+    })()
+
 </script>

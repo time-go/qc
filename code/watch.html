@@ -1,0 +1,25 @@
+<div qc-view="myview">
+    <input type="text" qc-value-change="say">
+    <span qc-text="{say}+{person.name}"></span>
+</div>
+
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.say = "hello";
+        vm.person = {
+            name: "张三"
+        }
+        ve.$watch("say", function (newValue, oldValue, $self) {
+            window.console && console.log(newValue, oldValue);
+            window.console && console.log($self)
+        })
+    })
+</script>
+
+变量监控API $watch
+如果要监控person里面的name
+$watch("person.name"
+如果有一个list数组,要监控数组里面的一给属性xxx
+$watch("list.xxx"
+newValue, oldValue, $self 三个参数
+新值、旧值、监控的属性所在的vm

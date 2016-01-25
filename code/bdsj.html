@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <script src="../js/qc.js"></script>
-</head>
-<body>
+View
 <div qc-view="myview">
     <input type="text" qc-value-change="say">
     <span qc-text="{say}+{person.name}"></span>
     <button qc-click="alert">点击</button>
 </div>
-</body>
-</html>
+js
 <script>
     qc.view("myview", function (vm, ve) {
         vm.say = "hello";
