@@ -1058,7 +1058,7 @@
                     for (var ar in vDom.attributes) {
                         var name = ar;
                         var value = vDom.attributes[ar];
-                        if (name.indexOf("data-") === 0) {
+                        if (name.indexOf("bind:") === 0) {
                             name = name.substr(5);
                             var pValue = fun.expEval(vm, ["{" + value + "}"], uuid, "widget," + name, obj);
                             obj.props[name] = pValue;
