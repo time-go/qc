@@ -237,8 +237,7 @@
             }
 
             var trope = {
-                "\\\"": "\\\""//转义字符串
-                , "\\\\": "\\\\"//转义字符串
+                "\\\\": "\\\\"//转义字符串
             }
 
             function tree(exp) {
@@ -373,97 +372,124 @@
                     temp = [];
                 }
                 var result;
+                if (list.length === 0) {
+                    window.console && console.log("%c表达式为空", "color:red");
+                    return;
+                }
                 if (list.length == 1) {
                     result = list[0].expValue;
                 } else {
-                    var opt = "";
-                    var value = "";
-                    for (var i = 0; i < list.length; i++) {
-                        if (i === 0 && list[i].expType === 1) {
-                            result = list[i].expValue;
-                            continue;
-                        }
-                        if (list[i].expType === 0) {
-                            opt = list[i].expValue
-                        } else {
-                            value = list[i].expValue
-                        }
-                        if (value !== "" && opt !== "") {
-                            if (opt === "+") {
-                                result = (result + value);
-
-                            } else if (opt === "-") {
-                                result = (result - value);
-                            } else if (opt === "*") {
-                                result = (result * value);
-                            }
-                            else if (opt === "/") {
-                                result = (result / value);
-                            }
-                            else if (opt === "%") {
-                                result = (result % value);
-                            }
-                            else if (opt === "!") {
-                                result = (!value);
-                            }
-                            else if (opt === "&&") {
-                                result = (result && value);
-                            }
-                            else if (opt === "||") {
-                                result = (result || value);
-                            }
-                            else if (opt === "!=") {
-                                result = (result != value)
-                            }
-                            else if (opt === "!==") {
-                                result = (result !== value)
-                            }
-                            else if (opt === "==") {
-                                if (isArray(value)) {
-                                    var index = -1;
-                                    for (var v = 0; v < value.length; v++) {
-                                        if (tree(value[v]) == result) {
-                                            index = v;
-                                            break;
-                                        }
-                                    }
-                                    result = index;
+                    if (list[0].expType === 0) {
+                        result = !list[1].expValue
+                    } else {
+                        result = list[0].expValue
+                        var i = 1;
+                        var len = list.length - 1;
+                        while (i < len) {
+                            if (len - i >= 2) {
+                                var opt = list[i + 2].expValue;
+                                var opt0 = list[i].expValue;
+                                if (opt !== "*" && opt !== "/" && opt !== "%") {
+                                    result = count(result, opt0, list[i + 1].expValue);
+                                    i = i + 2;
                                 } else {
-                                    result = (result == value)
-                                }
-                            }
-                            else if (opt === "===") {
-                                if (isArray(value)) {
-                                    var index = -1;
-                                    for (var v = 0; v < value.length; v++) {
-                                        if (tree(value[v]) === result) {
-                                            index = v;
-                                            break;
-                                        }
-                                    }
-                                    result = index;
-                                } else {
-                                    result = (result === value)
-                                }
-                            }
-                            else if (opt === "?") {
-                                if (isArray(value)) {
-                                    if (result === -1) {
-                                        result = tree(value[value.length - 1]);
-                                    } else {
-                                        if (value.length > result) {
-                                            result = tree(value[result]);
+                                    var temp = list[i + 1].expValue;
+                                    i = i + 2;
+                                    while (i < len) {
+                                        temp = count(temp, list[i].expValue, list[i + 1].expValue);
+                                        if (len - i >= 2) {
+                                            var opt = list[i + 2].expValue;
+                                            i = i + 2;
+                                            if (opt !== "*" && opt !== "/" && opt !== "%") {
+                                                break;
+                                            }
                                         } else {
-                                            result = "";
+                                            i = i + 2;
                                         }
                                     }
-                                } else {
-                                    result = value;
+                                    result = count(result, opt0, temp);
                                 }
+                            } else {
+                                result = count(result, list[i].expValue, list[i + 1].expValue);
+                                break;
                             }
-                            opt = "";
-                            value = "";
                         }
+
+                    }
+                    function count(result, opt, value) {
+                        if (opt === "+") {
+                            result = (result + value);
+
+                        } else if (opt === "-") {
+                            result = (result - value);
+                        } else if (opt === "*") {
+                            result = (result * value);
+                        }
+                        else if (opt === "/") {
+                            result = (result / value);
+                        }
+                        else if (opt === "%") {
+                            result = (result % value);
+                        }
+                        else if (opt === "!") {
+                            result = (!value);
+                        }
+                        else if (opt === "&&") {
+                            result = (result && value);
+                        }
+                        else if (opt === "||") {
+                            result = (result || value);
+                        }
+                        else if (opt === "!=") {
+                            result = (result != value)
+                        }
+                        else if (opt === "!==") {
+                            result = (result !== value)
+                        }
+                        else if (opt === "==") {
+                            if (isArray(value)) {
+                                var index = -1;
+                                for (var v = 0; v < value.length; v++) {
+                                    if (tree(value[v]) == result) {
+                                        index = v;
+                                        break;
+                                    }
+                                }
+                                result = index;
+                            } else {
+                                result = (result == value)
+                            }
+                        }
+                        else if (opt === "===") {
+                            if (isArray(value)) {
+                                var index = -1;
+                                for (var v = 0; v < value.length; v++) {
+                                    if (tree(value[v]) === result) {
+                                        index = v;
+                                        break;
+                                    }
+                                }
+                                result = index;
+                            } else {
+                                result = (result === value)
+                            }
+                        }
+                        else if (opt === "?") {
+                            if (isArray(value)) {
+                                if (result === -1) {
+                                    result = tree(value[value.length - 1]);
+                                } else {
+                                    if (value.length > result) {
+                                        result = tree(value[result]);
+                                    } else {
+                                        result = "";
+                                    }
+                                }
+                            } else {
+                                result = value;
+                            }
+                        }
+                        return result;
                     }
                 }
                 return result;
@@ -877,6 +903,7 @@
         retFun.getModel = getModel;// 获取纯净的数据对象
         retFun.valuePro = valuePro;//计算属性值 moudle,对象 p 属性
         retFun.isLowIe = isLowIe;
+        retFun.parse = parse;
         return retFun;
     })
     ()
@@ -1725,6 +1752,7 @@
         qc.fun = {};
         qc.collection = fun.collection;
         qc.getModel = fun.getModel;
+        qc.parse = fun.parse;
         /*储存函数调用*/
         window.qc = qc;
     })()
