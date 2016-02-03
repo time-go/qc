@@ -14,6 +14,7 @@
 ##QC工程文件夹
 + index.html是一个demo
 + test.html是一个性能测试例子
+
 ###js文件
 + qc.js 就是我们要引用的文件
 + event.js 是对移动端事件tap和longtap的扩展这个可以不用
