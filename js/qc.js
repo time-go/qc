@@ -1491,7 +1491,7 @@
         }
     }
 
-    function templet(html, data) {
+    function template(html, data) {
         function temp(vm, vDom, option) {
             if (vDom.localName === "#text") {
                 return vDom.nodeValue;
@@ -1938,7 +1938,7 @@
         qc.collection = fun.collection;
         qc.getModel = fun.getModel;
         qc.parse = fun.parse;
-        qc.templet = templet;
+        qc.template = template;
         /*储存函数调用*/
         window.qc = qc;
     })()
