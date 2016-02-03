@@ -8,34 +8,33 @@
 </head>
 <body>
 <div qc-view="test">
-
         <span qc-css="color:{person.name}===['张三','李四']?['red','green'];font-size:{person.name}===['张三','李四']?['20px','30px']"
               qc-text="{person.name}"></span>
-    <textarea qc-prop="disabled:{person.name}==='张三'" qc-value-change="person.name"></textarea>
+        <textarea qc-prop="disabled:{person.name}==='张三'" qc-value-change="person.name"></textarea>
 
-    <div qc-visible="{person.name}!=='李四'">
-        <div>oooooo</div>
-        <input type="text" qc-visible="{person.name}!=='张三'" qc-value-change="person.name"/>
-    </div>
-    <select qc-select="person.name">
-        <option value="张三">张三</option>
-        <option value="李四">李四</option>
-    </select>
-    <demo bind:name="person.name"></demo>
-    张三:<input type="radio" qc-radio="person.name" value="张三"><br>
-    李四:<input type="radio" qc-radio="person.name" value="李四"><br>
-    <test id="test"></test>
-    <button qc-click="add">增加</button>
-    <div qc-visible="{person.name}!=='张三'" qc-each="person.list">
-        <div>
-            (<span qc-text="{$key}+1"></span>)
-            <span qc-text="({v}%3)===[0,1,2]?['呵呵','哈哈','吼吼']"></span>
-            <input type="text" qc-value-change="str">
-            <button qc-click="change">+</button>
+        <div qc-visible="{person.name}!=='李四'">
+            <div>oooooo</div>
+            <input type="text" qc-visible="{person.name}!=='张三'" qc-value-change="person.name"/>
+        </div>
+        <select qc-select="person.name">
+            <option value="张三">张三</option>
+            <option value="李四">李四</option>
+        </select>
+        <demo bind:name="person.name"></demo>
+        张三:<input type="radio" qc-radio="person.name" value="张三"><br>
+        李四:<input type="radio" qc-radio="person.name" value="李四"><br>
+        <test id="test"></test>
+        <button qc-click="add">增加</button>
+        <div qc-visible="{person.name}!=='张三'" qc-each="person.list">
+            <div>
+                (<span qc-text="{$key}+1"></span>)
+                <span qc-text="({v}%3)===[0,1,2]?['呵呵','哈哈','吼吼']"></span>
+                <input type="text" qc-value-change="str">
+                <button qc-click="change">+</button>
+            </div>
         </div>
     </div>
-</div>
-<div id="compent"></div>
+    <div id="compent"></div>
 </body>
 </html>
 <script>
@@ -54,6 +53,7 @@
         }
     })
     qc.UIComponent({
+        url: "component/myComt",
         id: "compent",
         name: "list",
         data: "王五"

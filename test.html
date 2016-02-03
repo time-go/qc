@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/qc.js"></script>
+</head>
+<body>
+<div qc-view="test">
+
+    <div qc-each="list">
+        <div>
+            <span qc-text="{str}"></span>
+            <button qc-click="change">+</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    var list = [];
+    for (var i = 0; i < 10000; i++) {
+        list.push({str: "测试"})
+    }
+    console.time("time");
+    var test = qc.view("test", function (vm, ve) {
+        vm.list = list;
+        ve.change = function ($self) {
+            $self.setValue("str", $self.str + "!");
+        }
+    })
+    console.timeEnd("time");
+</script>

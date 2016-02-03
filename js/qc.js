@@ -641,31 +641,31 @@
             return null;
         }
 
-        function render(maps) {
-            function count(moudel, expList) {
-                var text = expList;
-                var textList = [];
-                for (var i = 0; i < text.length; i++) {
-                    if (text[i].indexOf("{") == 0) {
-                        textList.push(valuePro(moudel, text[i], uuid, type, text))
-                    } else {
-                        textList.push(text[i]);
-                    }
-                }
-                var _expshow = textList.join("");
-                ;
-                try {
-                    var myValue = parse(_expshow);
-                    var t = typeof myValue;
-                    if (t == "string" || t == "number" || t == "boolean") {
-                        return myValue;
-                    }
-
-                } catch (e) {
-                    return "";
+        function count(moudel, expList) {
+            var text = expList;
+            var textList = [];
+            for (var i = 0; i < text.length; i++) {
+                if (text[i].indexOf("{") == 0) {
+                    textList.push(valuePro(moudel, text[i]))
+                } else {
+                    textList.push(text[i]);
                 }
             }
+            var _expshow = textList.join("");
+            ;
+            try {
+                var myValue = parse(_expshow);
+                var t = typeof myValue;
+                if (t == "string" || t == "number" || t == "boolean") {
+                    return myValue;
+                }
 
+            } catch (e) {
+                return "";
+            }
+        }
+
+        function render(maps) {
             for (var _map in  maps) {
                 var map = maps[_map];
                 var dom = document.querySelector("[" + PREFIX + "-id=\"" + _map + "\"" + "]");
@@ -745,6 +745,8 @@
 
                             } else if (k === "text") {
                                 dom.innerHTML = innerText(myValue);
+                            } else if (k === "html") {
+                                dom.innerHTML = myValue;
                             } else if (k === "select") {
                                 if (document.activeElement !== dom) {
                                     for (var i = 0; i < dom.options.length; i++) {
@@ -904,6 +906,7 @@
         retFun.valuePro = valuePro;//计算属性值 moudle,对象 p 属性
         retFun.isLowIe = isLowIe;
         retFun.parse = parse;
+        retFun.count = count;
         return retFun;
     })
     ()
@@ -1442,6 +1445,10 @@
                         var text = vDom[PREFIX][PREFIX + "-text"];
                         var bindText = fun.expEval(vm, text, uuid, "text");
                         html.push(fun.innerText(bindText));
+                    } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
+                        var text = vDom[PREFIX][PREFIX + "-text"];
+                        var bindText = fun.expEval(vm, text, uuid, "text");
+                        html.push(bindText);
                     } else {
                         html.push(vDom.innerHTML);
                     }
@@ -1467,6 +1474,222 @@
         } else {
             return "<!--" + uuid + "-->";
         }
+    }
+
+    function templet(html, data) {
+        function temp(vm, vDom, option) {
+            if (vDom.localName === "#text") {
+                return vDom.nodeValue;
+            }
+
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-visible")) {
+                var expV = vDom[PREFIX][PREFIX + "-visible"];
+                if (!fun.count(vm, expV)) {
+                    return "";
+                }
+            }
+            var html = ["<" + vDom.localName];
+            var classObject = {};
+            if (vDom.hasOwnProperty("className")) {
+                var classList = vDom.className;
+                for (var i = 0; i < classList.length; i++) {
+                    classObject[classList[i]] = classList[i];
+                }
+            }
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-class")) {
+                var dClass = vDom[PREFIX][PREFIX + "-class"];
+                for (var c in dClass) {
+                    var result = fun.count(vm, dClass[c]);
+                    if (result) {
+                        classObject[c] = c;
+                    } else {
+                        delete classObject[c];
+                    }
+                }
+                classList = [];
+                for (var c in classObject) {
+                    classList.push(c);
+                }
+                if (classList.length > 0) {
+                    html.push(" class=\"" + classList.join(" ") + "\"");//class
+                }
+            } else {
+                if (vDom.className.length > 0) {
+                    html.push(" class=\"" + vDom.className.join(" ") + "\"");//class
+                }
+            }
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-attr")) {
+                var dAttr = vDom[PREFIX][PREFIX + "-attr"];
+                for (var a in dAttr) {
+                    var value = fun.count(vm, dAttr[a]);
+                    html.push(" " + a + "=" + "\"" + value + "\"");
+                    if (a === "value" && vDom.localName === "option") {
+                        if (option === value) {
+                            html.push(" selected");
+                        }
+                    }
+                    if (a === "value") {
+                        if (vDom[PREFIX].hasOwnProperty(PREFIX + "-radio")) {
+                            var textValue = vDom[PREFIX][PREFIX + "-radio"];
+                            var text = textValue[0];
+                            text = text.substr(1, text.length - 2);
+                            if (fun.count(vm, textValue) === value) {
+                                html.push(" checked");
+                            }
+                        }
+                    }
+                }
+            }
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-prop")) {
+                var dProp = vDom[PREFIX][PREFIX + "-prop"];
+                for (var p in dProp) {
+                    if (fun.count(vm, dProp[p])) {
+                        html.push(" " + p);
+                    }
+                }
+            }
+            if (vDom.hasOwnProperty("attributes")) {
+                for (var ar in vDom.attributes) {
+                    var name = ar;
+                    var value = vDom.attributes[ar];
+                    if (((!vDom[PREFIX].hasOwnProperty(PREFIX + "-attr")) || vDom[PREFIX][PREFIX + "-attr"][name] === undefined) && ((!vDom[PREFIX].hasOwnProperty(PREFIX + "-prop")) || vDom[PREFIX][PREFIX + "-prop"][name] === undefined)) {
+                        html.push(" " + name + "=" + "\"" + value + "\"");
+                        if (name === "value" && vDom.localName === "option") {
+                            if (option === value) {
+                                html.push(" selected");
+                            }
+                        }
+                        if (name === "value") {//因为要和自身的属性value做比较，所以放在 属性的循环里
+                            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-radio")) {
+                                var textValue = vDom[PREFIX][PREFIX + "-radio"];
+                                var text = textValue[0];
+                                text = text.substr(1, text.length - 2);
+                                if (fun.count(vm, textValue) === value) {
+                                    html.push(" checked");
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            var styleList = [];
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-css")) {
+                var dCss = vDom[PREFIX][PREFIX + "-css"];
+                for (var c in dCss) {
+                    styleList.push(c + ":" + fun.count(vm, dCss[c]));
+                }
+            }
+            if (vDom.hasOwnProperty("style")) {
+                for (var sy in vDom.style) {
+                    if ((!vDom[PREFIX].hasOwnProperty(PREFIX + "-css")) || vDom[PREFIX][PREFIX + "-css"][sy] === undefined) {
+                        styleList.push(sy + ":" + vDom.style[sy]);
+                    }
+                }
+            }
+            if (styleList.length > 0) {
+                html.push(" style=\"" + styleList.join(";") + "\"");
+            }
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-value")) {
+                var textValue = vDom[PREFIX][PREFIX + "-value"];
+                if (vDom.localName === "input") {
+                    html.push(" value=\"" + fun.count(vm, textValue) + "\"");
+                }
+            }
+            var selectValue = null;
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-select")) {
+                var textValue = vDom[PREFIX][PREFIX + "-select"];
+                var text = textValue[0];
+                text = text.substr(1, text.length - 2);
+                selectValue = fun.count(vm, textValue);
+            }
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-check")) {
+                var textValue = vDom[PREFIX][PREFIX + "-check"];
+                var text = textValue[0];
+                text = text.substr(1, text.length - 2);
+                if (fun.count(vm, textValue)) {
+                    html.push(" checked");
+                }
+            }
+            html.push(">");
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-value")) {
+                var textValue = vDom[PREFIX][PREFIX + "-value"];
+                if (vDom.localName !== "input") {
+                    html.push(fun.count(vm, textValue));
+                }
+            }
+            var arr = vDom[PREFIX][PREFIX + "-each"]
+            if (arr !== undefined) {
+                arr = arr[0];
+                arr = arr.substr(1, arr.length - 2);
+                var arrList = arr.split(".");
+                var $parent, $prop;
+                if (arrList.length > 1) {
+                    $prop = arrList.pop();
+                    $parent = fun.count(vm, "{" + arrList.join(".") + "}");
+                } else {
+                    $parent = vm;
+                    $prop = arr;
+                }
+                var list = $parent[$prop];
+                if (list === undefined) {
+                    $parent[$prop] = [];
+                    list = $parent[$prop];
+                }
+                for (var i = 0; i < vDom.childNodes.length; i++) {
+                    if (vDom.childNodes[i].localName !== "#text") {
+                        for (var l = 0; l < list.length; l++) {
+                            list[l].$key = l;
+                            if (selectValue === null) {
+                                html.push(temp(list[l], vDom.childNodes[i]));
+                            } else {
+                                html.push(temp(list[l], vDom.childNodes[i], selectValue));
+                            }
+                            if (html.length > 1000) {//数组进行性能优化
+                                html = [html.join("")];
+                            }
+                        }
+                        break;
+                    }
+
+                }
+            }
+            else {
+                if (vDom.childNodes.length === 0) {
+                    if (vDom[PREFIX].hasOwnProperty(PREFIX + "-text")) {//绑定text
+                        var text = vDom[PREFIX][PREFIX + "-text"];
+                        var bindText = fun.count(vm, text);
+                        html.push(fun.innerText(bindText));
+                    } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
+                        var text = vDom[PREFIX][PREFIX + "-text"];
+                        var bindText = fun.count(vm, text);
+                        html.push(bindText);
+                    } else {
+                        html.push(vDom.innerHTML);
+                    }
+                } else {
+                    for (var i = 0; i < vDom.childNodes.length; i++) {
+                        vDom.childNodes[i]
+                        if (selectValue === null) {
+                            html.push(temp(vm, vDom.childNodes[i]));
+                        } else {
+                            html.push(temp(vm, vDom.childNodes[i], selectValue));
+                        }
+                        ;
+                        if (html.length > 1000) {//数组进行性能优化
+                            html = [html.join("")];
+                        }
+                    }
+                }
+            }
+            html.push("</" + vDom.localName + ">")
+        }
+
+        var dom = document.createElement("div");
+        dom.innerHTML = html;
+        dom = dom.children[0];
+        var vDom = fun.htmlToObj(dom);
+        return temp(data, vDom);
     }
 
 //---------------初始化对象----------------//
@@ -1626,59 +1849,6 @@
 
             qc.widget[name] = implement;
         }
-        //创建组件
-
-        qc.UIComponent = function (config) {
-            var name = config.name;
-            var id = config.id;
-            var data = config.data;
-            var implement = qc.component[name];
-            var obj = {
-                id: id,
-                data: data,
-                viewModel: qc.vms[id],
-                getElement: function () {
-                    return document.querySelector("[" + PREFIX + "-id=\"" + this.id + "\"" + "]");
-                },
-                dataOut: function (data) {
-                    if (this.hasOwnProperty("callback") && this["callback"]) {
-                        this["callback"](data);
-                    }
-                },
-                view: implement.view,
-                update: implement.update
-            }
-            qc.vms[id] = {};
-            qc.vms[id].$ve = {};
-            qc.vms[id].$watch = [];
-            qc.vms[id].$ve.$watch = function (path, callback) {
-                qc.vms[id].$watch.push({path: id + "." + path, callback: callback})
-            }
-            obj.viewModel = qc.vms[id];
-            obj.view(qc.vms[id], qc.vms[id].$ve);
-            if (implement.hasOwnProperty("load")) {
-                obj.load = implement.load;
-                qc.load.push(obj);
-            }
-            delete qc.vms[id].$ve.$watch;
-            qc.vms[id].$path = id;
-            var dom = document.createElement("div");
-            dom.innerHTML = implement.templete;
-            dom = dom.children[0];
-            var widgetStr = bindData(qc.vms[id], fun.htmlToObj(dom));
-            var container = document.getElementById(id);
-            container.setAttribute(PREFIX + "-id", id);
-            container.innerHTML = widgetStr;
-            fun.load();//回调时间
-            return obj
-        }
-
-        qc.createUIComponent = function (name, implement) {
-            if (!qc.hasOwnProperty("component")) {
-                qc.component = {};
-                qc.component[name] = implement;
-            }
-        }
         function isMobile() {
             if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
                 return true;
@@ -1756,5 +1926,129 @@
         /*储存函数调用*/
         window.qc = qc;
     })()
-})
-()
+})()
+;
+(function () {
+    //---------------commonjs规范----------------//
+    function sendAjaxRequest(data) {
+        var XMLHttpReq;
+        try {
+            XMLHttpReq = new ActiveXObject("Msxml2.XMLHTTP");//IE高版本创建XMLHTTP
+        }
+        catch (E) {
+            try {
+                XMLHttpReq = new ActiveXObject("Microsoft.XMLHTTP");//IE低版本创建XMLHTTP
+            }
+            catch (E) {
+                XMLHttpReq = new XMLHttpRequest();//兼容非IE浏览器，直接创建XMLHTTP对象
+            }
+        }                                //创建XMLHttpRequest对象
+        XMLHttpReq.open("get", data.url, false);
+        XMLHttpReq.onreadystatechange = processResponse; //指定响应函数
+        XMLHttpReq.send(null);
+//回调函数
+        function processResponse() {
+            if (XMLHttpReq.readyState == 4 && XMLHttpReq.status == 200) {
+                var text = XMLHttpReq.responseText;
+                text = window.decodeURI(text);
+                if (typeof data.success === "function") {
+                    data.success(text);
+                }
+            } else {
+                if (typeof data.error === "function") {
+                    data.error();
+                }
+            }
+        }
+    }
+
+    var tmpTag = document.location.protocol + "//";
+    var _cssCache = {};
+    var _absUrl = (function () {
+        var a;
+        return function (url) {
+            if (!a) a = document.createElement('a');
+            a.href = url;
+            return a.href;
+        };
+    })();
+    var _require = function (parent, path) {
+        var _moudle;
+        var _type = "js";
+        var _basePath;
+        if (path.indexOf(tmpTag) < 0) {
+            if (path.substr(0, 2) == "./") {
+                path = path.substr(2);
+                _basePath = parent + path;
+            } else if (path.substr(0, 1) == "/") {
+                _basePath = tmpTag + window.location.host + path;
+            } else {
+                var _host;
+                if (parent == "") {
+                    _host = window.location.href;
+                } else {
+                    _host = parent;
+                }
+                if (_host.indexOf("/") > -1) {
+                    _host = _host.substr(0, _host.lastIndexOf("/") + 1);
+                } else {
+                    _host = _host + "/";
+                }
+                _basePath = _host + path;
+            }
+        } else {
+            _basePath = path;
+        }
+        var _path = _basePath;
+        _basePath = _basePath.substr(0, _basePath.lastIndexOf("/") + 1);
+        if (_path.lastIndexOf("!") > -1) {
+            _type = _path.substr(_path.lastIndexOf("!") + 1);
+            _path = _path.substr(0, _path.lastIndexOf("!"));
+        } else {
+            if (_path.lastIndexOf(".js") < 0) {
+                _path = _path + ".js";
+            }
+        }
+        var _myUrl = _absUrl(_path);
+        sendAjaxRequest({
+            "url": _myUrl + "?r=" + (new Date() - 1),
+            "error": function () {
+                console && console.log(_myUrl + "加载失败");
+            },
+            "success": function (data) {
+                _moudle = data;
+            }
+        });
+
+        if (_type == "js") { //js预编译
+            var _script = "(function(exports){\n";
+            _script += "var $parent = \"" + _basePath + "\";\n";
+            _script += _moudle.replace(/require\(/g, "_require($parent,");
+            _script += " return exports;\n";
+            _script += "})({});" + "//@ sourceURL=" + _myUrl;
+            _moudle = eval(_script);
+        } else if (_type == "css") {
+            var _key = _myUrl;
+            if (!_cssCache.hasOwnProperty(_key)) {
+                $("<style></style>").html(_moudle).appendTo("head");
+                _cssCache[_key] = "load";
+            }
+        }
+        return _moudle;
+    }
+    window.require = function (path) {
+        return _require("", path);
+    };
+})();
+;
+(function () {
+    //创建组件
+    qc.UIComponent = function (config) {
+        var url = config.url;
+        var id = config.id;
+        var data = config.data;
+        var element = document.getElementById(id);
+        element.setAttribute("qc-view", id);
+        return require(url)(document.getElementById(id), id, data);
+    }
+})()

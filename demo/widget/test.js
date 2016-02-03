@@ -17,14 +17,4 @@
             window.console && console.log(this.props);
         }
     });
-    //创建组件
-    qc.createUIComponent("list", {
-        templete: "<div><span qc-text='{name}'></span></div>",
-        view: function (vm, ve) {
-            vm.name = this.data;
-        },
-        load: function () {
-            window.console && console.log("组件加载完毕...")
-        }
-    })
 })()
