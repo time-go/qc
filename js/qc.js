@@ -1938,6 +1938,7 @@
         qc.collection = fun.collection;
         qc.getModel = fun.getModel;
         qc.parse = fun.parse;
+        qc.templet = templet;
         /*储存函数调用*/
         window.qc = qc;
     })()
