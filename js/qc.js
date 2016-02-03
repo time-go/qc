@@ -211,7 +211,11 @@
                 "==": "==",
                 "===": "===",
                 "=!": "!=",
-                "==!": "!=="
+                "==!": "!==",
+                ">": ">",
+                "=>": ">=",
+                "<": "<",
+                "=<": "<="
             }
 
             function caseValue(pushStr, list) {
@@ -445,6 +449,17 @@
                         }
                         else if (opt === "!==") {
                             result = (result !== value)
+                        }
+                        else if (opt === ">") {
+                            result = (result > value)
+                        }
+                        else if (opt === ">=") {
+                            result = (result >= value)
+                        } else if (opt === "<") {
+                            result = (result < value)
+                        }
+                        else if (opt === "<=") {
+                            result = (result <= value)
                         }
                         else if (opt === "==") {
                             if (isArray(value)) {
