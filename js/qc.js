@@ -58,7 +58,26 @@
 
         }
     })()
-    /*私有函数*/
+    /*私有函数*/ //tbosy 复制 iebug
+    function setTBodyInnerHTML(tbody, html) {//兼容ie6-ie9 的table innerHTML 不能修改
+        var div = document.createElement('div')
+        div.innerHTML = '<table><tbody>' + html + '</tbody></table>'
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild)
+        }
+        while (div.firstChild.firstChild.childNodes.length > 0) {
+            tbody.appendChild(div.firstChild.firstChild.childNodes[0])
+        }
+    }
+
+    function setTBodyAppendHtml(tbody, html) {
+        var div = document.createElement('div')
+        div.innerHTML = '<table><tbody>' + html + '</tbody></table>';
+        while (div.firstChild.firstChild.childNodes.length > 0) {
+            tbody.appendChild(div.firstChild.firstChild.childNodes[0])
+        }
+    }
+
     var fun = (function () {
         var retFun = {};
 
@@ -141,7 +160,11 @@
                 }
                 o.attributes = {};
                 o[PREFIX] = {};
-                o.innerHTML = d.innerHTML;
+                try {
+                    o.innerHTML = d.innerHTML;
+                } catch (e) {
+                    setTBodyInnerHTML(o, d.innerHTML);
+                }
                 if (d.attributes.length > 0) {
                     for (var a = 0; a < d.attributes.length; a++) {
                         var _node = d.attributes[a]
@@ -680,7 +703,7 @@
             }
         }
 
-        function render(maps) {
+        function render(maps, dub) {
             for (var _map in  maps) {
                 var map = maps[_map];
                 var dom = document.querySelector("[" + PREFIX + "-id=\"" + _map + "\"" + "]");
@@ -749,19 +772,27 @@
                                 }
                             } else if (k === "value") {
                                 if (v === "text") {
-                                    if (document.activeElement !== dom) {
+                                    if (document.activeElement !== dom || dub !== dom) {
                                         dom.value = myValue;
                                     }
                                 } else if (v === "textarea") {
-                                    if (document.activeElement !== dom) {
+                                    if (document.activeElement !== dom || dub !== dom) {
                                         dom.value = myValue;
                                     }
                                 }
 
                             } else if (k === "text") {
-                                dom.innerHTML = innerText(myValue);
+                                try {
+                                    dom.innerHTML = innerText(myValue);
+                                } catch (e) {
+                                    setTBodyInnerHTML(dom, innerText(myValue));
+                                }
                             } else if (k === "html") {
-                                dom.innerHTML = myValue;
+                                try {
+                                    dom.innerHTML = myValue;
+                                } catch (e) {
+                                    setTBodyInnerHTML(dom, myValue);
+                                }
                             } else if (k === "select") {
                                 if (document.activeElement !== dom) {
                                     for (var i = 0; i < dom.options.length; i++) {
@@ -939,7 +970,7 @@
             if (!vm.hasOwnProperty("$map")) {
                 vm.$map = {};
             }
-            vm.setValue = function (key, value) {
+            vm.setValue = function (key, value, dub) {
                 function getMypath(path) {
                     path = path.replace(/\[\d+\]/g, "");
                     var view = vm.$path;
@@ -963,9 +994,7 @@
                         return;
                     }
                     var watch = getMypath(vm.$path + "." + key);
-                    if (watch) {
-                        watch(value, fun.getModel(vm[key]), vm);
-                    }
+                    var oldValue = fun.getModel(vm[key]);
                     var each = this["$" + PREFIX + "-each-" + key];
                     vm[key] = value;
                     for (var _k = each.length - 1; _k >= 0; _k--) {
@@ -983,7 +1012,11 @@
                         if (s === null) {
                             each.splice(_k, 1);
                         } else {
-                            s.innerHTML = html.join("");
+                            try {
+                                s.innerHTML = html.join("");
+                            } catch (e) {
+                                setTBodyInnerHTML(s, html.join(""));
+                            }
                             fun.load();
                         }
                     }
@@ -991,11 +1024,13 @@
                     fun.render(this["$map"][key]);
                     //垃圾回收
                     fun.collection();
+                    if (watch) {
+                        watch(value, oldValue, vm);
+                    }
                 } else if (typeof key === "object") {
                     var watch = getMypath(vm.$path);
-                    if (watch) {
-                        watch(key, fun.getModel(this), this.$p);
-                    }
+                    var oldValue = fun.getModel(this);
+
                     function setObject(map, data) {
                         for (var m in  map) {
                             if (typeof map[m] !== "function" && m.indexOf("$") < 0) {
@@ -1022,21 +1057,25 @@
                     }
 
                     setObject(this, key);
+                    if (watch) {
+                        watch(key, oldValue, this.$p);
+                    }
                 }
                 else {
                     if (this[key] === value) {
                         return;
                     }
                     var watch = getMypath(vm.$path + "." + key);
-                    if (watch) {
-                        watch(value, fun.getModel(vm[key]), vm);
-                    }
+                    var oldValue = fun.getModel(vm[key]);
                     this[key] = value;
                     if (this.hasOwnProperty("$map")) {
                         var list = this.$map[key];
                         if (list !== undefined) {
-                            fun.render(list);
+                            fun.render(list, dub);
                         }
+                    }
+                    if (watch) {
+                        watch(value, oldValue, vm);
                     }
                 }
             }
@@ -1053,7 +1092,7 @@
         if (vDom.localName === "#text") {
             return vDom.nodeValue;
         }
-        var uuid = fun.getRandom();
+        var uuid = fun.getRandom() + "";
 
         if (qc.widget.hasOwnProperty(vDom.localName)) {
             var implement = qc.widget[vDom.localName];
@@ -1394,7 +1433,11 @@
                             if (s === null) {
                                 divObject.splice(k, 1);
                             } else {
-                                s.innerHTML = s.innerHTML + divText.join("");
+                                try {
+                                    s.innerHTML = s.innerHTML + divText.join("");
+                                } catch (e) {
+                                    setTBodyAppendHtml(s, divText.join(""));
+                                }
                                 fun.load();
                             }
                         }
@@ -1440,7 +1483,11 @@
                             if (s === null) {
                                 divObject.splice(k, 1);
                             } else {
-                                s.innerHTML = s.innerHTML + divText.join("");
+                                try {
+                                    s.innerHTML = s.innerHTML + divText.join("");
+                                } catch (e) {
+                                    setTBodyAppendHtml(s, divText.join(""));
+                                }
                                 fun.load();
                             }
                         }
@@ -1701,7 +1748,11 @@
         }
 
         var dom = document.createElement("div");
-        dom.innerHTML = html;
+        try {
+            dom.innerHTML = html;
+        } catch (e) {
+            setTBodyInnerHTML(dom, html)
+        }
         dom = dom.children[0];
         var vDom = fun.htmlToObj(dom);
         return temp(data, vDom);
@@ -1731,7 +1782,7 @@
             var dom = document.querySelector("[" + PREFIX + "-view='" + _vm + "']");
             if (dom !== null) {
                 var VDom = fun.htmlToObj(dom);
-                qc.vms[_vm].$path = _vm;
+                qc.vms[_vm].$path = _vm + "";
                 var outerHtml = bindData(qc.vms[_vm], VDom);
                 dom.outerHTML = outerHtml;
                 fun.load();
@@ -1844,6 +1895,8 @@
                         } else if (_this.parentNode !== newDom && rec !== true) {
                             getTarget(_this.parentNode)
                         }
+                    } else if (_this.parentNode !== newDom) {
+                        getTarget(_this.parentNode)
                     }
                 }
 
@@ -1857,7 +1910,11 @@
             }
             if (implement.hasOwnProperty("templete") && implement.templete !== "") {
                 var dom = document.createElement("div");
-                dom.innerHTML = implement.templete;
+                try {
+                    dom.innerHTML = implement.templete;
+                } catch (e) {
+                    setTBodyInnerHTML(dom, implement.templete);
+                }
                 dom = dom.children[0];
                 implement.vDom = fun.htmlToObj(dom);
             }
@@ -1903,7 +1960,7 @@
         qc.bindText = function (path, obj) {
             if (document.activeElement === obj) {
                 var v = getValue(path);
-                v.vm.setValue(v.pro, obj.value);
+                v.vm.setValue(v.pro, obj.value, obj);
             }
         }
         qc.bindSelect = function (path, obj) {
@@ -1939,6 +1996,7 @@
         qc.getModel = fun.getModel;
         qc.parse = fun.parse;
         qc.template = template;
+        qc.getRandom = fun.getRandom;
         /*储存函数调用*/
         window.qc = qc;
     })()
@@ -1966,7 +2024,7 @@
         function processResponse() {
             if (XMLHttpReq.readyState == 4 && XMLHttpReq.status == 200) {
                 var text = XMLHttpReq.responseText;
-                text = window.decodeURI(text);
+                //text = window.decodeURI(text);
                 if (typeof data.success === "function") {
                     data.success(text);
                 }
@@ -2029,7 +2087,7 @@
         sendAjaxRequest({
             "url": _myUrl + "?r=" + (new Date() - 1),
             "error": function () {
-                console && console.log(_myUrl + "加载失败");
+                window.console && console.log(_myUrl + "加载失败");
             },
             "success": function (data) {
                 _moudle = data;
@@ -2040,7 +2098,7 @@
             var _script = "(function(exports){\n";
             _script += "var $parent = \"" + _basePath + "\";\n";
             _script += _moudle.replace(/require\(/g, "_require($parent,");
-            _script += " return exports;\n";
+            _script += "\n return exports;\n";
             _script += "})({});" + "//@ sourceURL=" + _myUrl;
             _moudle = eval(_script);
         } else if (_type == "css") {
