@@ -1892,10 +1892,10 @@
                                     }
                                 }
                             }
-                        } else if (_this.parentNode !== newDom && rec !== true) {
-                            getTarget(_this.parentNode)
+                        } else if (_this !== newDom && _this.parentNode !== newDom && rec !== true) {
+                            getTarget(_this.parentNode);
                         }
-                    } else if (_this.parentNode !== newDom) {
+                    } else if (_this !== newDom && _this.parentNode !== newDom) {
                         getTarget(_this.parentNode)
                     }
                 }
