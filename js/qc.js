@@ -1035,7 +1035,9 @@
                         for (var m in  map) {
                             if (typeof map[m] !== "function" && m.indexOf("$") < 0) {
                                 if (map.hasOwnProperty("$" + PREFIX + "-each-" + m)) {
-                                    map.setValue(m, data[m]);
+                                    if (data[m] !== undefined) {
+                                        map.setValue(m, data[m]);
+                                    }
                                     continue;
                                 }
                                 if (map["$map"] && map["$map"][m] !== undefined) {
