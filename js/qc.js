@@ -1516,7 +1516,6 @@
                     }
                 } else {
                     for (var i = 0; i < vDom.childNodes.length; i++) {
-                        vDom.childNodes[i]
                         if (selectValue === null) {
                             html.push(bindData(vm, vDom.childNodes[i]));
                         } else {
@@ -1526,6 +1525,14 @@
                         if (html.length > 1000) {//数组进行性能优化
                             html = [html.join("")];
                         }
+                    }
+                }
+            } else {
+                for (var i = 0; i < vDom.childNodes.length; i++) {
+                    if (selectValue === null) {
+                        bindData(vm, vDom.childNodes[i])
+                    } else {
+                        bindData(vm, vDom.childNodes[i], selectValue)
                     }
                 }
             }
@@ -1893,7 +1900,7 @@
                                 }
                             }
                         } else if (_this !== newDom && _this.parentNode !== newDom && rec !== true) {
-                            getTarget(_this.parentNode);
+                            getTarget(_this.parentNode)
                         }
                     } else if (_this !== newDom && _this.parentNode !== newDom) {
                         getTarget(_this.parentNode)
