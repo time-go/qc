@@ -585,11 +585,16 @@
                         parent2 = mou;
                         mou = mou[p[i]];
                     } else if (i === p.length - 1) {
+                        parent1 = parent2;
+                        parent2 = mou;
                         mou[p[i]] = "";
                         mou = mou[p[i]]
                     } else {
-                        mou = "";
-                        break;
+                        mou[p[i]]={};
+                        parent1 = parent2;
+                        parent2 = mou;
+                        mou = mou[p[i]];
+
                     }
                 }
                 retValue = mou;
