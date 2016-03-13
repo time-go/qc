@@ -41,6 +41,8 @@
                 } else if ((char === "\"" || char === "'" ) && isStr === char) {
                     temp += char;
                     isStr = "";
+                } else if (isStr !== "") {
+                    temp += char;
                 } else {
                     if (char === z) {
                         list.push(temp);
@@ -106,6 +108,11 @@
             var list = [];
             var text = exp;
             var v = "";
+            try {
+                text.length;
+            } catch (e) {
+                console.log(text);
+            }
             for (var t = 0; t < text.length; t++) {
                 var char = text.charAt(t);
                 if (char == "{") {
@@ -590,7 +597,7 @@
                         mou[p[i]] = "";
                         mou = mou[p[i]]
                     } else {
-                        mou[p[i]]={};
+                        mou[p[i]] = {};
                         parent1 = parent2;
                         parent2 = mou;
                         mou = mou[p[i]];
