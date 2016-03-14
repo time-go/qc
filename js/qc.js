@@ -269,6 +269,7 @@
                         }
                 }
             }
+
 //1.针对火狐做的优化 火狐被调用的函数必须定义在调用前
 //2. 火狐在调用内联函数的时候 如果 外面有同名函数 会调用外面的 二不调用内联的
 
@@ -358,6 +359,7 @@
                 }
                 return result;
             }
+
             var trope = {
                 "\\\\": "\\\\"//转义字符串
             }
@@ -1077,6 +1079,8 @@
                     if (watch) {
                         watch(key, oldValue, this.$p);
                     }
+                } else if (typeof value === "object") {
+                    vm[key].setValue(value);
                 }
                 else {
                     if (this[key] === value) {
