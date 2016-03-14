@@ -405,6 +405,93 @@
                     caseValue(endStr, list);
                     temp = [];
                 }
+
+                function countExp(result, opt, value) {
+                    if (opt === "+") {
+                        result = (result + value);
+
+                    } else if (opt === "-") {
+                        result = (result - value);
+                    } else if (opt === "*") {
+                        result = (result * value);
+                    }
+                    else if (opt === "/") {
+                        result = (result / value);
+                    }
+                    else if (opt === "%") {
+                        result = (result % value);
+                    }
+                    else if (opt === "!") {
+                        result = (!value);
+                    }
+                    else if (opt === "&&") {
+                        result = (result && value);
+                    }
+                    else if (opt === "||") {
+                        result = (result || value);
+                    }
+                    else if (opt === "!=") {
+                        result = (result != value)
+                    }
+                    else if (opt === "!==") {
+                        result = (result !== value)
+                    }
+                    else if (opt === ">") {
+                        result = (result > value)
+                    }
+                    else if (opt === ">=") {
+                        result = (result >= value)
+                    } else if (opt === "<") {
+                        result = (result < value)
+                    }
+                    else if (opt === "<=") {
+                        result = (result <= value)
+                    }
+                    else if (opt === "==") {
+                        if (isArray(value)) {
+                            var index = -1;
+                            for (var v = 0; v < value.length; v++) {
+                                if (tree(value[v]) == result) {
+                                    index = v;
+                                    break;
+                                }
+                            }
+                            result = index;
+                        } else {
+                            result = (result == value)
+                        }
+                    }
+                    else if (opt === "===") {
+                        if (isArray(value)) {
+                            var index = -1;
+                            for (var v = 0; v < value.length; v++) {
+                                if (tree(value[v]) === result) {
+                                    index = v;
+                                    break;
+                                }
+                            }
+                            result = index;
+                        } else {
+                            result = (result === value)
+                        }
+                    }
+                    else if (opt === "?") {
+                        if (isArray(value)) {
+                            if (result === -1) {
+                                result = tree(value[value.length - 1]);
+                            } else {
+                                if (value.length > result) {
+                                    result = tree(value[result]);
+                                } else {
+                                    result = "";
+                                }
+                            }
+                        } else {
+                            result = value;
+                        }
+                    }
+                    return result;
+                }
                 var result;
                 if (list.length === 0) {
                     window.console && console.log("%c表达式为空", "color:red");
@@ -424,13 +511,13 @@
                                 var opt = list[i + 2].expValue;
                                 var opt0 = list[i].expValue;
                                 if (opt !== "*" && opt !== "/" && opt !== "%") {
-                                    result = count(result, opt0, list[i + 1].expValue);
+                                    result = countExp(result, opt0, list[i + 1].expValue);
                                     i = i + 2;
                                 } else {
                                     var temp = list[i + 1].expValue;
                                     i = i + 2;
                                     while (i < len) {
-                                        temp = count(temp, list[i].expValue, list[i + 1].expValue);
+                                        temp = countExp(temp, list[i].expValue, list[i + 1].expValue);
                                         if (len - i >= 2) {
                                             var opt = list[i + 2].expValue;
                                             i = i + 2;
@@ -441,100 +528,14 @@
                                             i = i + 2;
                                         }
                                     }
-                                    result = count(result, opt0, temp);
+                                    result = countExp(result, opt0, temp);
                                 }
                             } else {
-                                result = count(result, list[i].expValue, list[i + 1].expValue);
+                                result = countExp(result, list[i].expValue, list[i + 1].expValue);
                                 break;
                             }
                         }
 
-                    }
-                    function count(result, opt, value) {
-                        if (opt === "+") {
-                            result = (result + value);
-
-                        } else if (opt === "-") {
-                            result = (result - value);
-                        } else if (opt === "*") {
-                            result = (result * value);
-                        }
-                        else if (opt === "/") {
-                            result = (result / value);
-                        }
-                        else if (opt === "%") {
-                            result = (result % value);
-                        }
-                        else if (opt === "!") {
-                            result = (!value);
-                        }
-                        else if (opt === "&&") {
-                            result = (result && value);
-                        }
-                        else if (opt === "||") {
-                            result = (result || value);
-                        }
-                        else if (opt === "!=") {
-                            result = (result != value)
-                        }
-                        else if (opt === "!==") {
-                            result = (result !== value)
-                        }
-                        else if (opt === ">") {
-                            result = (result > value)
-                        }
-                        else if (opt === ">=") {
-                            result = (result >= value)
-                        } else if (opt === "<") {
-                            result = (result < value)
-                        }
-                        else if (opt === "<=") {
-                            result = (result <= value)
-                        }
-                        else if (opt === "==") {
-                            if (isArray(value)) {
-                                var index = -1;
-                                for (var v = 0; v < value.length; v++) {
-                                    if (tree(value[v]) == result) {
-                                        index = v;
-                                        break;
-                                    }
-                                }
-                                result = index;
-                            } else {
-                                result = (result == value)
-                            }
-                        }
-                        else if (opt === "===") {
-                            if (isArray(value)) {
-                                var index = -1;
-                                for (var v = 0; v < value.length; v++) {
-                                    if (tree(value[v]) === result) {
-                                        index = v;
-                                        break;
-                                    }
-                                }
-                                result = index;
-                            } else {
-                                result = (result === value)
-                            }
-                        }
-                        else if (opt === "?") {
-                            if (isArray(value)) {
-                                if (result === -1) {
-                                    result = tree(value[value.length - 1]);
-                                } else {
-                                    if (value.length > result) {
-                                        result = tree(value[result]);
-                                    } else {
-                                        result = "";
-                                    }
-                                }
-                            } else {
-                                result = value;
-                            }
-                        }
-                        return result;
                     }
                 }
                 return result;
