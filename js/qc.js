@@ -269,7 +269,95 @@
                         }
                 }
             }
+//1.针对火狐做的优化 火狐被调用的函数必须定义在调用前
+//2. 火狐在调用内联函数的时候 如果 外面有同名函数 会调用外面的 二不调用内联的
 
+            function countExp(result, opt, value) {
+                if (opt === "+") {
+                    result = (result + value);
+
+                } else if (opt === "-") {
+                    result = (result - value);
+                } else if (opt === "*") {
+                    result = (result * value);
+                }
+                else if (opt === "/") {
+                    result = (result / value);
+                }
+                else if (opt === "%") {
+                    result = (result % value);
+                }
+                else if (opt === "!") {
+                    result = (!value);
+                }
+                else if (opt === "&&") {
+                    result = (result && value);
+                }
+                else if (opt === "||") {
+                    result = (result || value);
+                }
+                else if (opt === "!=") {
+                    result = (result != value)
+                }
+                else if (opt === "!==") {
+                    result = (result !== value)
+                }
+                else if (opt === ">") {
+                    result = (result > value)
+                }
+                else if (opt === ">=") {
+                    result = (result >= value)
+                } else if (opt === "<") {
+                    result = (result < value)
+                }
+                else if (opt === "<=") {
+                    result = (result <= value)
+                }
+                else if (opt === "==") {
+                    if (isArray(value)) {
+                        var index = -1;
+                        for (var v = 0; v < value.length; v++) {
+                            if (tree(value[v]) == result) {
+                                index = v;
+                                break;
+                            }
+                        }
+                        result = index;
+                    } else {
+                        result = (result == value)
+                    }
+                }
+                else if (opt === "===") {
+                    if (isArray(value)) {
+                        var index = -1;
+                        for (var v = 0; v < value.length; v++) {
+                            if (tree(value[v]) === result) {
+                                index = v;
+                                break;
+                            }
+                        }
+                        result = index;
+                    } else {
+                        result = (result === value)
+                    }
+                }
+                else if (opt === "?") {
+                    if (isArray(value)) {
+                        if (result === -1) {
+                            result = tree(value[value.length - 1]);
+                        } else {
+                            if (value.length > result) {
+                                result = tree(value[result]);
+                            } else {
+                                result = "";
+                            }
+                        }
+                    } else {
+                        result = value;
+                    }
+                }
+                return result;
+            }
             var trope = {
                 "\\\\": "\\\\"//转义字符串
             }
@@ -406,92 +494,6 @@
                     temp = [];
                 }
 
-                function countExp(result, opt, value) {
-                    if (opt === "+") {
-                        result = (result + value);
-
-                    } else if (opt === "-") {
-                        result = (result - value);
-                    } else if (opt === "*") {
-                        result = (result * value);
-                    }
-                    else if (opt === "/") {
-                        result = (result / value);
-                    }
-                    else if (opt === "%") {
-                        result = (result % value);
-                    }
-                    else if (opt === "!") {
-                        result = (!value);
-                    }
-                    else if (opt === "&&") {
-                        result = (result && value);
-                    }
-                    else if (opt === "||") {
-                        result = (result || value);
-                    }
-                    else if (opt === "!=") {
-                        result = (result != value)
-                    }
-                    else if (opt === "!==") {
-                        result = (result !== value)
-                    }
-                    else if (opt === ">") {
-                        result = (result > value)
-                    }
-                    else if (opt === ">=") {
-                        result = (result >= value)
-                    } else if (opt === "<") {
-                        result = (result < value)
-                    }
-                    else if (opt === "<=") {
-                        result = (result <= value)
-                    }
-                    else if (opt === "==") {
-                        if (isArray(value)) {
-                            var index = -1;
-                            for (var v = 0; v < value.length; v++) {
-                                if (tree(value[v]) == result) {
-                                    index = v;
-                                    break;
-                                }
-                            }
-                            result = index;
-                        } else {
-                            result = (result == value)
-                        }
-                    }
-                    else if (opt === "===") {
-                        if (isArray(value)) {
-                            var index = -1;
-                            for (var v = 0; v < value.length; v++) {
-                                if (tree(value[v]) === result) {
-                                    index = v;
-                                    break;
-                                }
-                            }
-                            result = index;
-                        } else {
-                            result = (result === value)
-                        }
-                    }
-                    else if (opt === "?") {
-                        if (isArray(value)) {
-                            if (result === -1) {
-                                result = tree(value[value.length - 1]);
-                            } else {
-                                if (value.length > result) {
-                                    result = tree(value[result]);
-                                } else {
-                                    result = "";
-                                }
-                            }
-                        } else {
-                            result = value;
-                        }
-                    }
-                    return result;
-                }
                 var result;
                 if (list.length === 0) {
                     window.console && console.log("%c表达式为空", "color:red");
