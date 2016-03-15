@@ -795,7 +795,11 @@
                                 }
                             } else if (k === "value") {
                                 if (v === "text") {
-                                    if (document.activeElement !== dom || dub !== dom) {
+                                    try {
+                                        if (document.activeElement !== dom || dub !== dom) {
+                                            dom.value = myValue;
+                                        }
+                                    } catch (e) {//iebug修复
                                         dom.value = myValue;
                                     }
                                 } else if (v === "textarea") {
