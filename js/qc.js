@@ -505,7 +505,13 @@
                     result = list[0].expValue;
                 } else {
                     if (list[0].expType === 0) {
-                        result = !list[1].expValue
+                        if (list[0].expValue === "!") {
+                            result = !list[1].expValue
+                        } else if (list[0].expValue === "-") {
+                            result = -list[1].expValue
+                        } else {
+                            result = list[1].expValue
+                        }
                     } else {
                         result = list[0].expValue
                         var i = 1;
