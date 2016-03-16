@@ -1827,7 +1827,7 @@
                 //绑定事件
                 var newDom = document.querySelector("[" + PREFIX + "-view='" + _vm + "']");
                 newDom.removeAttribute(PREFIX + "-view");
-                newDom.setAttribute(PREFIX + "-id", _vm)
+                newDom.setAttribute(PREFIX + "-id", _vm);
                 newDom.onclick = function (e) {
                     var event = window.event || e;
                     event.target = event.target ? event.target : event.srcElement;//兼容IE
@@ -1996,10 +1996,8 @@
             }
         }
         qc.bindText = function (path, obj) {
-            if (document.activeElement === obj) {
-                var v = getValue(path);
-                v.vm.setValue(v.pro, obj.value, obj);
-            }
+            var v = getValue(path);
+            v.vm.setValue(v.pro, obj.value, obj);
         }
         qc.bindSelect = function (path, obj) {
             if (document.activeElement === obj) {
