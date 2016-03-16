@@ -1366,7 +1366,7 @@
             //绑定事件
             // click,dblclick,mousedown,mouseup
             //移动 touchstart touchend//需要扩展
-            var eventList = ["click", "dblclick", "mousedown", "mouseup", "mousemove", "mouseenter ", "mouseleave", "mouseover", "mouseout"];
+            var eventList = ["click", "dblclick", "keydown", "keyup", "mousedown", "mouseup", "mousemove", "mouseenter ", "mouseleave", "mouseover", "mouseout"];
             eventList = eventList.concat(["touchstart", "touchmove", "touchend", "touchcancel"]);
             for (var i = 0; i < eventList.length; i++) {
                 var veType = eventList[i];
@@ -1839,6 +1839,16 @@
                     bindEvent(event.target, _vm, "dblclick", event);
 
                 }
+                newDom.onkeydown = function (e) {
+                    var event = window.event || e;
+                    event.target = event.target ? event.target : event.srcElement;
+                    bindEvent(event.target, _vm, "keydown", event);
+                }
+                newDom.onkeyup = function (e) {
+                    var event = window.event || e;
+                    event.target = event.target ? event.target : event.srcElement;
+                    bindEvent(event.target, _vm, "keyup", event);
+                }
                 if (isMobile()) {//移动
                     newDom.addEventListener("touchstart", function (e) {
                         var event = window.event || e;
@@ -1896,6 +1906,9 @@
             }
             function bindEvent(_this, vmName, vType, event, rec) {
                 function getTarget(_this) {
+                    if (_this == null) {
+                        return;//ie修复
+                    }
                     var veType = _this.getAttribute(PREFIX + "-vetype");
                     if ((veType !== undefined) && (veType !== null)) {
                         if (veType === vType || qc.ve.hasOwnProperty(veType)) {
