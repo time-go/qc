@@ -1020,6 +1020,9 @@
                     if (typeof key === "object") {
                         return;
                     }
+                    if (!fun.isArray(vm[key])) {
+                        return;
+                    }
                     var watch = getMypath(vm.$path + "." + key);
                     var oldValue = fun.getModel(vm[key]);
                     var each = this["$" + PREFIX + "-each-" + key];
@@ -1067,16 +1070,14 @@
                                     }
                                     continue;
                                 }
-                                if (map["$map"] && map["$map"][m] !== undefined) {
-                                    if (data[m] !== undefined) {
-                                        if (typeof map[m] === "object") {
-                                            if (data[m] !== undefined) {
-                                                if (map[m].hasOwnProperty("$map")) {
-                                                    setObject(map[m], data[m]);
-                                                }
-                                            }
-                                        } else {
-                                            map[m] = data[m];
+                                if (data[m] !== undefined) {
+                                    if (typeof map[m] === "object") {
+                                        if (data[m] !== undefined && typeof data[m] === "object") {
+                                            setObject(map[m], data[m]);
+                                        }
+                                    } else {
+                                        map[m] = data[m];
+                                        if (map["$map"] && map["$map"][m] !== undefined) {
                                             fun.render(map["$map"][m]);
                                         }
                                     }
