@@ -1907,7 +1907,7 @@
             }
             function bindEvent(_this, vmName, vType, event, rec) {
                 function getTarget(_this) {
-                    if (_this == null) {
+                    if (_this == null || _this == undefined) {
                         return;//ie修复
                     }
                     var veType = _this.getAttribute(PREFIX + "-vetype");
