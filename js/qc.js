@@ -1332,7 +1332,7 @@
                 var text = textValue[0];
                 text = text.substr(1, text.length - 2);
                 if (fun.isLowIe()) {
-                    html.push(" onpropertychange=qc.bindText(\"" + path + "." + text + "\",this)");
+                    html.push(" onkeyup=qc.bindText(\"" + path + "." + text + "\",this)");
                 } else {
                     html.push(" oninput=qc.bindText(\"" + path + "." + text + "\",this)");
                 }
@@ -1910,7 +1910,12 @@
                     if (_this == null || _this == undefined) {
                         return;//ie修复
                     }
-                    var veType = _this.getAttribute(PREFIX + "-vetype");
+                    var veType
+                    try {
+                        veType = _this.getAttribute(PREFIX + "-vetype");
+                    }catch(e){
+                        return;//ie问题修复
+                    }
                     if ((veType !== undefined) && (veType !== null)) {
                         if (veType === vType || qc.ve.hasOwnProperty(veType)) {
                             var path = _this.getAttribute(PREFIX + "-path");
