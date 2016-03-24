@@ -17,7 +17,7 @@
                 run();
             }, 500);
         },
-        touchend: function (run, e) {
+        touchend: function (run, event) {
             clearTimeout(this.timer);
         }
     })

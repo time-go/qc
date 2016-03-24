@@ -849,7 +849,7 @@
                             } else if (k === "widget") {
                                 widget.props[v] = myValue;
                                 if (widget.hasOwnProperty("update") && typeof widget["update"] === "function") {
-                                    widget.update();
+                                    widget.update(v, myValue);
                                 }
                             }
                         } else {
@@ -1913,7 +1913,7 @@
                     var veType
                     try {
                         veType = _this.getAttribute(PREFIX + "-vetype");
-                    }catch(e){
+                    } catch (e) {
                         return;//ie问题修复
                     }
                     if ((veType !== undefined) && (veType !== null)) {
@@ -1936,8 +1936,8 @@
                                     }
                                 }
                                 var run = (function (vmName, veName, _this, vm, event) {
-                                    return function () {
-                                        qc.vms[vmName].$ve[veName].call(_this, vm, event);
+                                    return function (action) {
+                                        qc.vms[vmName].$ve[veName].call(_this, vm, event, action);//action 用于扩展组合事件
                                     }
                                 })(vmName, veName, _this, vm, event);
                                 if (veType === vType) {
