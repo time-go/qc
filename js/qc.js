@@ -755,15 +755,36 @@
                                     comDom.parentNode.removeChild(comDom);
                                     ele.outerHTML = bindData(vm, vm["$visible" + uuid]);
                                     fun.load();
+                                    var newDom = document.querySelector("[" + PREFIX + "-id='" + uuid + "']");
+                                    if (newDom.hasAttribute(PREFIX + "-animate")) {
+                                        var veAnimate = newDom.getAttribute(PREFIX + "-animate");
+                                        if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
+                                            fun.animate[veAnimate].call(newDom, "0");//显示
+                                        }
+                                    }
+
                                     delete vm["$visible" + uuid];
                                 }
                                 break;
                             }
                         } else {
                             if (dom !== null) {
-                                var comNode = document.createComment(uuid);//创建注释节点
-                                dom.parentNode.insertBefore(comNode, dom);
-                                dom.parentNode.removeChild(dom);
+                                var remove = function () {
+                                    var comNode = document.createComment(uuid);//创建注释节点
+                                    dom.parentNode.insertBefore(comNode, dom);
+                                    dom.parentNode.removeChild(dom);
+                                }
+
+                                if (dom.hasAttribute(PREFIX + "-animate")) {
+                                    var veAnimate = dom.getAttribute(PREFIX + "-animate");
+                                    if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
+                                        fun.animate[veAnimate].call(dom, "0", remove);//显示
+                                    } else {
+                                        remove();
+                                    }
+                                } else {
+                                    remove();
+                                }
                             }
                             //垃圾回收
                             fun.collection();
@@ -1410,7 +1431,7 @@
                 }
             }
         }
-        var arr = vDom[PREFIX][PREFIX + "-each"]
+        var arr = vDom[PREFIX][PREFIX + "-each"];
         if (arr !== undefined) {
             arr = arr[0];
             arr = arr.substr(1, arr.length - 2);
@@ -1427,6 +1448,39 @@
             if (list === undefined) {
                 $parent[$prop] = [];
                 list = $parent[$prop];
+            }
+            var addAnimate = function (index) {
+                var divObject = $parent["$" + PREFIX + "-each-" + $prop];
+                for (var k = divObject.length - 1; k >= 0; k--) {
+                    var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
+                    var childNodes = newDom.childNodes;
+                    newDom = childNodes[index];
+                    if (newDom.hasAttribute(PREFIX + "-animate")) {
+                        var veAnimate = newDom.getAttribute(PREFIX + "-animate");
+                        if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
+                            fun.animate[veAnimate].call(newDom, "1");//显示
+                        }
+                    }
+                }
+            }
+            var removeAnimate = function (index, callback) {
+                var divObject = $parent["$" + PREFIX + "-each-" + $prop];
+                var isCall = true;
+                for (var k = divObject.length - 1; k >= 0; k--) {
+                    var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
+                    var childNodes = newDom.childNodes;
+                    newDom = childNodes[index];
+                    if (newDom.hasAttribute(PREFIX + "-animate")) {
+                        var veAnimate = newDom.getAttribute(PREFIX + "-animate");
+                        if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
+                            fun.animate[veAnimate].call(newDom, "0", callback);
+                            isCall = false;
+                        }
+                    }
+                }
+                if (isCall) {
+                    callback();
+                }
             }
             for (var i = 0; i < vDom.childNodes.length; i++) {
                 if (vDom.childNodes[i].localName !== "#text") {
@@ -1466,43 +1520,68 @@
                                 divObject.splice(k, 1);
                             } else {
                                 try {
-                                    s.innerHTML = s.innerHTML + divText.join("");
+                                    s.innerHTML = s.innerHTML + divText.join("");//兼容ie
                                 } catch (e) {
                                     setTBodyAppendHtml(s, divText.join(""));
                                 }
                                 fun.load();
+
                             }
                         }
+                        addAnimate(list.length - 1);
                         //更新数组长度绑定
                         fun.render($parent["$map"][$prop]);
                     }
                     $parent[$prop + "pop"] = function () {
-                        var list = fun.getModel($parent[$prop]);
-                        list.pop();
-                        $parent.setValue($prop, list);
-
+                        var remove = function () {
+                            var list = fun.getModel($parent[$prop]);
+                            list.pop();
+                            $parent.setValue($prop, list);
+                        }
+                        removeAnimate(list.length - 1, remove);
                     }
                     $parent[$prop + "splice"] = function () {
-                        var list = fun.getModel($parent[$prop]);
-                        list.splice.apply(list, arguments);
-                        $parent.setValue($prop, list);
+                        var k = 0;
+                        var remove = function () {
+                            k--;
+                            if (k < 0) {
+                                var list = fun.getModel($parent[$prop]);
+                                list.splice.apply(list, arguments);
+                                $parent.setValue($prop, list);
+                            }
+                        }
+                        if (arguments.length == 2) {
+                            for (var index = arguments[2]; index < arguments[1] + arguments[2]; i++) {
+                                k++;
+                                removeAnimate(index, remove);
+                            }
+                            remove();
+                        } else {
+                            remove();
+                        }
 
                     }
                     $parent[$prop + "shift"] = function () {
                         var list = fun.getModel($parent[$prop]);
                         list.shift();
                         $parent.setValue($prop, list);
+                        addAnimate(0);
                     }
                     $parent[$prop + "unshift"] = function (value) {
-                        var list = fun.getModel($parent[$prop]);
-                        list.unshift(value);
-                        $parent.setValue($prop, list);
+                        var remove = function () {
+                            var list = fun.getModel($parent[$prop])
+                            list.unshift(value);
+                            $parent.setValue($prop, list)
+                        };
+                        removeAnimate(0, remove);
                     }
                     $parent[$prop + "concat"] = function (value) {
                         var divObject = $parent["$" + PREFIX + "-each-" + $prop];
                         var list = $parent[$prop];
                         var start = list.length;
+                        var start = list.length;
                         list.concat(value)
+                        var end = list.length - 1;
                         for (var k = divObject.length - 1; k >= 0; k--) {
                             var divText = [];
                             for (var l = start; l < value.length + start; l++) {
@@ -1522,6 +1601,9 @@
                                 }
                                 fun.load();
                             }
+                        }
+                        for (var index = start; index <= end; index++) {
+                            addAnimate(index);
                         }
                         //更新数组长度绑定
                         fun.render($parent["$map"][$prop]);
@@ -2046,7 +2128,8 @@
                 }
             }
         }
-        qc.fun = {};
+        qc.fun = {};//表达式函数绑定扩展
+        qc.animate = {};//动画扩展
         qc.collection = fun.collection;
         qc.getModel = fun.getModel;
         qc.parse = fun.parse;
