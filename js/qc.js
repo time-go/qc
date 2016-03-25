@@ -221,7 +221,7 @@
 //---------------私有函数-----------------//
         function isArray(v) {
             if (Object.prototype.toString.call(v) === "[object Array]") {
-                return true
+                return true;
             } else {
                 return false;
             }
@@ -753,16 +753,16 @@
                                     var ele = document.createElement("div");
                                     comDom.parentNode.insertBefore(ele, comDom);
                                     comDom.parentNode.removeChild(comDom);
-                                    ele.outerHTML = bindData(vm, vm["$visible" + uuid]);
+                                    var newid = fun.getRandom() + "";
+                                    ele.outerHTML = bindData(vm, vm["$visible" + uuid], undefined, newid);
                                     fun.load();
-                                    var newDom = document.querySelector("[" + PREFIX + "-id='" + uuid + "']");
+                                    var newDom = document.querySelector("[" + PREFIX + "-id='" + newid + "']");
                                     if (newDom.hasAttribute(PREFIX + "-animate")) {
                                         var veAnimate = newDom.getAttribute(PREFIX + "-animate");
-                                        if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
-                                            fun.animate[veAnimate].call(newDom, "0");//显示
+                                        if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                                            qc.animate[veAnimate].call(newDom, "1");//显示
                                         }
                                     }
-
                                     delete vm["$visible" + uuid];
                                 }
                                 break;
@@ -777,8 +777,8 @@
 
                                 if (dom.hasAttribute(PREFIX + "-animate")) {
                                     var veAnimate = dom.getAttribute(PREFIX + "-animate");
-                                    if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
-                                        fun.animate[veAnimate].call(dom, "0", remove);//显示
+                                    if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                                        qc.animate[veAnimate].call(dom, "0", remove);//显示
                                     } else {
                                         remove();
                                     }
@@ -1005,7 +1005,7 @@
     })
     ()
 
-    function bindData(vm, vDom, option) {
+    function bindData(vm, vDom, option, uuid) {
         var path = "_";
         var show = true;
         if (vm.hasOwnProperty("$path")) {
@@ -1145,7 +1145,9 @@
         if (vDom.localName === "#text") {
             return vDom.nodeValue;
         }
-        var uuid = fun.getRandom() + "";
+        if (uuid === undefined || uuid === "" || uuid === null) {
+            uuid = fun.getRandom() + "";
+        }
 
         if (qc.widget.hasOwnProperty(vDom.localName)) {
             var implement = qc.widget[vDom.localName];
@@ -1411,6 +1413,12 @@
                     html.push(" " + PREFIX + "-vename=\"" + veName + "\"");
                 }
             }
+            /*动画*/
+            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-animate")) {
+                var lenAnimate = vDom[PREFIX][PREFIX + "-animate"][0];
+                lenAnimate = lenAnimate.substr(1, lenAnimate.length - 2);
+                html.push(" " + PREFIX + "-animate=\"" + lenAnimate + "\"");
+            }
             html.push(">");
             if (vDom[PREFIX].hasOwnProperty(PREFIX + "-value")) {
                 var textValue = vDom[PREFIX][PREFIX + "-value"];
@@ -1457,8 +1465,8 @@
                     newDom = childNodes[index];
                     if (newDom.hasAttribute(PREFIX + "-animate")) {
                         var veAnimate = newDom.getAttribute(PREFIX + "-animate");
-                        if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
-                            fun.animate[veAnimate].call(newDom, "1");//显示
+                        if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                            qc.animate[veAnimate].call(newDom, "1");//显示
                         }
                     }
                 }
@@ -1472,8 +1480,8 @@
                     newDom = childNodes[index];
                     if (newDom.hasAttribute(PREFIX + "-animate")) {
                         var veAnimate = newDom.getAttribute(PREFIX + "-animate");
-                        if (fun.animate.hasOwnProperty(veAnimate) && typeof fun.animate[veAnimate] == "function") {
-                            fun.animate[veAnimate].call(newDom, "0", callback);
+                        if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                            qc.animate[veAnimate].call(newDom, "0", callback);
                             isCall = false;
                         }
                     }
@@ -1533,8 +1541,8 @@
                         fun.render($parent["$map"][$prop]);
                     }
                     $parent[$prop + "pop"] = function () {
+                        var list = fun.getModel($parent[$prop]);
                         var remove = function () {
-                            var list = fun.getModel($parent[$prop]);
                             list.pop();
                             $parent.setValue($prop, list);
                         }
@@ -1542,16 +1550,17 @@
                     }
                     $parent[$prop + "splice"] = function () {
                         var k = 0;
+                        var args = arguments;
+                        var list = fun.getModel($parent[$prop]);
                         var remove = function () {
                             k--;
                             if (k < 0) {
-                                var list = fun.getModel($parent[$prop]);
-                                list.splice.apply(list, arguments);
+                                list.splice.apply(list, args);
                                 $parent.setValue($prop, list);
                             }
                         }
                         if (arguments.length == 2) {
-                            for (var index = arguments[2]; index < arguments[1] + arguments[2]; i++) {
+                            for (var index = args[0]; index < args[0] + args[1]; index++) {
                                 k++;
                                 removeAnimate(index, remove);
                             }
@@ -1563,24 +1572,24 @@
                     }
                     $parent[$prop + "shift"] = function () {
                         var list = fun.getModel($parent[$prop]);
-                        list.shift();
-                        $parent.setValue($prop, list);
-                        addAnimate(0);
+                        var remove = function () {
+                            list.shift();
+                            $parent.setValue($prop, list)
+                        }
+                        removeAnimate(0, remove);
                     }
                     $parent[$prop + "unshift"] = function (value) {
-                        var remove = function () {
-                            var list = fun.getModel($parent[$prop])
-                            list.unshift(value);
-                            $parent.setValue($prop, list)
-                        };
-                        removeAnimate(0, remove);
+                        var list = fun.getModel($parent[$prop]);
+                        list.unshift(value);
+                        $parent.setValue($prop, list);
+                        addAnimate(0);
                     }
                     $parent[$prop + "concat"] = function (value) {
                         var divObject = $parent["$" + PREFIX + "-each-" + $prop];
                         var list = $parent[$prop];
                         var start = list.length;
-                        var start = list.length;
-                        list.concat(value)
+                        $parent[$prop] = list.concat(value);
+                        list = $parent[$prop];
                         var end = list.length - 1;
                         for (var k = divObject.length - 1; k >= 0; k--) {
                             var divText = [];
