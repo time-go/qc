@@ -21,7 +21,7 @@ qc.extendEvent({
 &nbsp;&nbsp;touchstart: function (run, event) {
 &nbsp;&nbsp;&nbsp;&nbsp;event.preventDefault();//修复touchend不执行bug
 &nbsp;&nbsp;this.timer = setTimeout(function () {
-&nbsp;&nbsp;&nbsp;&nbsp;run();
+&nbsp;&nbsp;&nbsp;&nbsp;run(参数);
 &nbsp;&nbsp;}, 500);
 },
 touchend: function (run, e) {
@@ -30,5 +30,12 @@ touchend: function (run, e) {
 })
 
 name为事件名称 定义完可以用qc-xxx 绑定
-run 为一个函数 调用这个函数run() 就会执行绑定的事件
+run 为一个函数 调用这个函数run() 就会执行绑定的事件,wun可以穿一个参数主要在
 e 为event事件参数
+<script>
+    qc.view("myview", function (vm, ve) {
+        ve.myEvent = function ($self,even,参数) {
+            //自定义事件多一个参数，可以根据这个参数进行事件组合
+        }
+    })
+</script>
