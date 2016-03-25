@@ -1,0 +1,10 @@
+qc-keydown
+qc-keyup
+<input qc-keydown="run" qc-value-change="keyWord" type="text">
+<script>
+    ve.run = function ($self, e) {
+        if (e && e.keyCode == 13) { // enter 键
+            getMeetingList(1);
+        }
+    }
+</script>
