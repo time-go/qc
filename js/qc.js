@@ -2144,6 +2144,9 @@
         qc.parse = fun.parse;
         qc.template = template;
         qc.getRandom = fun.getRandom;
+        qc.log = function (info) {
+            window.console && console.log(info);
+        }
         /*储存函数调用*/
         window.qc = qc;
     })()
