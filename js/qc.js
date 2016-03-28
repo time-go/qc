@@ -2144,6 +2144,7 @@
         qc.parse = fun.parse;
         qc.template = template;
         qc.getRandom = fun.getRandom;
+        qc.PREFIX = PREFIX;
         qc.log = function (info) {
             window.console && console.log(info);
         }
@@ -2552,7 +2553,7 @@
         var id = config.id;
         var data = config.data;
         var element = document.getElementById(id);
-        element.setAttribute("qc-view", id);
+        element.setAttribute(qc.PREFIX + "-view", id);
         return require(url)(document.getElementById(id), id, data);
     }
 })()
