@@ -2036,7 +2036,7 @@
                                 } else {
                                     var extend = qc.ve[veType];
                                     if (extend.hasOwnProperty(vType) && typeof extend[vType] === "function") {
-                                        extend[vType].call(extend, run, event);
+                                        extend[vType].call(extend, run, event, _this);
                                     }
                                 }
                             }
@@ -2467,7 +2467,6 @@
 (function () {
     //---------------commonjs规范----------------//
     var tmpTag = document.location.protocol + "//";
-    var _cssCache = {};
     var _absUrl = (function () {
         var a;
         return function (url) {
@@ -2477,7 +2476,7 @@
         };
     })();
     var _require = function (parent, path) {
-        var _moudle;
+        var _model;
         var _type = "js";
         var _basePath;
         if (path.indexOf(tmpTag) < 0) {
@@ -2521,25 +2520,19 @@
                 window.console && console.log(_myUrl + "加载失败");
             },
             "success": function (data) {
-                _moudle = data;
+                _model = data;
             }
         });
 
         if (_type == "js") { //js预编译
             var _script = "(function(exports){\n";
             _script += "var $parent = \"" + _basePath + "\";\n";
-            _script += _moudle.replace(/require\(/g, "_require($parent,");
+            _script += _model.replace(/require\(/g, "_require($parent,");
             _script += "\n return exports;\n";
             _script += "})({});" + "//@ sourceURL=" + _myUrl;
-            _moudle = eval(_script);
-        } else if (_type == "css") {
-            var _key = _myUrl;
-            if (!_cssCache.hasOwnProperty(_key)) {
-                $("<style></style>").html(_moudle).appendTo("head");
-                _cssCache[_key] = "load";
-            }
+            _model = eval(_script);
         }
-        return _moudle;
+        return _model;
     }
     window.require = function (path) {
         return _require("", path);
