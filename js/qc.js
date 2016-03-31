@@ -1145,6 +1145,9 @@
         if (vDom.localName === "#text") {
             return vDom.nodeValue;
         }
+        if (vDom.localName == "h3") {
+            console.log("ss");
+        }
         if (uuid === undefined || uuid === "" || uuid === null) {
             uuid = fun.getRandom() + "";
         }
@@ -1625,18 +1628,14 @@
         }
         else {
             if (show) {
-                if (vDom.childNodes.length === 0) {
-                    if (vDom[PREFIX].hasOwnProperty(PREFIX + "-text")) {//绑定text
-                        var text = vDom[PREFIX][PREFIX + "-text"];
-                        var bindText = fun.expEval(vm, text, uuid, "text");
-                        html.push(fun.innerText(bindText));
-                    } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
-                        var text = vDom[PREFIX][PREFIX + "-text"];
-                        var bindText = fun.expEval(vm, text, uuid, "text");
-                        html.push(bindText);
-                    } else {
-                        html.push(vDom.innerHTML);
-                    }
+                if (vDom[PREFIX].hasOwnProperty(PREFIX + "-text")) {//绑定text
+                    var text = vDom[PREFIX][PREFIX + "-text"];
+                    var bindText = fun.expEval(vm, text, uuid, "text");
+                    html.push(fun.innerText(bindText));
+                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
+                    var text = vDom[PREFIX][PREFIX + "-text"];
+                    var bindText = fun.expEval(vm, text, uuid, "text");
+                    html.push(bindText);
                 } else {
                     for (var i = 0; i < vDom.childNodes.length; i++) {
                         if (selectValue === null) {
@@ -1650,6 +1649,7 @@
                         }
                     }
                 }
+
             } else {
                 for (var i = 0; i < vDom.childNodes.length; i++) {
                     if (selectValue === null) {
@@ -1666,226 +1666,6 @@
         } else {
             return "<!--" + uuid + "-->";
         }
-    }
-
-    function template(html, data) {
-        function temp(vm, vDom, option) {
-            if (vDom.localName === "#text") {
-                return vDom.nodeValue;
-            }
-
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-visible")) {
-                var expV = vDom[PREFIX][PREFIX + "-visible"];
-                if (!fun.count(vm, expV)) {
-                    return "";
-                }
-            }
-            var html = ["<" + vDom.localName];
-            var classObject = {};
-            if (vDom.hasOwnProperty("className")) {
-                var classList = vDom.className;
-                for (var i = 0; i < classList.length; i++) {
-                    classObject[classList[i]] = classList[i];
-                }
-            }
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-class")) {
-                var dClass = vDom[PREFIX][PREFIX + "-class"];
-                for (var c in dClass) {
-                    var result = fun.count(vm, dClass[c]);
-                    if (result) {
-                        classObject[c] = c;
-                    } else {
-                        delete classObject[c];
-                    }
-                }
-                classList = [];
-                for (var c in classObject) {
-                    classList.push(c);
-                }
-                if (classList.length > 0) {
-                    html.push(" class=\"" + classList.join(" ") + "\"");//class
-                }
-            } else {
-                if (vDom.className.length > 0) {
-                    html.push(" class=\"" + vDom.className.join(" ") + "\"");//class
-                }
-            }
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-attr")) {
-                var dAttr = vDom[PREFIX][PREFIX + "-attr"];
-                for (var a in dAttr) {
-                    var value = fun.count(vm, dAttr[a]);
-                    html.push(" " + a + "=" + "\"" + value + "\"");
-                    if (a === "value" && vDom.localName === "option") {
-                        if (option === value) {
-                            html.push(" selected");
-                        }
-                    }
-                    if (a === "value") {
-                        if (vDom[PREFIX].hasOwnProperty(PREFIX + "-radio")) {
-                            var textValue = vDom[PREFIX][PREFIX + "-radio"];
-                            var text = textValue[0];
-                            text = text.substr(1, text.length - 2);
-                            if (fun.count(vm, textValue) === value) {
-                                html.push(" checked");
-                            }
-                        }
-                    }
-                }
-            }
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-prop")) {
-                var dProp = vDom[PREFIX][PREFIX + "-prop"];
-                for (var p in dProp) {
-                    if (fun.count(vm, dProp[p])) {
-                        html.push(" " + p);
-                    }
-                }
-            }
-            if (vDom.hasOwnProperty("attributes")) {
-                for (var ar in vDom.attributes) {
-                    var name = ar;
-                    var value = vDom.attributes[ar];
-                    if (((!vDom[PREFIX].hasOwnProperty(PREFIX + "-attr")) || vDom[PREFIX][PREFIX + "-attr"][name] === undefined) && ((!vDom[PREFIX].hasOwnProperty(PREFIX + "-prop")) || vDom[PREFIX][PREFIX + "-prop"][name] === undefined)) {
-                        html.push(" " + name + "=" + "\"" + value + "\"");
-                        if (name === "value" && vDom.localName === "option") {
-                            if (option === value) {
-                                html.push(" selected");
-                            }
-                        }
-                        if (name === "value") {//因为要和自身的属性value做比较，所以放在 属性的循环里
-                            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-radio")) {
-                                var textValue = vDom[PREFIX][PREFIX + "-radio"];
-                                var text = textValue[0];
-                                text = text.substr(1, text.length - 2);
-                                if (fun.count(vm, textValue) === value) {
-                                    html.push(" checked");
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-            var styleList = [];
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-css")) {
-                var dCss = vDom[PREFIX][PREFIX + "-css"];
-                for (var c in dCss) {
-                    styleList.push(c + ":" + fun.count(vm, dCss[c]));
-                }
-            }
-            if (vDom.hasOwnProperty("style")) {
-                for (var sy in vDom.style) {
-                    if ((!vDom[PREFIX].hasOwnProperty(PREFIX + "-css")) || vDom[PREFIX][PREFIX + "-css"][sy] === undefined) {
-                        styleList.push(sy + ":" + vDom.style[sy]);
-                    }
-                }
-            }
-            if (styleList.length > 0) {
-                html.push(" style=\"" + styleList.join(";") + "\"");
-            }
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-value")) {
-                var textValue = vDom[PREFIX][PREFIX + "-value"];
-                if (vDom.localName === "input") {
-                    html.push(" value=\"" + fun.count(vm, textValue) + "\"");
-                }
-            }
-            var selectValue = null;
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-select")) {
-                var textValue = vDom[PREFIX][PREFIX + "-select"];
-                var text = textValue[0];
-                text = text.substr(1, text.length - 2);
-                selectValue = fun.count(vm, textValue);
-            }
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-check")) {
-                var textValue = vDom[PREFIX][PREFIX + "-check"];
-                var text = textValue[0];
-                text = text.substr(1, text.length - 2);
-                if (fun.count(vm, textValue)) {
-                    html.push(" checked");
-                }
-            }
-            html.push(">");
-            if (vDom[PREFIX].hasOwnProperty(PREFIX + "-value")) {
-                var textValue = vDom[PREFIX][PREFIX + "-value"];
-                if (vDom.localName !== "input") {
-                    html.push(fun.count(vm, textValue));
-                }
-            }
-            var arr = vDom[PREFIX][PREFIX + "-each"]
-            if (arr !== undefined) {
-                arr = arr[0];
-                arr = arr.substr(1, arr.length - 2);
-                var arrList = arr.split(".");
-                var $parent, $prop;
-                if (arrList.length > 1) {
-                    $prop = arrList.pop();
-                    $parent = fun.count(vm, "{" + arrList.join(".") + "}");
-                } else {
-                    $parent = vm;
-                    $prop = arr;
-                }
-                var list = $parent[$prop];
-                if (list === undefined) {
-                    $parent[$prop] = [];
-                    list = $parent[$prop];
-                }
-                for (var i = 0; i < vDom.childNodes.length; i++) {
-                    if (vDom.childNodes[i].localName !== "#text") {
-                        for (var l = 0; l < list.length; l++) {
-                            list[l].$key = l;
-                            if (selectValue === null) {
-                                html.push(temp(list[l], vDom.childNodes[i]));
-                            } else {
-                                html.push(temp(list[l], vDom.childNodes[i], selectValue));
-                            }
-                            if (html.length > 1000) {//数组进行性能优化
-                                html = [html.join("")];
-                            }
-                        }
-                        break;
-                    }
-
-                }
-            }
-            else {
-                if (vDom.childNodes.length === 0) {
-                    if (vDom[PREFIX].hasOwnProperty(PREFIX + "-text")) {//绑定text
-                        var text = vDom[PREFIX][PREFIX + "-text"];
-                        var bindText = fun.count(vm, text);
-                        html.push(fun.innerText(bindText));
-                    } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
-                        var text = vDom[PREFIX][PREFIX + "-text"];
-                        var bindText = fun.count(vm, text);
-                        html.push(bindText);
-                    } else {
-                        html.push(vDom.innerHTML);
-                    }
-                } else {
-                    for (var i = 0; i < vDom.childNodes.length; i++) {
-                        vDom.childNodes[i]
-                        if (selectValue === null) {
-                            html.push(temp(vm, vDom.childNodes[i]));
-                        } else {
-                            html.push(temp(vm, vDom.childNodes[i], selectValue));
-                        }
-                        ;
-                        if (html.length > 1000) {//数组进行性能优化
-                            html = [html.join("")];
-                        }
-                    }
-                }
-            }
-            html.push("</" + vDom.localName + ">")
-        }
-
-        var dom = document.createElement("div");
-        try {
-            dom.innerHTML = html;
-        } catch (e) {
-            setTBodyInnerHTML(dom, html)
-        }
-        dom = dom.children[0];
-        var vDom = fun.htmlToObj(dom);
-        return temp(data, vDom);
     }
 
 //---------------初始化对象----------------//
@@ -2142,7 +1922,6 @@
         qc.collection = fun.collection;
         qc.getModel = fun.getModel;
         qc.parse = fun.parse;
-        qc.template = template;
         qc.getRandom = fun.getRandom;
         qc.PREFIX = PREFIX;
         qc.log = function (info) {
