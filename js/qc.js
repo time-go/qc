@@ -1,5 +1,5 @@
 (function () {
-    var PREFIX = "q";
+    var PREFIX = "qc";
     (function () {
         //IE6 IE7做处理*/ IE8 开始支持这个方法
         if (!document.querySelectorAll) {
