@@ -17,7 +17,7 @@
                     this.run = false;
                     element.className = element.className.replace(" active", "");
                 } else {
-                    event.preventDefault();//修复touchend不执行bug\
+                    event.preventDefault();//修复touchend不执行bug
                 }
             }
         },

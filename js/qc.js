@@ -760,7 +760,7 @@
                                     if (newDom.hasAttribute(PREFIX + "-animate")) {
                                         var veAnimate = newDom.getAttribute(PREFIX + "-animate");
                                         if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                                            qc.animate[veAnimate].call(newDom, "1");//显示
+                                            qc.animate[veAnimate].call(newDom, "enter");//显示
                                         }
                                     }
                                     delete vm["$visible" + uuid];
@@ -778,7 +778,7 @@
                                 if (dom.hasAttribute(PREFIX + "-animate")) {
                                     var veAnimate = dom.getAttribute(PREFIX + "-animate");
                                     if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                                        qc.animate[veAnimate].call(dom, "0", remove);//显示
+                                        qc.animate[veAnimate].call(dom, "leave", remove);//显示
                                     } else {
                                         remove();
                                     }
@@ -1466,7 +1466,7 @@
                     if (newDom.hasAttribute(PREFIX + "-animate")) {
                         var veAnimate = newDom.getAttribute(PREFIX + "-animate");
                         if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                            qc.animate[veAnimate].call(newDom, "1");//显示
+                            qc.animate[veAnimate].call(newDom, "enter");//显示
                         }
                     }
                 }
@@ -1481,7 +1481,7 @@
                     if (newDom.hasAttribute(PREFIX + "-animate")) {
                         var veAnimate = newDom.getAttribute(PREFIX + "-animate");
                         if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                            qc.animate[veAnimate].call(newDom, "0", callback);
+                            qc.animate[veAnimate].call(newDom, "leave", callback);
                             isCall = false;
                         }
                     }

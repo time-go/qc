@@ -27,13 +27,13 @@
 </body>
 </html>
 <script>
-    qc.animate.testAnimate = function (action, callback) {
-        if (action == "1") {
+    qc.animate.testAnimate = function (action, run) {
+        if (action == "enter") {
             $(this).hide();
             $(this).slideDown();
-        } else if (action == "0") {
+        } else if (action == "leave") {
             $(this).slideUp(function () {
-                callback();
+                run();
             })
         }
     }
