@@ -17,7 +17,8 @@
 
 ###js文件
 + qc.js 就是我们要引用的文件
-+ event.js 是对移动端事件tap和longtap的扩展这个可以不用
++ event.js 是对移动端事件tap、longtap的和一个tapswip扩展
++ animate.js里面有两个常用动画 fade 和 slide
 
 ###tool文件夹
 + index.html 是一个html代码转字符串数组工具，解决大家拼接字符串的不便
