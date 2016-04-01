@@ -58,7 +58,7 @@
      * 和点击
      * */
     qc.extendEvent({
-        name: "tapswipetd",
+        name: "tapswipe",
         touchstart: function (run, event, element) {
             this.y = event.touches[0].pageY;
             this.x = event.touches[0].pageX;
