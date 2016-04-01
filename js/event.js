@@ -2,33 +2,48 @@
  * 2016-3-30
  * */
 (function (qc) {
+    function hasClass(obj, cls) {
+        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+    }
+
+    function addClass(obj, cls) {
+        if (!hasClass(obj, cls)) obj.className += " " + cls;
+    }
+
+    function removeClass(obj, cls) {
+        if (hasClass(obj, cls)) {
+            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+            obj.className = obj.className.replace(reg, ' ');
+        }
+    }
+
     /*点击事件*/
     qc.extendEvent({
         name: "tap",
         touchstart: function (run, event, element) {
             this.y = event.touches[0].pageY;
             this.x = event.touches[0].pageX;
-            element.className += " active";
+            addClass(element, "active");
             this.run = true;
         },
         touchmove: function (run, event, element) {
             if (this.run) {
                 if (Math.abs(event.touches[0].pageY - this.y) > 12 || Math.abs(event.touches[0].pageX - this.x) > 12) {
                     this.run = false;
-                    element.className = element.className.replace(" active", "");
+                    removeClass(element, "active");
                 } else {
-                    event.preventDefault();//修复touchend不执行bug
+                    event.preventDefault();//修复touchend不执行bug\
                 }
             }
         },
         touchend: function (run, event, element) {
-            element.className = element.className.replace(" active", "");
+            removeClass(element, "active");
             if (this.run) {
                 run();
             }
         },
         touchcancel: function (run, event, element) {
-            element.className = element.className.replace(" active", "");
+            removeClass(element, "active");
         }
     });
     /*长按事件
@@ -39,17 +54,17 @@
         name: "longtap",
         touchstart: function (run, event, element) {
             event.preventDefault();//修复touchend不执行bug
-            element.className += " active";
+            addClass(element, "active");
             this.timer = setTimeout(function () {
                 run();
             }, 750)
         },
         touchend: function (run, event, element) {
-            element.className = element.className.replace(" active", "");
+            removeClass(element, "active");
             clearTimeout(run);
         },
         touchcancel: function (run, event, element) {
-            element.className = element.className.replace(" active", "");
+            removeClass(element, "active");
             clearTimeout(run);
         }
     });
@@ -63,7 +78,7 @@
             this.y = event.touches[0].pageY;
             this.x = event.touches[0].pageX;
             this.endX = event.touches[0].pageX;
-            element.className += " active";
+            addClass(element, "active");
             this.run = true;
         },
         touchmove: function (run, event, element) {
@@ -73,12 +88,12 @@
                     this.endX = event.touches[0].pageX;
                 } else {
                     this.run = false;
-                    element.className = element.className.replace(" active", "");
+                    removeClass(element, "active");
                 }
             }
         },
         touchend: function (run, event, element) {
-            element.className = element.className.replace(" active", "");
+            removeClass(element, "active");
             if (this.run) {
                 if (this.endX - this.x > 12) {
                     run("right");
@@ -90,7 +105,7 @@
             }
         },
         touchcancel: function (run, event, element) {
-            element.className = element.className.replace(" active", "");
+            removeClass(element, "active");
         }
     });
 })(qc)
