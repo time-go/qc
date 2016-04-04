@@ -910,7 +910,7 @@
         }
 
         function isLowIe() {
-            return navigator.userAgent.indexOf("MSIE") != -1;
+            return window.ActiveXObject ? true : false;
         }
 
         function getModel(o) {
