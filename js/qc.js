@@ -683,14 +683,7 @@
 
         /*获取注释节点*/
         function getCommentNodes(value) {
-            if (isLowIe()) {
-                var doms = document.getElementsByTagName("!");
-                for (var i = 0; i < doms.length; i++) {
-                    if (doms[i].nodeValue === (value + "")) {
-                        return doms[i];
-                    }
-                }
-            } else {
+            if (window.NodeFilter) {
                 var objs = document.createTreeWalker(document, NodeFilter.SHOW_COMMENT, null, false);
                 var o;
                 while (o = objs.nextNode()) {
@@ -698,6 +691,14 @@
                         return o;
                     }
                 }
+            } else {
+                var doms = document.getElementsByTagName("!");
+                for (var i = 0; i < doms.length; i++) {
+                    if (doms[i].nodeValue === (value + "")) {
+                        return doms[i];
+                    }
+                }
+
             }
             return null;
         }
