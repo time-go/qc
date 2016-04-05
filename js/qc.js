@@ -702,7 +702,6 @@
             }
             return null;
         }
-
         function count(moudel, expList) {
             var text = expList;
             var textList = [];
