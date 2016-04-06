@@ -1,4 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="qc.min.js"></script>
+</head>
+<body>
 <div qc-view="myview">
+
     <div qc-each="list">
         <div>
             索引:<span qc-text="{$key}+1"></span>
@@ -7,6 +16,8 @@
         </div>
     </div>
 </div>
+</body>
+</html>
 <script>
     qc.view("myview", function (vm, ve) {
         vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
