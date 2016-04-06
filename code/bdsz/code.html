@@ -1,0 +1,14 @@
+<div qc-view="myview">
+    <div qc-each="list">
+        <div>
+            索引:<span qc-text="{$key}+1"></span>
+            姓名:<span qc-text="{name}"></span>
+            性别:<span qc-text="{sex}"></span>
+        </div>
+    </div>
+</div>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+    })
+</script>
