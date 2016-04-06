@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../build/qc.min.js"></script>
+</head>
+<body>
+<div q-view="myview">
+    <div>
+        <input q-radio="name" type="radio" value="张三">
+        <input q-radio="name" type="radio" value="李四">
+        <input q-radio="name" type="radio" value="王五">
+    </div>
+    <div>
+        <input q-check="check1" type="checkbox">check1
+        <input q-check="check2" type="checkbox">check2
+        <input q-check="check3" type="checkbox">check3
+    </div>
+    <div>
+        <select q-select="name">
+            <option value="张三">张三</option>
+            <option value="李四">李四</option>
+            <option value="王五">王五</option>
+        </select>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.name = "李四";
+        vm.check1 = false;
+        vm.check2 = true;
+        vm.check3 = false;
+
+    })
+</script>

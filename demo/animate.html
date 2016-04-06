@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动画</title>
+    <style>
+        .rect {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+    </style>
+    <script src="../tool/jquery-1.11.2.min.js"></script>
+    <script src="../build/qc.min.js"></script>
+</head>
+<body>
+<div q-view="myview">
+    <div q-visible="{show}" q-animate="testAnimate" class="rect"></div>
+    <input q-click="veAnimate" type="button" value="动画">
+    <br>
+    <ul q-each="list">
+        <li q-animate="testAnimate"><span q-text="{text}"></span></li>
+    </ul>
+    <input q-click="add" type="button" value="添加一行">
+    <input q-click="remove" type="button" value="删除第一行">
+</div>
+</body>
+</html>
+<script>
+    qc.animate.testAnimate = function (action, run) {
+        if (action == "enter") {
+            $(this).hide();
+            $(this).slideDown();
+        } else if (action == "leave") {
+            $(this).slideUp(function () {
+                run();
+            })
+        }
+    }
+    qc.view("myview", function (vm, ve) {
+        vm.show = true;
+        vm.list = [{text: "动画测试" + qc.getRandom()}];
+        ve.veAnimate = function () {
+            vm.setValue("show", !vm.show);
+        }
+        ve.add = function () {
+            //vm.listpush({text: "动画测试" + qc.getRandom()})
+            vm.listconcat([{text: "动画测试" + qc.getRandom()}, {text: "动画测试" + qc.getRandom()}])
+            //vm.listunshift({text: "动画测试" + qc.getRandom()});
+        }
+        ve.remove = function () {
+            vm.listsplice(0, 1);
+            //vm.listpop();
+            //vm.listshift()
+        }
+    })
+</script>

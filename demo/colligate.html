@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../build/qc.min.js"></script>
+    <script src="widget/test.js"></script>
+</head>
+<body>
+<div q-view="test">
+        <span q-css="color:{person.name}===['张三','李四']?['red','green'];font-size:{person.name}===['张三','李四']?['20px','30px']"
+              q-text="{person.name}"></span>
+        <textarea q-prop="disabled:{person.name}==='张三'" q-value-change="person.name"></textarea>
+
+        <div q-visible="{person.name}!=='李四'">
+            <div>oooooo</div>
+            <input type="text" q-visible="{person.name}!=='张三'" q-value-change="person.name"/>
+        </div>
+        <select q-select="person.name">
+            <option value="张三">张三</option>
+            <option value="李四">李四</option>
+        </select>
+        <demo bind:name="person.name"></demo>
+        张三:<input type="radio" q-radio="person.name" value="张三"><br>
+        李四:<input type="radio" q-radio="person.name" value="李四"><br>
+        <test id="test"></test>
+        <button q-click="add">增加</button>
+        <div q-visible="{person.name}!=='张三'" q-each="person.list">
+            <div>
+                (<span q-text="{$key}+1"></span>)
+                <span q-text="({v}%3)===[0,1,2]?['呵呵','哈哈','吼吼']"></span>
+                <input type="text" q-value-change="str">
+                <button q-click="change">+</button>
+            </div>
+        </div>
+    </div>
+    <div id="compent"></div>
+</body>
+</html>
+<script>
+    var test = qc.view("test", function (vm, ve) {
+        vm.person = {
+            sex: "男"
+        }
+        ve.change = function ($self) {
+            $self.setValue("v", 4);
+        }
+        ve.$watch("person.list.v", function (newValue, oldValue) {
+            window.console && console.log(newValue, oldValue);
+        })
+        ve.add = function () {
+            vm.person.listpush({v: 0, str: "增加"});
+        }
+    })
+    qc.UIComponent({
+        url: "component/myComt",
+        id: "compent",
+        name: "list",
+        data: "王五"
+    });
+</script>
