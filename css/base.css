@@ -1,30 +1,14 @@
 body {
     font-family: "Microsoft YaHei";
-    padding-bottom: 70px;
-}
-
-pre {
-    padding: 1em 1.6em 1em 1.2em;
-    vertical-align: top;
-    background: #f8f8f8;
-    border: 1px solid #e8e8e8;
-    border-width: 1px 1px 1px 4px;
-    margin: -0.5em 0 1.1em;
-    overflow-x: auto;
-    font-size: 14px;
-    line-height: 1.5438em;
 }
 
 .navbar {
     border-radius: 0;
 }
 
-.kword {
-    color: #f0ad4e;
-}
-
-.str {
-    color: #5cb85c;
+.navbar a {
+    font-size: 20px;
+    color: white !important;
 }
 
 #learn-sider > li:hover {
@@ -33,22 +17,26 @@ pre {
 }
 
 #learn-sider > li.active {
-    background-color: #5cb85c;
-    color: #ffffff;
+    background-color: black;
+    border-color : #ffffff;
 }
-#learn-sider a{
+
+#learn-sider a {
     text-decoration: none;
     display: block;
     height: 100%;
-    color:#333 ;
+    color: #333;
 }
-#learn-sider > .active   i {
+
+#learn-sider > .active i {
     color: #ffffff;
 }
-#learn-sider > .active>a{
-    color:#ffffff ;
+
+#learn-sider > .active > a {
+    color: #ffffff;
 }
-.list-group-item  i {
+
+.list-group-item i {
     float: right;
     display: inline-block;
     width: 14px;
@@ -59,9 +47,19 @@ pre {
     margin-right: -6px;
     color: #737373;
 }
-
-p {
+.bs-docs-section {
     font-size: 16px;
     line-height: 1.75;
     margin-bottom: 1em;
+    margin-bottom: 10px;
+}
+.bs-docs-section > p{
+    text-indent:2em;
+}
+pre{
+    margin: 0!important;
+    padding: 10px!important;
+    border-width:0 ;
+    background: white;
+    font-size: 14px;
 }

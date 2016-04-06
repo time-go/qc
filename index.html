@@ -7,6 +7,8 @@
     <title>简明教程</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/base.css">
@@ -16,7 +18,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container">
         <ul class="nav navbar-nav">
-            <li><a href="/">QC教程</a></li>
+            <li><a href="/">QC官网</a></li>
         </ul>
     </div>
 </nav>
@@ -24,7 +26,7 @@
     <div class="row">
         <div class="col-sm-3">
             <ul id="learn-sider" class="list-group">
-                <li data-index="introduce" data-type="html" class="list-group-item active">QC介绍</li>
+                <li data-index="introduce" class="list-group-item active">QC介绍</li>
                 <li data-index="hello" class="list-group-item">hello word!</li>
                 <li data-index="bdsj" class="list-group-item">绑定事件</li>
                 <li data-index="bdsz" class="list-group-item">绑定数组</li>
@@ -32,11 +34,11 @@
                 <li data-index="rcs" class="list-group-item">radio checkbox select</li>
                 <li data-index="bdys" class="list-group-item">属性绑定</li>
                 <li data-index="sxbd" data-type="html" class="list-group-item">属性绑定API</li>
-                <li data-index="expression" data-type="html" class="list-group-item">表达式与函数调用</li>
+                <li data-index="expression" class="list-group-item">表达式与函数调用</li>
                 <li data-index="watch" class="list-group-item">变量监控</li>
                 <li data-index="self" class="list-group-item">$self参数</li>
                 <li data-index="intelligent" class="list-group-item">数据智能匹配</li>
-                <li data-index="event" data-type="html" class="list-group-item">事件系统</li>
+                <li data-index="event" class="list-group-item">事件系统</li>
                 <li data-index="widget" class="list-group-item">控件</li>
                 <li data-index="component" class="list-group-item">组件</li>
                 <li data-index="animate" class="list-group-item">动画</li>
@@ -46,15 +48,7 @@
         </div>
         <div class="col-sm-9">
             <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            说明
-                        </h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre id="txt-code" style="background:#ffffff"></pre>
-                    </div>
+                <div class="panel-body" id="txt-code">
                 </div>
             </div>
         </div>
@@ -64,22 +58,23 @@
 </body>
 </html>
 <script>
+    function htmlEncode(value) {
+        return $('<div/>').text(value).html();
+    }
+
+    function htmlDecode(value) {
+        return $('<div/>').html(value).text();
+    }
+    function loadcode(id, page, code) {
+        $("#" + id).html(htmlEncode(require("./code/" + page + "/" + code + "!text")));
+    }
     (function () {
-        function htmlEncode(value) {
-            return $('<div/>').text(value).html();
-        }
-
-        function htmlDecode(value) {
-            return $('<div/>').html(value).text();
-        }
-
         function init(fname, type) {
-            var _intTxt = require("./code/" + fname + ".html!text");
-            if (type !== undefined && type === "html") {
-                $("#txt-code").html(_intTxt);
-            } else {
-                $("#txt-code").html(htmlEncode(_intTxt));
-            }
+            var _intTxt = require("./code/" + fname + "/index.html!text");
+            $("#txt-code").html(_intTxt);
+            $("#txt-code").find("pre").each(function (i, block) {
+                hljs.highlightBlock(block);
+            })
         }
 
         init("introduce", "html");//初始化;
@@ -87,9 +82,9 @@
             if (!$(this).hasClass("active")) {
                 $("#learn-sider").find(">li").removeClass("active");
                 $(this).addClass("active");
-                init($(this).attr("data-index"), $(this).attr("data-type"))
+                init($(this).attr("data-index"))
             }
         });
-    })()
-
+    })();
+    hljs.initHighlightingOnLoad();
 </script>
