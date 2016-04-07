@@ -10,8 +10,6 @@
     <input q-click="mypush" type="button" value="push">
     <input q-click="mysplice" type="button" value="splice">
 </div>
-</body>
-</html>
 <script>
     qc.view("myview", function (vm, ve) {
         vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
@@ -20,7 +18,7 @@
         }
         ve.mysplice = function ($self, event, action) {
             vm.listsplice($self.$key,1);
-            window.console&&window.console(this)
+            window.console&&window.console.log(this)
         }
 
     })

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="qc.min.js"></script>
+</head>
+<body>
+<div q-view="myview">
+    <input type="text" q-keyup="mykey" q-value-change="say">
+</div>
+</body>
+</html>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.say = "hello";
+        ve.mykey = function ($self, event) {
+            window.console && console.log(event);
+        }
+    })
+</script>

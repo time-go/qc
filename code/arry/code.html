@@ -14,16 +14,11 @@
     <input q-click="myunshift" type="button" value="unshift">
     <input q-click="myconcat" type="button" value="concat">
 </div>
-</body>
-</html>
 <script>
     qc.view("myview", function (vm, ve) {
         vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
         ve.mypush=function(){
             vm.listpush({name: "王五", sex: "男"})
-        }
-        ve.mypush=function(){
-
         }
         ve.mypop=function(){
 

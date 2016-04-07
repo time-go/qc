@@ -11,7 +11,7 @@
     <div q-css="color:{c}">你好</div>
     <input q-attr="id:'view'+{uid}" type="text" q-value-change="say">
     <span q-text="{uid}+':说'+{say}"></span>
-    <input type="text" q-prop="disabled:{uid}='123'" value="q-prop" />
+    <input type="text" q-prop="disabled:{uid}=='123'" value="q-prop" />
     <div>
         <ul q-each="list">
             <li q-class="back0:{$key} % 2 ==0;back1:{$index} % 2==1">

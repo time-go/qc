@@ -18,11 +18,14 @@
             window.console && console.log("控件加载完毕...");
             this.getElement()//获取控件的element元素
         },
-        update: function () {
+        update: function (key, value) {
             //此控件绑定了 父元素 person.name,当  person.name 变化时
             //此函数被调用
             window.console && console.log(this.props);
-            this.props//获取父元素 属性上绑定的值 即从父元素传来的值
+            //this.props//获取父元素 属性上绑定的值 即从父元素传来的值
+            //this.viewModel//控件的vm对象
+            //this.getElement 获取控件element对象
+
         }
     });
 </script>
