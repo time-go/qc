@@ -1,0 +1,42 @@
+<div q-view="myview">
+    <div q-each="list">
+        <div>
+            索引:<span q-text="{$key}+1"></span>
+            姓名:<span q-text="{name}"></span>
+            性别:<span q-text="{sex}"></span>
+        </div>
+    </div>
+
+    <input q-click="mypush" type="button" value="push">
+    <input q-click="mypop" type="button" value="pop">
+    <input q-click="mysplice" type="button" value="splice">
+    <input q-click="myshift" type="button" value="shift">
+    <input q-click="myunshift" type="button" value="unshift">
+    <input q-click="myconcat" type="button" value="concat">
+</div>
+</body>
+</html>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+        ve.mypush=function(){
+            vm.listpush({name: "王五", sex: "男"})
+        }
+        ve.mypush=function(){
+
+        }
+        ve.mypop=function(){
+
+        }
+        ve.mysplice=function(){
+
+        }
+        ve.myunshift=function(){
+
+        }
+        ve.myconcat=function(){
+
+        }
+
+    })
+</script>

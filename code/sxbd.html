@@ -7,66 +7,66 @@
     </thead>
     <tbody>
     <tr>
-        <td>qc-visible</td>
+        <td>q-visible</td>
         <td>格式{属性名};也可以是表达式如：{属性名1}+{属性名2} 表达式为true 显示，为false 移除</td>
     </tr>
     <tr>
-        <td>qc-prop</td>
-        <td>qc-prop="名称:{属性名1}+{属性名2};名称:{属性名1}+{属性名2};名称:{属性名1}+{属性名2}..."<br> value表达式为true 就绑定对应的属性 为false
-            就不绑定对应的属性<br>例如:qc-prop="readonley:{xx}"
+        <td>q-prop</td>
+        <td>q-prop="名称:{属性名1}+{属性名2};名称:{属性名1}+{属性名2};名称:{属性名1}+{属性名2}..."<br> value表达式为true 就绑定对应的属性 为false
+            就不绑定对应的属性<br>例如:q-prop="readonley:{xx}"
         </td>
     </tr>
     <tr>
         <td>$p.属性名</td>
-        <td>绑定父元素属性，如qc-text={$p.name},同理，绑定父元素的父元素属性qc-text={$p.$p.name}以此类推</td>
+        <td>绑定父元素属性，如q-text={$p.name},同理，绑定父元素的父元素属性q-text={$p.$p.name}以此类推</td>
     </tr>
     <tr>
-        <td>qc-text(转义输出)</td>
+        <td>q-text(转义输出)</td>
         <td>格式{属性名};也可以是表达式如：{属性名1}+{属性名2}</td>
     </tr>
     <tr>
-        <td>qc-html(不转义输出)</td>
+        <td>q-html(不转义输出)</td>
         <td>格式{属性名};也可以是表达式如：{属性名1}+{属性名2}</td>
     </tr>
     <tr>
-        <td>qc-attr</td>
-        <td>qc-attr="标签属性:{属性名1}+{属性名2};标签属性:{属性名1}+{属性名2}..." 如 qc-attr="id:'view'+{uid}"对应 id="view"+uid<br>
+        <td>q-attr</td>
+        <td>q-attr="标签属性:{属性名1}+{属性名2};标签属性:{属性名1}+{属性名2}..." 如 q-attr="id:'view'+{uid}"对应 id="view"+uid<br>
         </td>
     </tr>
     <tr>
-        <td>qc-css</td>
-        <td>qc-css="标签属性:{属性名1}+{属性名2};标签属性:{属性名1}+{属性名2}..." ;同上</td>
+        <td>q-css</td>
+        <td>q-css="标签属性:{属性名1}+{属性名2};标签属性:{属性名1}+{属性名2}..." ;同上</td>
     </tr>
     <tr>
-        <td>qc-class</td>
-        <td>qc-class="class名称:{属性名1}+{属性名2};class名称:{属性名1}+{属性名2};class名称:{属性名1}+{属性名2}..."<br>value表达式为true 就绑定对应的属性
+        <td>q-class</td>
+        <td>q-class="class名称:{属性名1}+{属性名2};class名称:{属性名1}+{属性名2};class名称:{属性名1}+{属性名2}..."<br>value表达式为true 就绑定对应的属性
             为false 就不绑定对应的属性
         </td>
     </tr>
     <tr>
-        <td>qc-valule</td>
-        <td>qc-value="属性名称" 用于input textarea绑定</td>
+        <td>q-valule</td>
+        <td>q-value="属性名称" 用于input textarea绑定</td>
     </tr>
     <tr>
-        <td>qc-valule-change</td>
-        <td>qc-value="属性名称" 用于input textarea绑定;当输入框的值变化时 输入框的值同步到viewModel</td>
+        <td>q-valule-change</td>
+        <td>q-value="属性名称" 用于input textarea绑定;当输入框的值变化时 输入框的值同步到viewModel</td>
     </tr>
     <tr>
-        <td>qc-valule-blur</td>
-        <td>qc-value="属性名称" 用于input textarea绑定;当输入框失去焦点时 输入框的值同步到viewModel</td>
+        <td>q-valule-blur</td>
+        <td>q-value="属性名称" 用于input textarea绑定;当输入框失去焦点时 输入框的值同步到viewModel</td>
     </tr>
     <tr>
-        <td>qc-radio</td>
-        <td>qc-radio="属性名称" 用于radio的绑定，选中后，属性名更新为选中radio的value值<br>
+        <td>q-radio</td>
+        <td>q-radio="属性名称" 用于radio的绑定，选中后，属性名更新为选中radio的value值<br>
     </tr>
     <tr>
-        <td>qc-select</td>
-        <td>qc-select="属性名称" 用于select的绑定，选中后，属性名更新为选中option的value值<br>
+        <td>q-select</td>
+        <td>q-select="属性名称" 用于select的绑定，选中后，属性名更新为选中option的value值<br>
         </td>
     </tr>
     <tr>
-        <td>qc-check</td>
-        <td>qc-check="属性名称" 用于checkbox的绑定,属性为true时选中，为false是不选中<br>
+        <td>q-check</td>
+        <td>q-check="属性名称" 用于checkbox的绑定,属性为true时选中，为false是不选中<br>
         </td>
     </tr>
     </tbody>

@@ -4,6 +4,8 @@ body {
 
 .navbar {
     border-radius: 0;
+    font-size: 16px;
+    color: white !important;
 }
 
 .navbar a {

@@ -1,0 +1,17 @@
+<div q-view="myview">
+    <input type="text" q-value-change="say">
+    <span q-text="{say}+{person.name}"></span>
+</div>
+
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.say = "hello";
+        vm.person = {
+            name: "张三"
+        }
+        ve.$watch("say", function (newValue, oldValue, $self) {
+            window.console && console.log(newValue, oldValue);
+            window.console && console.log($self)
+        })
+    })
+</script>

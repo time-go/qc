@@ -1,0 +1,39 @@
+<style>
+    .back0 {
+        background-color: coral;
+    }
+
+    .back1 {
+        background-color: forestgreen;
+    }
+</style>
+<div q-view="myview">
+    <div q-css="color:{c}">你好</div>
+    <input q-attr="id:'view'+{uid}" type="text" q-value-change="say">
+    <span q-text="{uid}+':说'+{say}"></span>
+    <input type="text" q-prop="disabled:{uid}='123'" value="q-prop" />
+    <div>
+        <ul q-each="list">
+            <li q-class="back0:{$key} % 2 ==0;back1:{$index} % 2==1">
+                <span q-text="{$key}+1"></span>
+                <span>姓名:</span><span q-text="{name}"></span>---
+                <span>性别:</span><span q-text="{sex}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [
+            {"name": "张三", "sex": "男"}
+            ,
+            {"name": "李四", "sex": "男"}
+            ,
+            {"name": "王五", "sex": "男"}
+        ];
+        vm.uid = "123";
+        vm.say = "word";
+        vm.c = "red"
+    })
+</script>

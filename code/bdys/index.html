@@ -1,0 +1,45 @@
+<div class="bs-docs-section">
+    <h3>代码</h3>
+<pre class="html">
+    <code id="bdys">
+    </code>
+</pre>
+    <h3>说明</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th style="width: 100px">指令</th>
+            <th>作用</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>q-css</td>
+            <td>绑定style，可绑定多个<code>q-css="color:{xx}+{xx};top:表达式;..."</code></td>
+        </tr>
+        <tr>
+            <td>q-attr</td>
+            <td>绑定属性 用法同<code>q-css</code></td>
+        </tr>
+        <tr>
+            <td>q-class</td>
+            <td>
+                绑定样式<code>q-css="class1:{xx}+{xx};class2:表达式;..."</code>，
+                当表达式值为true即绑定改样式，为false移除该样式
+            </td>
+        </tr>
+        <tr>
+            <td>q-prop</td>
+            <td>用法同<code>q-calss</code>,用于绑定 readonly disabled等</td>
+        </tr>
+        <tr>
+            <td>q-visible</td>
+            <td><code>q-visible="{xx}+{xx}"</code>当绑定的值为true时元素显示，为false是元素隐藏</td>
+        </tr>
+        </tbody>
+    </table>
+    </p>
+</div>
+<script>
+    loadcode("bdys", "bdys", "code.html");
+</script>

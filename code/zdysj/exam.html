@@ -1,0 +1,24 @@
+<ul q-each="list" class="ui-list ui-list-link ui-border-tb">
+    <li q-tapswipe="action" q-animate="slide" class="ui-border-t">
+        <div class="ui-list-img">
+            <img width="100" height="68" src="img/mp.jpeg"/>
+        </div>
+        <div class="ui-list-info">
+            <h4 class="ui-nowrap" q-text="{title}"></h4>
+            <p class="ui-nowrap" q-text="{descript}"></p>
+        </div>
+    </li>
+</ul>
+<script>
+    //省略...
+    ve.action = function ($self, event, action) {
+        if (action === "tap") {
+            mobile.loadPage("two");
+        } else if (action == "right") {
+            mobile.dialog("确认要删除吗？", function () {
+                vm.listsplice($self.$key, 1);
+            })
+        }
+    }
+    //省略...
+</script>

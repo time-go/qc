@@ -1,0 +1,44 @@
+<div class="bs-docs-section">
+    <h3>代码</h3>
+<pre class="html">
+    <code id="input">
+    </code>
+</pre>
+    <h3>说明</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>表单类型</th>
+            <th>指令</th>
+            <th>作用</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>input ,textarear</td>
+            <td>q-value-change,q-value-blur</td>
+            <td>第一个指令 但文本框变化同步到数据模型，第一个指令当文本框失去焦点同步到数据模型</td>
+        </tr>
+        <tr>
+            <td>radio</td>
+            <td>q-radio</td>
+            <td>当<code>绑定的值</code>和<code>value值</code>相等的时候 绑定</td>
+        </tr>
+        <tr>
+            <td>checkbox</td>
+            <td>q-check</td>
+            <td>当绑定值得为<code>true</code>的时候绑定</td>
+        </tr>
+        <tr>
+            <td>select</td>
+            <td>q-select</td>
+            <td>选中的值同步到数据模型</td>
+        </tr>
+        </tbody>
+    </table>
+    <code>表单对属性的绑定没有“{}”，所以只能绑定单一属性，不能绑定表达式</code>
+    </p>
+</div>
+<script>
+    loadcode("input", "input", "code.html");
+</script>

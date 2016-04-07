@@ -1,0 +1,38 @@
+<div q-view="myview">
+    书名：<span q-text="{book.name}"></span><br>
+    价格:<span q-text="{book.price}"></span>元<br>
+    <button q-click="change">改变价格</button>
+    <button q-click="changeAll">更换书籍</button>
+    <br>
+    <button q-click="add">增加数组</button>
+    (<span q-text="{list.length}"></span>)
+
+    <div q-each="list">
+        <div>
+            <span q-text="{$key}+1"></span>.
+            姓名:<span q-text="{name}"></span>
+            性别:<span q-text="{sex}"></span>
+        </div>
+    </div>
+</div>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.book = {
+            name: "QC源码分析",
+            price: "36"
+        }
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+        ve.add = function () {
+            vm.setValue("list", [{name: "王五", sex: "男"}, {name: "赵六", sex: "女"}])
+        }
+        ve.change = function () {
+            vm.book.setValue("price", "40");
+        }
+        ve.changeAll = function () {
+            vm.book.setValue({
+                name: "AngularJS权威教程",
+                price: 99
+            });
+        }
+    })
+</script>

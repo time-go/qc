@@ -1,0 +1,31 @@
+/*点击事件*/
+<script>
+    qc.extendEvent({
+        name: "tap",
+        touchstart: function (run, event, element) {
+            this.data = "张三";
+            //省略
+            //event 事件参数
+            //element 事件发生的element对应
+            //run 指定绑定的事件可以带参数 比如run("xxx");
+            /*
+             * <span q-tap="myenent"></span>
+             * ve.mtevent=function($self,event,action){
+             * action值为xxx
+             *
+             * }
+             * */
+        },
+        touchmove: function (run, event, element) {
+            //省略
+            window.console && console.log(this.data);
+            /*要传递的参数可以放在this传递*/
+        },
+        touchend: function (run, event, element) {
+            //省略
+        },
+        touchcancel: function (run, event, element) {
+            //省略
+        }
+    });
+</script>
