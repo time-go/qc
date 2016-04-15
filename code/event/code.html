@@ -4,11 +4,11 @@
             索引:<span q-text="{$key}+1"></span>
             姓名:<span q-text="{name}"></span>
             性别:<span q-text="{sex}"></span>
+            <input q-click="mysplice" type="button" value="splice">
         </div>
     </div>
 
     <input q-click="mypush" type="button" value="push">
-    <input q-click="mysplice" type="button" value="splice">
 </div>
 <script>
     qc.view("myview", function (vm, ve) {
