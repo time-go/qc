@@ -7,7 +7,7 @@
             window.console && console.log(this.props);
             var _this = this;
             setTimeout(function () {
-                _this.updateParent("name", "张三");
+                _this.updateParent("name", "hello");
             }, 3000)
         },
         load: function () {

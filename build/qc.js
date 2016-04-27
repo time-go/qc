@@ -1527,13 +1527,16 @@
                 var divObject = $parent["$" + PREFIX + "-each-" + $prop];
                 for (var k = divObject.length - 1; k >= 0; k--) {
                     var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
-                    var childNodes = newDom.childNodes;
-                    newDom = childNodes[index];
-                    if (newDom.hasAttribute(PREFIX + "-animate")) {
-                        var veAnimate = newDom.getAttribute(PREFIX + "-animate");
-                        if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                            qc.animate[veAnimate].call(newDom, "enter");//显示
+                    try {
+                        var childNodes = newDom.childNodes;
+                        newDom = childNodes[index];
+                        if (newDom.hasAttribute(PREFIX + "-animate")) {
+                            var veAnimate = newDom.getAttribute(PREFIX + "-animate");
+                            if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                                qc.animate[veAnimate].call(newDom, "enter");//显示
+                            }
                         }
+                    } catch (e) {
                     }
                 }
             }
@@ -1541,15 +1544,19 @@
                 var divObject = $parent["$" + PREFIX + "-each-" + $prop];
                 var isCall = true;
                 for (var k = divObject.length - 1; k >= 0; k--) {
-                    var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
-                    var childNodes = newDom.childNodes;
-                    newDom = childNodes[index];
-                    if (newDom.hasAttribute(PREFIX + "-animate")) {
-                        var veAnimate = newDom.getAttribute(PREFIX + "-animate");
-                        if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                            qc.animate[veAnimate].call(newDom, "leave", callback);
-                            isCall = false;
+                    try {
+                        var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
+                        var childNodes = newDom.childNodes;
+                        newDom = childNodes[index];
+                        if (newDom.hasAttribute(PREFIX + "-animate")) {
+                            var veAnimate = newDom.getAttribute(PREFIX + "-animate");
+                            if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                                qc.animate[veAnimate].call(newDom, "leave", callback);
+                                isCall = false;
+                            }
                         }
+                    } catch (e) {
+                        //
                     }
                 }
                 if (isCall) {
@@ -2038,7 +2045,8 @@
 /*
  * 来自https://github.com/ForbesLindesay/ajax/blob/master/index.js
  * */
-;(function (qc) {
+;
+(function (qc) {
     var type = function (t) {
         return typeof(t);
     }
@@ -2328,11 +2336,15 @@
 
     function extend(target) {
         var slice = Array.prototype.slice;
-        slice.call(arguments, 1).forEach(function (source) {
-            for (key in source)
-                if (source[key] !== undefined)
-                    target[key] = source[key]
-        })
+        var list = slice.call(arguments, 1);
+        for (var i = 0; i < list.length; i++) {
+            var source = list[i];
+            for (key in source) {
+                if (source[key] !== undefined) {
+                    target[key] = source[key];
+                }
+            }
+        }
         return target
     }
 

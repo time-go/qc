@@ -6,7 +6,8 @@
 /*
  * 来自https://github.com/ForbesLindesay/ajax/blob/master/index.js
  * */
-;(function (qc) {
+;
+(function (qc) {
     var type = function (t) {
         return typeof(t);
     }
@@ -296,11 +297,15 @@
 
     function extend(target) {
         var slice = Array.prototype.slice;
-        slice.call(arguments, 1).forEach(function (source) {
-            for (key in source)
-                if (source[key] !== undefined)
-                    target[key] = source[key]
-        })
+        var list = slice.call(arguments, 1);
+        for (var i = 0; i < list.length; i++) {
+            var source = list[i];
+            for (key in source) {
+                if (source[key] !== undefined) {
+                    target[key] = source[key];
+                }
+            }
+        }
         return target
     }
 

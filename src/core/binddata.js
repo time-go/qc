@@ -624,13 +624,16 @@
                 var divObject = $parent["$" + PREFIX + "-each-" + $prop];
                 for (var k = divObject.length - 1; k >= 0; k--) {
                     var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
-                    var childNodes = newDom.childNodes;
-                    newDom = childNodes[index];
-                    if (newDom.hasAttribute(PREFIX + "-animate")) {
-                        var veAnimate = newDom.getAttribute(PREFIX + "-animate");
-                        if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                            qc.animate[veAnimate].call(newDom, "enter");//显示
+                    try {
+                        var childNodes = newDom.childNodes;
+                        newDom = childNodes[index];
+                        if (newDom.hasAttribute(PREFIX + "-animate")) {
+                            var veAnimate = newDom.getAttribute(PREFIX + "-animate");
+                            if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                                qc.animate[veAnimate].call(newDom, "enter");//显示
+                            }
                         }
+                    } catch (e) {
                     }
                 }
             }
@@ -638,15 +641,19 @@
                 var divObject = $parent["$" + PREFIX + "-each-" + $prop];
                 var isCall = true;
                 for (var k = divObject.length - 1; k >= 0; k--) {
-                    var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
-                    var childNodes = newDom.childNodes;
-                    newDom = childNodes[index];
-                    if (newDom.hasAttribute(PREFIX + "-animate")) {
-                        var veAnimate = newDom.getAttribute(PREFIX + "-animate");
-                        if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
-                            qc.animate[veAnimate].call(newDom, "leave", callback);
-                            isCall = false;
+                    try {
+                        var newDom = document.querySelector("[" + PREFIX + "-id='" + divObject[k].uuid + "']");
+                        var childNodes = newDom.childNodes;
+                        newDom = childNodes[index];
+                        if (newDom.hasAttribute(PREFIX + "-animate")) {
+                            var veAnimate = newDom.getAttribute(PREFIX + "-animate");
+                            if (qc.animate.hasOwnProperty(veAnimate) && typeof qc.animate[veAnimate] == "function") {
+                                qc.animate[veAnimate].call(newDom, "leave", callback);
+                                isCall = false;
+                            }
                         }
+                    } catch (e) {
+                        //
                     }
                 }
                 if (isCall) {
