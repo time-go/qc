@@ -2104,7 +2104,7 @@
 
                     try {
                         //if (dataType == 'script')    (1, eval)(result)
-                        if (dataType == 'script')result = xhr.responseXML;
+                        if (dataType == 'script')result = xhr.responseText;
                         else if (dataType == 'xml')  result = xhr.responseXML;
                         else if (dataType == 'json') result = blankRE.test(result) ? null : JSON.parse(result)
                     } catch (e) {
