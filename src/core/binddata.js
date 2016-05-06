@@ -242,9 +242,6 @@
                         watch(value, oldValue, vm);
                     }
                 } else if (typeof key === "object") {
-                    var watch = getMypath(vm.$path);
-                    var oldValue = qc.getModel(this);
-
                     function setObject(map, data) {
                         for (var m in  map) {
                             if (typeof map[m] !== "function" && m.indexOf("$") < 0) {
@@ -257,9 +254,19 @@
                                 if (data[m] !== undefined) {
                                     if (typeof map[m] === "object") {
                                         if (data[m] !== undefined && typeof data[m] === "object") {
-                                            setObject(map[m], data[m]);
+                                            map.setObject(map[m], data[m]);
                                         }
-                                    } else {
+                                    }
+                                }
+                            }
+                        }
+                        for (var m in  map) {
+                            if (typeof map[m] !== "function" && m.indexOf("$") < 0) {
+                                if (map.hasOwnProperty("$" + PREFIX + "-each-" + m)) {
+                                    continue;
+                                }
+                                if (data[m] !== undefined) {
+                                    if (typeof map[m] !== "object") {
                                         map[m] = data[m];
                                         if (map["$map"] && map["$map"][m] !== undefined) {
                                             render(map["$map"][m]);
