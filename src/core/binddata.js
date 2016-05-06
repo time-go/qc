@@ -505,9 +505,19 @@
                 html.push(" style=\"" + styleList.join(";") + "\"");
             }
             if (vDom[PREFIX].hasOwnProperty(PREFIX + "-value")) {
-                var textValue = vDom[PREFIX][PREFIX + "-value"];
+                var tempValue = qclib.expEval(vm, vDom[PREFIX][PREFIX + "-value"], uuid, "value,text");
                 if (vDom.localName === "input") {
-                    html.push(" value=\"" + qclib.expEval(vm, textValue, uuid, "value,text") + "\"");
+                    if (vDom[PREFIX].hasOwnProperty(PREFIX + "-radio")) {
+                        var textValue = vDom[PREFIX][PREFIX + "-radio"];
+                        var text = textValue[0];
+                        text = text.substr(1, text.length - 2);
+                        if (qclib.expEval(vm, textValue, uuid, "radio") === tempValue) {
+                            html.push(" checked onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                        } else {
+                            html.push(" onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                        }
+                    }
+                    html.push(" value=\"" + tempValue + "\"");
                 }
             }
             if (vDom[PREFIX].hasOwnProperty(PREFIX + "-value-change")) {
