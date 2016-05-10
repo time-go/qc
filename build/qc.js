@@ -1618,9 +1618,11 @@
                                 divObject.splice(k, 1);
                             } else {
                                 try {
-                                    s.innerHTML = s.innerHTML + divText.join("");//兼容ie
+                                    var newDiv = document.createElement("div");
+                                    newDiv.innerHTML = divText.join("");
+                                    s.appendChild(newDiv.children[0]);
                                 } catch (e) {
-                                    setTBodyAppendHtml(s, divText.join(""));
+                                    qclib.setTBodyAppendHtml(s, divText.join(""));
                                 }
                                 qclib.load();
 
@@ -1694,7 +1696,9 @@
                                 divObject.splice(k, 1);
                             } else {
                                 try {
-                                    s.innerHTML = s.innerHTML + divText.join("");
+                                    var newDiv = document.createElement("div");
+                                    newDiv.innerHTML = divText.join("");
+                                    s.appendChild(newDiv.children[0]);
                                 } catch (e) {
                                     qclib.setTBodyAppendHtml(s, divText.join(""));
                                 }
