@@ -78,7 +78,7 @@
                     if (dom !== null) {
                         var myValue = qclib.count(vm, exp);
                         if (k === "attr") {
-                            dom.setAttribute(v, dom);
+                            dom.setAttribute(v, myValue);
                         } else if (k === "css") {
                             dom.style[v] = myValue;
                         } else if (k === "class") {
