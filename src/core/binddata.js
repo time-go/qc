@@ -304,7 +304,7 @@
             }
 
             for (var v in vm) {
-                if (typeof vm[v] !== "function" && v.indexOf("$") < 0 && !qclib.isArray(vm[v]) && typeof vm[v] === "object") {
+                if (typeof vm[v] !== "function" && v.indexOf("$") < 0 && !qclib.isArray(vm[v]) && vm[v] != null && typeof vm[v] === "object") {
                     vm[v].$path = vm.$path + "." + v;
                     bindSet(vm[v], vm);
                 }
@@ -451,9 +451,9 @@
                             var text = textValue[0];
                             text = text.substr(1, text.length - 2);
                             if (qclib.expEval(vm, textValue, uuid, "radio") === value) {
-                                html.push(" checked onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                                html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                             } else {
-                                html.push(" onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                                html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                             }
                         }
                     }
@@ -484,9 +484,9 @@
                                 var text = textValue[0];
                                 text = text.substr(1, text.length - 2);
                                 if (qclib.expEval(vm, textValue, uuid, "radio") === value) {
-                                    html.push(" checked onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                                    html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                                 } else {
-                                    html.push(" onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                                    html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                                 }
                             }
                         }
@@ -519,9 +519,9 @@
                         var text = textValue[0];
                         text = text.substr(1, text.length - 2);
                         if (qclib.expEval(vm, textValue, uuid, "radio") === tempValue) {
-                            html.push(" checked onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                            html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                         } else {
-                            html.push(" onclick=qc.bindRadio(\"" + path + "." + text + "\",this)");
+                            html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                         }
                     }
                     html.push(" value=\"" + tempValue + "\"");
@@ -562,9 +562,9 @@
                 var text = textValue[0];
                 text = text.substr(1, text.length - 2);
                 if (qclib.expEval(vm, textValue, uuid, "check")) {
-                    html.push(" checked onclick=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
                 } else {
-                    html.push(" onclick=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
                 }
             }
             //绑定事件
@@ -821,8 +821,8 @@
                     var bindText = qclib.expEval(vm, text, uuid, "text");
                     html.push(qclib.innerText(bindText));
                 } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
-                    var text = vDom[PREFIX][PREFIX + "-text"];
-                    var bindText = qclib.expEval(vm, text, uuid, "text");
+                    var text = vDom[PREFIX][PREFIX + "-html"];
+                    var bindText = qclib.expEval(vm, text, uuid, "html");
                     html.push(bindText);
                 } else {
                     for (var i = 0; i < vDom.childNodes.length; i++) {
