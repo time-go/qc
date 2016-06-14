@@ -336,7 +336,7 @@
                                     if (_value === undefined) {
                                         _value = "\"\""
                                     } else {
-                                        _value = _value + "";
+                                        _value = _value;
                                     }
                                     list.push({expType: 1, expValue: _value});
                                 } else {
