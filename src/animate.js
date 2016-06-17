@@ -123,6 +123,7 @@
                 unit: "px"
             }, function () {
                 _this.style.overflow = overflow;
+                _this.style.height = "";
             })
         } else if (action == "leave") {
             animate(this, {
@@ -145,6 +146,7 @@
                 unit: "px"
             }, function () {
                 _this.style.overflow = overflow;
+                _this.style.height = "";
             })
         } else {
             run();
