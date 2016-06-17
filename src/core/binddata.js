@@ -253,7 +253,7 @@
                                 }
                                 if (data[m] !== undefined) {
                                     if (typeof map[m] === "object") {
-                                        if (data[m] !== undefined && typeof data[m] === "object" && data[m] != null) {
+                                        if (typeof data[m] === "object" && data[m] != null) {
                                             setObject(map[m], data[m]);
                                         }
                                     }
@@ -268,7 +268,7 @@
                                 if (data[m] !== undefined) {
                                     if (typeof map[m] !== "object") {
                                         map[m] = data[m];
-                                        if (map["$map"] && map["$map"][m] !== undefined && data[m] != null) {
+                                        if (map["$map"] && map["$map"][m] !== undefined) {
                                             render(map["$map"][m]);
                                         }
                                     }
