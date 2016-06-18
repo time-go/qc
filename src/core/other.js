@@ -209,7 +209,8 @@
             }
         }
         var _expshow = textList.join("");
-        if (type === "html") {
+        if (type === "dhtml") {
+            //判断函数
             return _expshow.replace(/\"/g, "");
         }
         try {

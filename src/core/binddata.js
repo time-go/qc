@@ -77,7 +77,7 @@
                 } else {
                     if (dom !== null) {
                         var myValue;
-                        if (k === "html") {
+                        if (k === "dhtml") {
                             exp = exp[0];
                             exp = exp.replace("{", "").replace("}", "");
                             myValue = vm[exp];
@@ -126,7 +126,7 @@
                             } catch (e) {
                                 qclib.setTBodyInnerHTML(dom, qclib.innerText(myValue));
                             }
-                        } else if (k === "html") {
+                        } else if (k === "html" || k === "dhtml") {
                             try {
                                 dom.innerHTML = myValue;
                             } catch (e) {
@@ -832,6 +832,10 @@
                 } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
                     var text = vDom[PREFIX][PREFIX + "-html"];
                     var bindText = qclib.expEval(vm, text, uuid, "html");
+                    html.push(bindText);
+                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-dhtml")) {
+                    var text = vDom[PREFIX][PREFIX + "-dhtml"];
+                    var bindText = qclib.expEval(vm, text, uuid, "dhtml");
                     html.push(bindText);
                 } else {
                     for (var i = 0; i < vDom.childNodes.length; i++) {
