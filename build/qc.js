@@ -816,7 +816,9 @@
             }
         }
         var _expshow = textList.join("");
-        ;
+        if (type === "html") {
+            return _expshow.replace(/\"/g, "");
+        }
         try {
             var myValue = qclib.parse(_expshow);
             var t = typeof myValue;
@@ -979,7 +981,14 @@
                     }
                 } else {
                     if (dom !== null) {
-                        var myValue = qclib.count(vm, exp);
+                        var myValue;
+                        if (k === "html") {
+                            exp = exp[0];
+                            exp = exp.replace("{", "").replace("}", "");
+                            myValue = vm[exp];
+                        } else {
+                            myValue = qclib.count(vm, exp);
+                        }
                         if (k === "attr") {
                             dom.setAttribute(v, myValue);
                         } else if (k === "css") {
@@ -1698,7 +1707,7 @@
                                 try {
                                     var newDiv = document.createElement("div");
                                     newDiv.innerHTML = divText.join("");
-                                    while(newDiv.children.length>0){
+                                    while (newDiv.children.length > 0) {
                                         s.appendChild(newDiv.children[0]);
                                     }
                                 } catch (e) {

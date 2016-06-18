@@ -209,7 +209,9 @@
             }
         }
         var _expshow = textList.join("");
-        ;
+        if (type === "html") {
+            return _expshow.replace(/\"/g, "");
+        }
         try {
             var myValue = qclib.parse(_expshow);
             var t = typeof myValue;
