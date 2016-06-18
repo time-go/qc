@@ -795,8 +795,8 @@
                                 try {
                                     var newDiv = document.createElement("div");
                                     newDiv.innerHTML = divText.join("");
-                                    for (var c = 0; c < newDiv.children.length; c++) {
-                                        s.appendChild(newDiv.children[c]);
+                                    while(newDiv.children.length>0){
+                                        s.appendChild(newDiv.children[0]);
                                     }
                                 } catch (e) {
                                     qclib.setTBodyAppendHtml(s, divText.join(""));
