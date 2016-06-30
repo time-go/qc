@@ -722,9 +722,14 @@
                                 divObject.splice(k, 1);
                             } else {
                                 try {
-                                    var newDiv = document.createElement("div");
-                                    newDiv.innerHTML = divText.join("");
-                                    s.appendChild(newDiv.children[0]);
+                                    var _tagName = s.tagName.toLocaleLowerCase();
+                                    if (_tagName == "table" || _tagName == "tr" || _tagName == "tbody") {
+                                        qclib.setTBodyAppendHtml(s, divText.join(""));
+                                    } else {
+                                        var newDiv = document.createElement("div");
+                                        newDiv.innerHTML = divText.join("");
+                                        s.appendChild(newDiv.children[0]);
+                                    }
                                 } catch (e) {
                                     qclib.setTBodyAppendHtml(s, divText.join(""));
                                 }
@@ -800,10 +805,15 @@
                                 divObject.splice(k, 1);
                             } else {
                                 try {
-                                    var newDiv = document.createElement("div");
-                                    newDiv.innerHTML = divText.join("");
-                                    while (newDiv.children.length > 0) {
-                                        s.appendChild(newDiv.children[0]);
+                                    var _tagName = s.tagName.toLocaleLowerCase();
+                                    if (_tagName == "table" || _tagName == "tr" || _tagName == "tbody") {
+                                        qclib.setTBodyAppendHtml(s, divText.join(""));
+                                    } else {
+                                        var newDiv = document.createElement("div");
+                                        newDiv.innerHTML = divText.join("");
+                                        while (newDiv.children.length > 0) {
+                                            s.appendChild(newDiv.children[0]);
+                                        }
                                     }
                                 } catch (e) {
                                     qclib.setTBodyAppendHtml(s, divText.join(""));
