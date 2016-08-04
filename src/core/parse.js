@@ -181,7 +181,55 @@
         var trope = {
             "\\\\": "\\\\"//转义字符串
         }
-
+        var tmpStr = function (arr, start, end) {
+            var myA = [];
+            for (var i = 0; i < arr.length; i++) {
+                myA.push({option: arr[i].option, value: arr[i].value})
+            }
+            var _arr = myA.splice(start, end);
+            var retStr = "";
+            for (var i = 0; i < _arr.length; i++) {
+                retStr += _arr[i].value;
+            }
+            return retStr;
+        }
+        var tmpSplice = function (arr, z) {
+            var myA = [];
+            for (var i = 0; i < arr.length; i++) {
+                myA.push({option: arr[i].option, value: arr[i].value})
+            }
+            var list = [];
+            var temp = [];
+            var isStr = "";
+            for (var i = 0; i < myA.length; i++) {
+                var char = myA[i].value;
+                if (myA[i].option) {
+                    if ((char === "\"" || char === "'" ) && isStr === "") {
+                        isStr = char;
+                        temp.push(myA[i])
+                    } else if ((char === "\"" || char === "'" ) && isStr === char) {
+                        temp.push(myA[i])
+                        isStr = "";
+                    } else if (isStr !== "") {
+                        temp.push(myA[i])
+                    } else {
+                        if (char === z) {
+                            list.push(temp);
+                            temp = [];
+                        } else {
+                            temp.push(myA[i])
+                        }
+                    }
+                } else {
+                    temp.push(myA[i])
+                }
+                if (i === myA.length - 1 && temp.length > 0) {
+                    list.push(temp);
+                    temp = [];
+                }
+            }
+            return list;
+        }
         var tree = function (exp) {
             var list = [];//语法树存储
             var stack = 0;
@@ -192,7 +240,7 @@
             var str = "";
             var lock = true;
             for (var i = 0; i < exp.length; i++) {
-                var char = exp.charAt(i);
+                var char = exp[i].value;
                 if (isStr) {
                     if (temp.length > 0 && lock) {
                         var tp = temp.pop();
@@ -222,11 +270,11 @@
                         }
                         if (stack === 1) {
                             if (fun === "") {
-                                list.push({expType: 1, expValue: tree(temp.join(""))});
+                                list.push({expType: 1, expValue: tree(temp)});
                             } else {
                                 var argList = [];
                                 if (temp.length > 0) {
-                                    argList = temp.join("").mySplit(",");
+                                    argList = tmpSplice(temp, ",");
                                     for (var a = 0; a < argList.length; a++) {
                                         argList[a] = tree(argList[a]);
                                     }
@@ -247,7 +295,7 @@
                             temp = [];
                             stack = 0;
                         } else {
-                            temp.push(char);
+                            temp.push(exp[i]);
                         }
                         continue;
                     }
@@ -258,11 +306,11 @@
                             stackQ--;
                         }
                         if (stackQ === 1) {
-                            list.push({expType: 1, expValue: temp.join("").mySplit(",")});
+                            list.push({expType: 1, expValue: tmpSplice(temp, ",")});
                             temp = [];
                             stackQ = 0;
                         } else {
-                            temp.push(char);
+                            temp.push(exp[i]);
                         }
                         continue;
                     }
@@ -270,15 +318,33 @@
                     var opt = "";
                     var optIndex = 0;
                     for (var p = temp.length - 1; p >= 0; p--) {
-                        optStr += temp[p];
+                        optStr += temp[p].value;
                         if (option.hasOwnProperty(optStr)) {
                             opt = optStr;
                             optIndex = p;
                         }
                     }
+                    if (!exp[i].option) {
+                        if (opt !== "") {
+                            var pushStr = tmpStr(temp, 0, optIndex);
+                            if(pushStr!=="") {
+                                caseValue(pushStr, list);
+                            }
+                            caseValue(pushStr, list);
+                            list.push({expType: 0, expValue: option[opt]});
+                            list.push({expType: 1, expValue: char});
+                            temp = [];
+                        } else {
+                            list.push({expType: 1, expValue: char});
+                            temp = [];
+                        }
+                        continue;
+                    }
                     if ((opt !== "") && (!option.hasOwnProperty(char + opt))) {
-                        var pushStr = temp.splice(0, optIndex).join("");
-                        caseValue(pushStr, list);
+                        var pushStr = tmpStr(temp, 0, optIndex);
+                        if(pushStr!=="") {
+                            caseValue(pushStr, list);
+                        }
                         list.push({expType: 0, expValue: option[opt]});
                         temp = [];
                     }
@@ -291,7 +357,7 @@
                         str = char;
                     } else if (char === "(") {
                         if (temp.length !== 0) {
-                            fun = temp.join("");
+                            fun = tmpStr(temp, 0, temp.length);
                             temp = [];
                         }
                         stack = 2;
@@ -303,13 +369,13 @@
                         stackQ = 2;
                     } else {
                         if (char !== " ") {
-                            temp.push(char);
+                            temp.push(exp[i]);
                         }
                     }
                 }
             }
             if (temp.length > 0) {
-                var endStr = temp.join("");
+                var endStr = tmpStr(temp, 0, temp.length);
                 caseValue(endStr, list);
                 temp = [];
             }
@@ -369,7 +435,17 @@
             return result;
         }
         /*计算值*/
-        return tree(exp);
+        var _exp = [];
+        for (var i = 0; i < exp.length; i++) {
+            if (exp[i].option) {
+                for (var j = 0; j < exp[i].value.length; j++) {
+                    _exp.push({option: true, value: exp[i].value.charAt(j)});
+                }
+            } else {
+                _exp.push(exp[i]);
+            }
+        }
+        return tree(_exp);
     }
     if (!window.qclib) {
         window.qclib = {};

@@ -3,7 +3,7 @@
 <head lang="zh">
     <meta charset="UTF-8">
     <title>class style绑定</title>
-    <script src="../build/qc.min.js"></script>
+    <script src="../build/qc.js"></script>
     <style>
         .back0 {
             background-color: coral;
@@ -22,7 +22,7 @@
 
     <div>
         <ul q-each="list">
-            <li q-class="back0:{$key} % 2 ==0;back1:{$index} % 2==1">
+            <li q-class="back0:{$key} % 2 ==0;back1:{$key} % 2==1">
                 <span q-text="{$key}+1"></span>
                 <span>姓名:</span><span q-text="{name}"></span>---
                 <span>性别:</span><span q-text="{sex}"></span>

@@ -40,18 +40,9 @@
                 break;
             }
         }
-        if (typeof mou === "number" || typeof  mou === "boolean") {
+        if (mou == undefined || mou === null) {
 
-            return mou + "";
-
-        } else if (mou === null) {
-
-            return "\"\"";
-
-        } else if (typeof mou === "string") {
-            mou = mou.replace(/\\/g, "\\\\");
-            mou = mou.replace(/\"/g, "\\\"");
-            return "\"" + mou + "\"";
+            return "";
 
         } else {
 
@@ -146,19 +137,10 @@
             }
         })
         (moudel)
-        if (typeof retValue === "number" || typeof  retValue === "boolean") {
-
-            return retValue + "";
-
-        } else if (retValue === null) {
-
-            return "\"\"";
-
+        if (retValue == null || retValue == undefined) {
+            return ""
         } else {
-            retValue = retValue.replace(/\\/g, "\\\\");
-            retValue = retValue.replace(/\"/g, "\\\"");
-            return "\"" + retValue + "\"";
-
+            return retValue;
         }
     }
 
@@ -172,15 +154,13 @@
         var textList = [];
         for (var i = 0; i < text.length; i++) {
             if (text[i].indexOf("{") == 0) {
-                textList.push(valuePro(moudel, text[i]))
+                textList.push({option: false, value: valuePro(moudel, text[i])})
             } else {
-                textList.push(text[i]);
+                textList.push({option: true, value: text[i]});
             }
         }
-        var _expshow = textList.join("");
-        ;
         try {
-            var myValue = qclib.parse(_expshow);
+            var myValue = qclib.parse(textList);
             var t = typeof myValue;
             if (t == "string" || t == "number" || t == "boolean") {
                 return myValue;
@@ -203,18 +183,13 @@
         var textList = [];
         for (var i = 0; i < text.length; i++) {
             if (text[i].indexOf("{") == 0) {
-                textList.push(getValue(moudel, text[i], uuid, type, text, widget))
+                textList.push({option: false, value: getValue(moudel, text[i], uuid, type, text, widget)})
             } else {
-                textList.push(text[i]);
+                textList.push({option: true, value: text[i]});
             }
         }
-        var _expshow = textList.join("");
-        if (type === "dhtml") {
-            //判断函数
-            return _expshow.replace(/\"/g, "");
-        }
         try {
-            var myValue = qclib.parse(_expshow);
+            var myValue = qclib.parse(textList);
             var t = typeof myValue;
             if (t == "string" || t == "number" || t == "boolean") {
                 return myValue;
