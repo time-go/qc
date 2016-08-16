@@ -1095,9 +1095,9 @@
                         else if (k === "check") {
                             if (document.activeElement !== dom) {
                                 if (myValue) {
-                                    dom.setAttribute("checked", true);
+                                    dom.checked = true;
                                 } else {
-                                    dom.removeAttribute("checked");
+                                    dom.checked = false;
                                 }
                             }
                         } else if (k === "radio") {
