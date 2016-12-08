@@ -2125,7 +2125,7 @@
     }
 })(qc)
 /**
- * Created by zhangyan on 2016/4/5.
+ * Created by zhangyan on 2016/12/8.
  * ajax.js
  */
 ;
@@ -2133,9 +2133,9 @@
  * 来自https://github.com/ForbesLindesay/ajax/blob/master/index.js
  * */
 ;
-(function (qc) {
+(function (qc) {;
     var type = function (t) {
-        return typeof(t);
+        return typeof (t);
     }
     var jsonpID = 0,
         document = window.document,
@@ -2149,6 +2149,7 @@
         blankRE = /^\s*$/
 
     var ajax = function (options) {
+        var then = { resolve: null, reject: null };//张岩
         var settings = extend({}, options || {})
         for (key in ajax.settings) if (settings[key] === undefined) settings[key] = ajax.settings[key]
 
@@ -2160,7 +2161,7 @@
         var dataType = settings.dataType, hasPlaceholder = /=\?/.test(settings.url)
         if (dataType == 'jsonp' || hasPlaceholder) {
             if (!hasPlaceholder) settings.url = appendQuery(settings.url, 'callback=?')
-            return ajax.JSONP(settings)
+            return ajax.JSONP(settings, then)
         }
 
         if (!settings.url) settings.url = window.location.toString()
@@ -2191,17 +2192,21 @@
 
                     try {
                         //if (dataType == 'script')    (1, eval)(result)
-                        if (dataType == 'script')result = xhr.responseText;
-                        else if (dataType == 'xml')  result = xhr.responseXML;
+                        if (dataType == 'script') result = xhr.responseText;
+                        else if (dataType == 'xml') result = xhr.responseXML;
                         else if (dataType == 'json') result = blankRE.test(result) ? null : JSON.parse(result)
                     } catch (e) {
                         error = e
                     }
 
-                    if (error) ajaxError(error, 'parsererror', xhr, settings)
-                    else ajaxSuccess(result, xhr, settings)
+                    if (error) {
+                        ajaxError(error, 'parsererror', xhr, settings, then);
+                    }
+                    else {
+                        ajaxSuccess(result, xhr, settings, then);
+                    }
                 } else {
-                    ajaxError(null, 'error', xhr, settings)
+                    ajaxError(null, 'error', xhr, settings, then);
                 }
             }
         }
@@ -2224,7 +2229,9 @@
 
         // avoid sending empty string (#319)
         xhr.send(settings.data ? settings.data : null)
-        return xhr
+        //张岩2016-10-19 为了使用多ajax进行异步的情况进行的改造//
+        //return xhr
+        return then;
     }
 
 
@@ -2262,15 +2269,32 @@
         triggerGlobal(settings, context, 'ajaxSend', [xhr, settings])
     }
 
-    function ajaxSuccess(data, xhr, settings) {
-        var context = settings.context, status = 'success'
-        settings.success.call(context, data, status, xhr)
-        triggerGlobal(settings, context, 'ajaxSuccess', [xhr, settings, data])
-        ajaxComplete(status, xhr, settings)
+    function ajaxSuccess(data, xhr, settings, then) {
+        try {
+            var context = settings.context, status = 'success';
+            var retData = settings.success.call(context, data, status, xhr);
+            triggerGlobal(settings, context, 'ajaxSuccess', [xhr, settings, data]);
+            ajaxComplete(status, xhr, settings);
+            if (then && typeof then.resolve === 'function') {
+                if (retData !== undefined) {
+                    then.resolve(retData, xhr, settings);//张岩2016-10-19
+                } else {
+                    then.resolve(data, xhr, settings);//张岩2016-10-19
+                }
+            }
+        } catch (e) {
+            if (then && typeof then.reject === 'function') {
+                then.reject(e, 'business', xhr, settings);//2016-10-19
+            }
+        }
     }
 
 // type: "timeout", "error", "abort", "parsererror"
-    function ajaxError(error, type, xhr, settings) {
+    function ajaxError(error, type, xhr, settings, then) {
+
+        if (then && typeof then.reject === 'function') {
+            then.reject(error, type, xhr, settings);//2016-10-19
+        }
         var context = settings.context
         settings.error.call(context, xhr, type, error)
         triggerGlobal(settings, context, 'ajaxError', [xhr, settings, error])
@@ -2289,7 +2313,8 @@
     function empty() {
     }
 
-    ajax.JSONP = function (options) {
+    ajax.JSONP = function (options, then) {
+        then = then || { resolve: null, reject: null };
         if (!('type' in options)) return ajax(options)
 
         var callbackName = 'jsonp' + (++jsonpID),
@@ -2300,7 +2325,7 @@
                 if (callbackName in window) window[callbackName] = empty
                 ajaxComplete('abort', xhr, options)
             },
-            xhr = {abort: abort}, abortTimeout,
+            xhr = { abort: abort }, abortTimeout,
             head = document.getElementsByTagName("head")[0]
                 || document.documentElement
 
@@ -2329,7 +2354,9 @@
             ajaxComplete('timeout', xhr, options)
         }, options.timeout)
 
-        return xhr
+        /**张岩 */
+        //return xhr
+        return then;
     }
 
     ajax.settings = {
@@ -2366,10 +2393,10 @@
     }
 
     function mimeToDataType(mime) {
-        return mime && ( mime == htmlType ? 'html' :
+        return mime && (mime == htmlType ? 'html' :
                 mime == jsonType ? 'json' :
                     scriptTypeRE.test(mime) ? 'script' :
-                    xmlTypeRE.test(mime) && 'xml' ) || 'text'
+                    xmlTypeRE.test(mime) && 'xml') || 'text'
     }
 
     function appendQuery(url, query) {
@@ -2384,16 +2411,16 @@
     }
 
     ajax.get = function (url, success) {
-        return ajax({url: url, success: success})
+        return ajax({ url: url, success: success })
     }
 
     ajax.post = function (url, data, success, dataType) {
         if (type(data) === 'function') dataType = dataType || success, success = data, data = null
-        return ajax({type: 'POST', url: url, data: data, success: success, dataType: dataType})
+        return ajax({ type: 'POST', url: url, data: data, success: success, dataType: dataType })
     }
 
     ajax.getJSON = function (url, success) {
-        return ajax({url: url, success: success, dataType: 'json'})
+        return ajax({ url: url, success: success, dataType: 'json' })
     }
 
     var escape = encodeURIComponent
@@ -2434,6 +2461,55 @@
             }
         }
         return target
+    }
+    /**
+     * 2016-10-19
+     * 张岩
+     * 根据多多异步同时操作的需求对ajax库进行了改造
+     */
+    ajax.ajax = ajax;
+    ajax.when = function (params) {
+        var count = params.length;
+        var result = {};
+        var isErr = true;
+        var successFoo = null;
+        var errorFoo = null;
+        function _then(callback) {
+            successFoo = callback;
+            return { 'then': _then, 'catch': _catch };
+        }
+        function _catch(callback) {
+            errorFoo = callback;
+            return { 'then': _then, 'catch': _catch };
+        }
+        params.map(function (value, i) {
+            value.i = i;
+            value.resolve = function (data) {
+                //成功回调
+                if (isErr) {
+                    result[this.i] = data;
+                    count--;
+                    if (count <= 0) {
+                        var retData = [];
+                        for (var i = 0; i < params.length; i++) {
+                            retData.push(result[i]);
+                        }
+                        if (typeof successFoo === 'function') {
+                            successFoo.apply(window, retData);
+                        }
+                    }
+                }
+            }
+            value.reject = function (error, type, xhr, settings) {
+                //失败回调
+                if (isErr && typeof errorFoo === 'function') {
+                    errorFoo.call(window, error, type, xhr, settings);
+                    isErr = false;
+
+                }
+            }
+        })
+        return { 'then': _then, 'catch': _catch };
     }
 
     qc.ajax = ajax;
