@@ -254,8 +254,8 @@
     }
 
     var load = function () {
-        for (var load in qc.load) {//渲染完触发回调
-            qc.load[load].load();
+        for (var i=0; i<qc.load.length;i++) {//渲染完触发回调
+            qc.load[i].load();
         }
         qc.load = [];//
     }
