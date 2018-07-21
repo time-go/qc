@@ -29,9 +29,27 @@
 ### 感谢名单
 + QQ5759125(发现q-html指令bug)
 
-# 使用文档
+<span id = "index">使用文档</span>
+-
+- [hello word!](#index1)
+- [绑定数组](#index2)
+- [绑定事件](#index3)
+- [更新视图](#index4)
+- [form表单](#index5)
+- [属性绑定](#index6)
+- [数组操作](#index7)
+- [绑定父元素](#index8)
+- [表达式与函数调用](#index9)
+- [外面更新视图](#index10)
+- [键盘事件](#index11)
+- [事件参数](#index12)
+- [量监控](#index13)
+- [自定义动画](#index14)
+- [自定义事件](#index15)
+- [自定义控件](#index16)
+- [系统常用API](#index17)
 
-### hello word
+### <span id = "index1">hello word</span> [返回目录](#index)
 
 ~~~ html
 <html lang="en">
@@ -61,7 +79,7 @@
 - q-view="**myview**"和javascript里面的 qc.view(" **myview** ",是对应的，大家可以叫别的名字，只要相同就可以了
 - 变量是可以进行运算的
 
-### 绑定数组
+###  <span id = "index2">绑定数组</span> [返回目录](#index)
 
 ~~~ html
 <html lang="en">
@@ -102,7 +120,7 @@
 - $key是数组的索引，是框架生成的
 - 绑定数组没有“{}”，所以只能绑定单一属性，不能绑定表达式
 
-### 绑定事件
+###  <span id = "index3">绑定事件</span> [返回目录](#index)
 
 ~~~ html
 <div q-view="myview">
@@ -129,7 +147,7 @@
    - PC: q-mousedown q-mouseup q-mousemove q-mouseout q-mouseleave q-mouseover q-mouseenter
    - 移动: q-touchstart q-touchmove q-touchend q-touchcancel
   
- ### 更新视图
+ ###  <span id = "index4">更新视图</span> [返回目录](#index)
  
  ~~~ html
  <div q-view="myview">
@@ -177,7 +195,7 @@
  - 可以更新整个对象和数组
  - 直接 **vm.xxx=** 值是不改变视图的
 
-### form表单
+###  <span id = "index5">form表单</span> [返回目录](#index)
 
 ~~~ html
  <div q-view="myview">
@@ -223,7 +241,7 @@
 
 **备注：表单对属性的绑定没有“{}”，所以只能绑定单一属性，不能绑定表达式**
 
-### 属性绑定
+###  <span id = "index6">属性绑定</span> [返回目录](#index)
 ~~~ html
 <style>
     .back0 {
@@ -275,7 +293,7 @@
 |q-prop|用法同q-calss,用于绑定 readonly disabled等
 |q-visible|q-visible="{xx}+{xx}"当绑定的值为true时元素显示，为false是元素隐藏
 
-### 数组操作
+###  <span id = "index7">数组操作</span> [返回目录](#index)
 ~~~ html
 <div q-view="myview">
     <div q-each="list">
@@ -318,7 +336,7 @@
 - 数组操作就是 **属性名+方法** 像示一样，方法的参数和原生数组方法相同
 - 还有个整体更新数组的方法setValue，在“更新视图”哪一章
 
-### 绑定父元素
+###  <span id = "index8">绑定父元素</span> [返回目录](#index)
 ~~~ html
 <div q-view="myview">
     <div q-each="list">
@@ -339,7 +357,7 @@
 ~~~
 - **$p.xxx** 绑定父元素，当有多级数字 **$p.$p.xxx** 可以无限级向上传递
 
-### 表达式与函数调用
+###  <span id = "index9">表达式与函数调用</span> [返回目录](#index)
 
 ~~~ html
 <div q-view="myview">
@@ -375,7 +393,7 @@
 - 表达式支持示例上的“多目”运算
 - **qc.fun** 是定义调用函数的位置
 
-### 外面更新视图
+###  <span id = "index10">外面更新视图</span> [返回目录](#index)
 ~~~ html
 <div q-view="myview">
     <div q-each="list">
@@ -399,7 +417,7 @@
 </script>
 ~~~
 
-### 键盘事件
+###  <span id = "index11">键盘事件</span> [返回目录](#index)
 
 ~~~ html
 <html lang="en">
@@ -426,7 +444,7 @@
 - q-keyup
 - q-keydown
 
-### 事件参数
+###  <span id = "index12">事件参数</span> [返回目录](#index)
 
 ~~~ html
 <div q-view="myview">
@@ -460,7 +478,7 @@
 - **action** 自定义组合事件用到
 - **this** 当前事件发生的element对象
 
-### 变量监控
+###  <span id = "index13">变量监控</span> [返回目录](#index)
 ~~~ html
    <div q-view="myview">
     <input type="text" q-value-change="say">
@@ -484,7 +502,7 @@
 - 监控数组里面的变量，**$watch("list.xxx",list** 是数组,xxx数组里面对象属性
 - **newValue** , **oldValue** , **$self** 三个参数,新值、旧值、监控的属性所在的vm
 
-### 自定义动画
+###  <span id = "index14">自定义动画</span> [返回目录](#index)
 ~~~ html
 <html lang="en">
 <head>
@@ -562,7 +580,7 @@
 - q-visible
 - 数组的相关操作方法
 
-### 自定义事件
+###  <span id = "index15">自定义事件</span> [返回目录](#index)
 ~~~ javascript
     /*点击事件*/
     qc.extendEvent({
@@ -625,7 +643,7 @@
    </script>
    ~~~
    
-  ###自定义控件
+  ###  <span id = "index16">自定义控件</span> [返回目录](#index)
   ~~~ html
      <demo bind:name="person.name" sex="男"></demo>
   <!--"bind:"开头的值 是绑定父元素的值
@@ -660,7 +678,7 @@
   ~~~
   **createWidget** 第一个参数是控件名称
   
-  ### 系统常用API
+  ###  <span id = "index17">系统常用API</span> [返回目录](#index)
   |api|作用|
   |-|-|
   |qc.getModel()|把vm对象转换为json 去掉系统生成的的属性|
