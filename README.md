@@ -223,3 +223,54 @@
 
 ***表单对属性的绑定没有“{}”，所以只能绑定单一属性，不能绑定表达式***
 
+### 属性绑定
+~~~ html
+<style>
+    .back0 {
+        background-color: coral;
+    }
+
+    .back1 {
+        background-color: forestgreen;
+    }
+</style>
+<div q-view="myview">
+    <div q-css="color:{c}">你好</div>
+    <input q-attr="id:'view'+{uid}" type="text" q-value-change="say">
+    <span q-text="{uid}+':说'+{say}"></span>
+    <input type="text" q-prop="disabled:{uid}=='123'" value="q-prop" />
+    <div>
+        <ul q-each="list">
+            <li q-class="back0:{$key} % 2 ==0;back1:{$index} % 2==1">
+                <span q-text="{$key}+1"></span>
+                <span>姓名:</span><span q-text="{name}"></span>---
+                <span>性别:</span><span q-text="{sex}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [
+            {"name": "张三", "sex": "男"}
+            ,
+            {"name": "李四", "sex": "男"}
+            ,
+            {"name": "王五", "sex": "男"}
+        ];
+        vm.uid = "123";
+        vm.say = "word";
+        vm.c = "red"
+    })
+</script>
+~~~
+|指令|作用|
+|--|--|
+|q-text|绑定的时候特殊字符会被转义，比如html片段会被转义
+|q-html|原始数据是什么样就会输出什么样，可能是html片段
+|q-css|绑定style，可绑定多个q-css="color:{xx}+{xx};top:表达式;..."
+|q-attr|绑定属性 用法同q-css
+|q-class|绑定样式q-css="class1:{xx}+{xx};class2:表达式;..."， 当表达式值为true即绑定改样式，为false移除该样式
+|q-prop|用法同q-calss,用于绑定 readonly disabled等
+|q-visible|q-visible="{xx}+{xx}"当绑定的值为true时元素显示，为false是元素隐藏
