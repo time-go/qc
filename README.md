@@ -317,3 +317,24 @@
 ~~~
 - 数组操作就是 **属性名+方法** 像示一样，方法的参数和原生数组方法相同
 - 还有个整体更新数组的方法setValue，在“更新视图”哪一章
+
+### 绑定父元素
+~~~ html
+<div q-view="myview">
+    <div q-each="list">
+        <div>
+            索引:<span q-text="{$key}+1"></span>
+            姓名:<span q-text="{$p.home}+':'+{name}"></span>
+            性别:<span q-text="{sex}"></span>
+        </div>
+    </div>
+</div>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.home = "深圳";
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+
+    })
+</script>
+~~~
+- **$p.xxx** 绑定父元素，当有多级数字 **$p.$p.xxx** 可以无限级向上传递
