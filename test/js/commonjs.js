@@ -4,6 +4,9 @@
  */
 
 ;(function () {
+    if((!$)||(!$.ajax)){
+        window.console&&window.console("找不到ajax模块");
+    }
     //---------------commonjs规范----------------//;
     window.$need = function (parent, path) {
         var _model;

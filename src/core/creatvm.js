@@ -79,7 +79,7 @@
                 for (var a = 0; a < d.attributes.length; a++) {
                     var _node = d.attributes[a]
                     if (_node.nodeName.indexOf(PREFIX + "-") == 0 && _node.nodeName !== PREFIX + "-view") {
-                        if (_node.nodeName === PREFIX + "-text" || _node.nodeName === PREFIX + "-html") {//text文本
+                        if (_node.nodeName === PREFIX + "-text" || _node.nodeName === PREFIX + "-test") {//text文本
                             o[PREFIX][_node.nodeName] = expresssion(_node.value);
                         } else if (_node.nodeName === PREFIX + "-css") {//style
                             o[PREFIX][_node.nodeName] = exp(_node.value);
@@ -101,8 +101,10 @@
                         var styleList = _node.value.split(";");
                         o.style = {};
                         for (var k = 0; k < styleList.length; k++) {
-                            var v = styleList[k].mySplit(":");
-                            o.style[v[0]] = v[1];
+                            if(styleList[k]!==undefined) {
+                                var v = styleList[k].mySplit(":");
+                                o.style[v[0]] = v[1];
+                            }
                         }
                     }
                 }

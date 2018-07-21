@@ -1,3 +1,4 @@
+﻿///<jscompress sourcefile="head.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * head.js
@@ -12,7 +13,8 @@
         window.qc.animate = {};
     }
 })()
-
+;
+///<jscompress sourcefile="ie.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * 主要用于放和ie的兼容处理相关内容
@@ -97,7 +99,8 @@
     qclib.setTBodyAppendHtml = setTBodyAppendHtml;
     qclib.isLowIe = isLowIe;
     qclib.getCommentNodes = getCommentNodes;
-})()
+})();
+///<jscompress sourcefile="parse.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * parse.js
@@ -552,7 +555,8 @@
     }
     window.qclib.isArray = isArray;
     window.qclib.parse = parse;
-})(qc)
+})(qc);
+///<jscompress sourcefile="creatvm.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * creatvm.js
@@ -634,7 +638,7 @@
                 for (var a = 0; a < d.attributes.length; a++) {
                     var _node = d.attributes[a]
                     if (_node.nodeName.indexOf(PREFIX + "-") == 0 && _node.nodeName !== PREFIX + "-view") {
-                        if (_node.nodeName === PREFIX + "-text" || _node.nodeName === PREFIX + "-html") {//text文本
+                        if (_node.nodeName === PREFIX + "-text" || _node.nodeName === PREFIX + "-test") {//text文本
                             o[PREFIX][_node.nodeName] = expresssion(_node.value);
                         } else if (_node.nodeName === PREFIX + "-css") {//style
                             o[PREFIX][_node.nodeName] = exp(_node.value);
@@ -656,8 +660,10 @@
                         var styleList = _node.value.split(";");
                         o.style = {};
                         for (var k = 0; k < styleList.length; k++) {
-                            var v = styleList[k].mySplit(":");
-                            o.style[v[0]] = v[1];
+                            if(styleList[k]!==undefined) {
+                                var v = styleList[k].mySplit(":");
+                                o.style[v[0]] = v[1];
+                            }
                         }
                     }
                 }
@@ -680,7 +686,8 @@
         window.qclib = {};
     }
     window.qclib.htmlToObj = htmlToObj;
-})(qc)
+})(qc);
+///<jscompress sourcefile="other.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * other.js
@@ -739,7 +746,7 @@
      *moudel 属性所在模型
      * 属性p 有可能为 xxx.xxx
      * uuid 属性唯一id
-     * type 类型$visible attr css prop textarea value class text html select radio check widget
+     * type 类型$visible attr css prop textarea value class text test select radio check widget
      * exp 表达式 比如{name}+':'+{age}
      * widget 是否为控件
      * */
@@ -857,7 +864,7 @@
     /* //在biandata调用 比getValue高一级
      *moudel 属性所在模型
      * uuid 属性唯一id
-     * type 类型$visible attr css prop textarea value class text html select radio check widget
+     * type 类型$visible attr css prop textarea value class text test select radio check widget
      * exp 表达式 比如{name}+':'+{age}
      * widget 是否为控件
      * */
@@ -954,7 +961,8 @@
     qc.getRandom = getRandom;//生成随机数
     qc.getModel = getModel;// 获取纯净的数据对象
 
-})(qc)
+})(qc);
+///<jscompress sourcefile="binddata.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * binddata.js
@@ -1094,15 +1102,25 @@
                         }
                         else if (k === "check") {
                             if (document.activeElement !== dom) {
-                                if (myValue) {
-                                    dom.checked = true;
+                                var qtrue = dom.getAttribute("qtrue");
+                                var qfalse = dom.getAttribute("qfalse");
+                                if (qtrue == undefined || qtrue == null) {
+                                    if (myValue == qtrue) {
+                                        dom.checked = true;
+                                    } else {
+                                        dom.checked = false;
+                                    }
                                 } else {
-                                    dom.checked = false;
+                                    if (myValue) {
+                                        dom.checked = true;
+                                    } else {
+                                        dom.checked = false;
+                                    }
                                 }
                             }
                         } else if (k === "radio") {
                             if (document.activeElement !== dom) {
-                                if (myValue === dom.value) {
+                                if (myValue == dom.value) {
                                     dom.checked = true;
                                 } else {
                                     dom.checked = false;
@@ -1407,7 +1425,7 @@
                             var textValue = vDom[PREFIX][PREFIX + "-radio"];
                             var text = textValue[0];
                             text = text.substr(1, text.length - 2);
-                            if (qclib.expEval(vm, textValue, uuid, "radio") === value) {
+                            if (qclib.expEval(vm, textValue, uuid, "radio") == value) {
                                 html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                             } else {
                                 html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
@@ -1440,7 +1458,7 @@
                                 var textValue = vDom[PREFIX][PREFIX + "-radio"];
                                 var text = textValue[0];
                                 text = text.substr(1, text.length - 2);
-                                if (qclib.expEval(vm, textValue, uuid, "radio") === value) {
+                                if (qclib.expEval(vm, textValue, uuid, "radio") == value) {
                                     html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                                 } else {
                                     html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
@@ -1475,7 +1493,7 @@
                         var textValue = vDom[PREFIX][PREFIX + "-radio"];
                         var text = textValue[0];
                         text = text.substr(1, text.length - 2);
-                        if (qclib.expEval(vm, textValue, uuid, "radio") === tempValue) {
+                        if (qclib.expEval(vm, textValue, uuid, "radio") == tempValue) {
                             html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                         } else {
                             html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
@@ -1518,10 +1536,20 @@
                 var textValue = vDom[PREFIX][PREFIX + "-check"];
                 var text = textValue[0];
                 text = text.substr(1, text.length - 2);
-                if (qclib.expEval(vm, textValue, uuid, "check")) {
-                    html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
-                } else {
-                    html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                var qtrue = vDom.attributes.qtrue;
+                var qfalse = vDom.attributes.qfalse;
+                if(qtrue==undefined||qtrue==null){
+                    if (qclib.expEval(vm, textValue, uuid, "check")) {
+                        html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    } else {
+                        html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    }
+                }else{
+                    if (qclib.expEval(vm, textValue, uuid, "check")==qtrue) {
+                        html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    } else {
+                        html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    }
                 }
             }
             //绑定事件
@@ -1789,8 +1817,8 @@
                     var text = vDom[PREFIX][PREFIX + "-text"];
                     var bindText = qclib.expEval(vm, text, uuid, "text");
                     html.push(qclib.innerText(bindText));
-                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
-                    var text = vDom[PREFIX][PREFIX + "-html"];
+                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-test")) {
+                    var text = vDom[PREFIX][PREFIX + "-test"];
                     var bindText = qclib.expEval(vm, text, uuid, "html");
                     html.push(bindText);
                 } else {
@@ -1829,7 +1857,8 @@
     if (!window.qclib) {
         window.qclib = {};
     }
-})(qc)
+})(qc);
+///<jscompress sourcefile="sweep.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * sweep.js
@@ -2031,7 +2060,8 @@
         sweep(name);
         return qc.vms[name];
     }
-})(qc)
+})(qc);
+///<jscompress sourcefile="dbevent.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * dbevent.js
@@ -2076,11 +2106,22 @@
     qc.bindCheck = function (path, obj) {
         if (document.activeElement === obj) {
             var v = getValue(path);
-            if (obj.checked) {
-                v.vm.setValue(v.pro, true);
+            var qtrue = obj.getAttribute("qtrue");
+            var qfalse = obj.getAttribute("qfalse");
+            if (qtrue == undefined || qtrue == null) {
+                if (obj.checked) {
+                    v.vm.setValue(v.pro, true);
+                } else {
+                    v.vm.setValue(v.pro, false);
+                }
             } else {
-                v.vm.setValue(v.pro, false);
+                if (obj.checked) {
+                    v.vm.setValue(v.pro, qtrue);
+                } else {
+                    v.vm.setValue(v.pro, qfalse);
+                }
             }
+
         }
     }
     qc.bindRadio = function (path, obj) {
@@ -2091,7 +2132,8 @@
             }
         }
     }
-})(qc)
+})(qc);
+///<jscompress sourcefile="extent.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * extent.js
@@ -2123,450 +2165,23 @@
             qc.ve[ars[i].name] = ars[i];
         }
     }
-})(qc)
-/**
- * Created by zhangyan on 2016/12/8.
- * ajax.js
- */
-;
-/*
- * 来自https://github.com/ForbesLindesay/ajax/blob/master/index.js
- * */
-;
-(function (qc) {;
-    var type = function (t) {
-        return typeof (t);
-    }
-    var jsonpID = 0,
-        document = window.document,
-        key,
-        name,
-        rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-        scriptTypeRE = /^(?:text|application)\/javascript/i,
-        xmlTypeRE = /^(?:text|application)\/xml/i,
-        jsonType = 'application/json',
-        htmlType = 'text/html',
-        blankRE = /^\s*$/
-
-    var ajax = function (options) {
-        var then = { resolve: null, reject: null };//张岩
-        var settings = extend({}, options || {})
-        for (key in ajax.settings) if (settings[key] === undefined) settings[key] = ajax.settings[key]
-
-        ajaxStart(settings)
-
-        if (!settings.crossDomain) settings.crossDomain = /^([\w-]+:)?\/\/([^\/]+)/.test(settings.url) &&
-            RegExp.$2 != window.location.host
-
-        var dataType = settings.dataType, hasPlaceholder = /=\?/.test(settings.url)
-        if (dataType == 'jsonp' || hasPlaceholder) {
-            if (!hasPlaceholder) settings.url = appendQuery(settings.url, 'callback=?')
-            return ajax.JSONP(settings, then)
-        }
-
-        if (!settings.url) settings.url = window.location.toString()
-        serializeData(settings)
-
-        var mime = settings.accepts[dataType],
-            baseHeaders = {},
-            protocol = /^([\w-]+:)\/\//.test(settings.url) ? RegExp.$1 : window.location.protocol,
-            xhr = ajax.settings.xhr(), abortTimeout
-
-        if (!settings.crossDomain) baseHeaders['X-Requested-With'] = 'XMLHttpRequest'
-        if (mime) {
-            baseHeaders['Accept'] = mime
-            if (mime.indexOf(',') > -1) mime = mime.split(',', 2)[0]
-            xhr.overrideMimeType && xhr.overrideMimeType(mime)
-        }
-        if (settings.contentType || (settings.data && settings.type.toUpperCase() != 'GET'))
-            baseHeaders['Content-Type'] = (settings.contentType || 'application/x-www-form-urlencoded')
-        settings.headers = extend(baseHeaders, settings.headers || {})
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                clearTimeout(abortTimeout)
-                var result, error = false
-                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304 || (xhr.status == 0 && protocol == 'file:')) {
-                    dataType = dataType || mimeToDataType(xhr.getResponseHeader('content-type'))
-                    result = xhr.responseText
-
-                    try {
-                        //if (dataType == 'script')    (1, eval)(result)
-                        if (dataType == 'script') result = xhr.responseText;
-                        else if (dataType == 'xml') result = xhr.responseXML;
-                        else if (dataType == 'json') result = blankRE.test(result) ? null : eval('(' + result + ')');
-                    } catch (e) {
-                        error = e
-                    }
-
-                    if (error) {
-                        ajaxError(error, 'parsererror', xhr, settings, then);
-                    }
-                    else {
-                        ajaxSuccess(result, xhr, settings, then);
-                    }
-                } else {
-                    ajaxError(null, 'error', xhr, settings, then);
-                }
-            }
-        }
-
-        var async = 'async' in settings ? settings.async : true
-        xhr.open(settings.type, settings.url, async)
-
-        for (name in settings.headers) xhr.setRequestHeader(name, settings.headers[name])
-
-        if (ajaxBeforeSend(xhr, settings) === false) {
-            xhr.abort()
-            return false
-        }
-
-        if (settings.timeout > 0) abortTimeout = setTimeout(function () {
-            xhr.onreadystatechange = empty
-            xhr.abort()
-            ajaxError(null, 'timeout', xhr, settings)
-        }, settings.timeout)
-
-        // avoid sending empty string (#319)
-        xhr.send(settings.data ? settings.data : null)
-        //张岩2016-10-19 为了使用多ajax进行异步的情况进行的改造//
-        //return xhr
-        return then;
-    }
-
-
-// trigger a custom event and return false if it was cancelled
-    function triggerAndReturn(context, eventName, data) {
-        //todo: Fire off some events
-        //var event = $.Event(eventName)
-        //$(context).trigger(event, data)
-        return true;//!event.defaultPrevented
-    }
-
-// trigger an Ajax "global" event
-    function triggerGlobal(settings, context, eventName, data) {
-        if (settings.global) return triggerAndReturn(context || document, eventName, data)
-    }
-
-// Number of active Ajax requests
-    ajax.active = 0
-
-    function ajaxStart(settings) {
-        if (settings.global && ajax.active++ === 0) triggerGlobal(settings, null, 'ajaxStart')
-    }
-
-    function ajaxStop(settings) {
-        if (settings.global && !(--ajax.active)) triggerGlobal(settings, null, 'ajaxStop')
-    }
-
-// triggers an extra global event "ajaxBeforeSend" that's like "ajaxSend" but cancelable
-    function ajaxBeforeSend(xhr, settings) {
-        var context = settings.context
-        if (settings.beforeSend.call(context, xhr, settings) === false ||
-            triggerGlobal(settings, context, 'ajaxBeforeSend', [xhr, settings]) === false)
-            return false
-
-        triggerGlobal(settings, context, 'ajaxSend', [xhr, settings])
-    }
-
-    function ajaxSuccess(data, xhr, settings, then) {
-        try {
-            var context = settings.context, status = 'success';
-            var retData = settings.success.call(context, data, status, xhr);
-            triggerGlobal(settings, context, 'ajaxSuccess', [xhr, settings, data]);
-            ajaxComplete(status, xhr, settings);
-            if (then && typeof then.resolve === 'function') {
-                if (retData !== undefined) {
-                    then.resolve(retData, xhr, settings);//张岩2016-10-19
-                } else {
-                    then.resolve(data, xhr, settings);//张岩2016-10-19
-                }
-            }
-        } catch (e) {
-            if (then && typeof then.reject === 'function') {
-                then.reject(e, 'business', xhr, settings);//2016-10-19
-            }
-        }
-    }
-
-// type: "timeout", "error", "abort", "parsererror"
-    function ajaxError(error, type, xhr, settings, then) {
-
-        if (then && typeof then.reject === 'function') {
-            then.reject(error, type, xhr, settings);//2016-10-19
-        }
-        var context = settings.context
-        settings.error.call(context, xhr, type, error)
-        triggerGlobal(settings, context, 'ajaxError', [xhr, settings, error])
-        ajaxComplete(type, xhr, settings)
-    }
-
-// status: "success", "notmodified", "error", "timeout", "abort", "parsererror"
-    function ajaxComplete(status, xhr, settings) {
-        var context = settings.context
-        settings.complete.call(context, xhr, status)
-        triggerGlobal(settings, context, 'ajaxComplete', [xhr, settings])
-        ajaxStop(settings)
-    }
-
-// Empty function, used as default callback
-    function empty() {
-    }
-
-    ajax.JSONP = function (options, then) {
-        then = then || { resolve: null, reject: null };
-        if (!('type' in options)) return ajax(options)
-
-        var callbackName = 'jsonp' + (++jsonpID),
-            script = document.createElement('script'),
-            abort = function () {
-                //todo: remove script
-                //$(script).remove()
-                if (callbackName in window) window[callbackName] = empty
-                ajaxComplete('abort', xhr, options)
-            },
-            xhr = { abort: abort }, abortTimeout,
-            head = document.getElementsByTagName("head")[0]
-                || document.documentElement
-
-        if (options.error) script.onerror = function () {
-            xhr.abort()
-            options.error()
-        }
-
-        window[callbackName] = function (data) {
-            clearTimeout(abortTimeout)
-            //todo: remove script
-            //$(script).remove()
-            delete window[callbackName]
-            ajaxSuccess(data, xhr, options)
-        }
-
-        serializeData(options)
-        script.src = options.url.replace(/=\?/, '=' + callbackName)
-
-        // Use insertBefore instead of appendChild to circumvent an IE6 bug.
-        // This arises when a base node is used (see jQuery bugs #2709 and #4378).
-        head.insertBefore(script, head.firstChild);
-
-        if (options.timeout > 0) abortTimeout = setTimeout(function () {
-            xhr.abort()
-            ajaxComplete('timeout', xhr, options)
-        }, options.timeout)
-
-        /**张岩 */
-        //return xhr
-        return then;
-    }
-
-    ajax.settings = {
-        // Default type of request
-        type: 'GET',
-        // Callback that is executed before request
-        beforeSend: empty,
-        // Callback that is executed if the request succeeds
-        success: empty,
-        // Callback that is executed the the server drops error
-        error: empty,
-        // Callback that is executed on request complete (both: error and success)
-        complete: empty,
-        // The context for the callbacks
-        context: null,
-        // Whether to trigger "global" Ajax events
-        global: true,
-        // Transport
-        xhr: function () {
-            return new window.XMLHttpRequest()
-        },
-        // MIME types mapping
-        accepts: {
-            script: 'text/javascript, application/javascript',
-            json: jsonType,
-            xml: 'application/xml, text/xml',
-            html: htmlType,
-            text: 'text/plain'
-        },
-        // Whether the request is to another domain
-        crossDomain: false,
-        // Default timeout
-        timeout: 0
-    }
-
-    function mimeToDataType(mime) {
-        return mime && (mime == htmlType ? 'html' :
-                mime == jsonType ? 'json' :
-                    scriptTypeRE.test(mime) ? 'script' :
-                    xmlTypeRE.test(mime) && 'xml') || 'text'
-    }
-
-    function appendQuery(url, query) {
-        return (url + '&' + query).replace(/[&?]{1,2}/, '?')
-    }
-
-// serialize payload and append it to the URL for GET requests
-    function serializeData(options) {
-        if (type(options.data) === 'object') options.data = param(options.data)
-        if (options.data && (!options.type || options.type.toUpperCase() == 'GET'))
-            options.url = appendQuery(options.url, options.data)
-    }
-
-    ajax.get = function (url, success) {
-        return ajax({ url: url, success: success })
-    }
-
-    ajax.post = function (url, data, success, dataType) {
-        if (type(data) === 'function') dataType = dataType || success, success = data, data = null
-        return ajax({ type: 'POST', url: url, data: data, success: success, dataType: dataType })
-    }
-
-    ajax.getJSON = function (url, success) {
-        return ajax({ url: url, success: success, dataType: 'json' })
-    }
-
-    var escape = encodeURIComponent
-
-    function serialize(params, obj, traditional, scope) {
-        var array = type(obj) === 'array';
-        for (var key in obj) {
-            var value = obj[key];
-
-            if (scope) key = traditional ? scope : scope + '[' + (array ? '' : key) + ']'
-            // handle data in serializeArray() format
-            if (!scope && array) params.add(value.name, value.value)
-            // recurse into nested objects
-            else if (traditional ? (type(value) === 'array') : (type(value) === 'object'))
-                serialize(params, value, traditional, key)
-            else params.add(key, value)
-        }
-    }
-
-    function param(obj, traditional) {
-        var params = []
-        params.add = function (k, v) {
-            this.push(escape(k) + '=' + escape(v))
-        }
-        serialize(params, obj, traditional)
-        return params.join('&').replace('%20', '+')
-    }
-
-    function extend(target) {
-        var slice = Array.prototype.slice;
-        var list = slice.call(arguments, 1);
-        for (var i = 0; i < list.length; i++) {
-            var source = list[i];
-            for (key in source) {
-                if (source[key] !== undefined) {
-                    target[key] = source[key];
-                }
-            }
-        }
-        return target
-    }
-    /**
-     * 2016-10-19
-     * 张岩
-     * 根据多多异步同时操作的需求对ajax库进行了改造
-     */
-    ajax.ajax = ajax;
-    ajax.when = function (params) {
-        var count = params.length;
-        var result = {};
-        var isErr = true;
-        var successFoo = null;
-        var errorFoo = null;
-        function _then(callback) {
-            successFoo = callback;
-            return { 'then': _then, 'catch': _catch };
-        }
-        function _catch(callback) {
-            errorFoo = callback;
-            return { 'then': _then, 'catch': _catch };
-        }
-        params.map(function (value, i) {
-            value.i = i;
-            value.resolve = function (data) {
-                //成功回调
-                if (isErr) {
-                    result[this.i] = data;
-                    count--;
-                    if (count <= 0) {
-                        var retData = [];
-                        for (var i = 0; i < params.length; i++) {
-                            retData.push(result[i]);
-                        }
-                        if (typeof successFoo === 'function') {
-                            successFoo.apply(window, retData);
-                        }
-                    }
-                }
-            }
-            value.reject = function (error, type, xhr, settings) {
-                //失败回调
-                if (isErr && typeof errorFoo === 'function') {
-                    errorFoo.call(window, error, type, xhr, settings);
-                    isErr = false;
-
-                }
-            }
-        })
-        return { 'then': _then, 'catch': _catch };
-    }
-
-    qc.ajax = ajax;
-    qc.get = ajax.get;
-    qc.post = ajax.post;
-    qc.getJSON = ajax.getJSON;
-    qc.async = function (callback) {
-        setTimeout(function () {
-            callback();
-        }, 16)
-    }
 })(qc);
+///<jscompress sourcefile="commonjs.js" />
 /**
  * Created by zhangyan on 2016/4/5.
  * commonjs.js
  */
 
-;(function (qc) {
-    if(!qc.ajax){
-        window.console&&window.console("找不到ajax模块");
-    }
-    //---------------commonjs规范----------------//
-    var tmpTag = document.location.protocol + "//";
-    var _absUrl = (function () {
-        var a;
-        return function (url) {
-            if (!a) a = document.createElement('a');
-            a.href = url;
-            return a.href;
-        };
-    })();
-    var _require = function (parent, path) {
+;(function () {
+    //---------------commonjs规范----------------//;
+    window.$need = function (parent, path) {
         var _model;
         var _type = "js";
         var _basePath;
-        if (path.indexOf(tmpTag) < 0) {
-            if (path.substr(0, 2) == "./") {
-                path = path.substr(2);
-                _basePath = parent + path;
-            } else if (path.substr(0, 1) == "/") {
-                _basePath = tmpTag + window.location.host + path;
-            } else {
-                var _host;
-                if (parent == "") {
-                    _host = window.location.href;
-                } else {
-                    _host = parent;
-                }
-                if (_host.indexOf("/") > -1) {
-                    _host = _host.substr(0, _host.lastIndexOf("/") + 1);
-                } else {
-                    _host = _host + "/";
-                }
-                _basePath = _host + path;
-            }
-        } else {
+        if (path.substr(0, 1) == "/") {
             _basePath = path;
+        } else {
+            _basePath = parent + path;
         }
         var _path = _basePath;
         _basePath = _basePath.substr(0, _basePath.lastIndexOf("/") + 1);
@@ -2578,12 +2193,11 @@
                 _path = _path + ".js";
             }
         }
-        var _myUrl = _absUrl(_path);
-        qc.ajax({
-            "url": _myUrl + "?r=" + (new Date() - 1),
+        $.ajax({
+            "url": _path + "?r=" + (new Date() - 1),
             async: false,
             "error": function () {
-                window.console && console.log(_myUrl + "加载失败");
+                window.console && console.log(_path + "加载失败");
             },
             "success": function (data) {
                 _model = data;
@@ -2591,315 +2205,32 @@
         });
 
         if (_type == "js") { //js预编译
-            var _script = "(function(exports){\n";
+            var _script = "(function(out){\n";
             _script += "var $parent = \"" + _basePath + "\";\n";
-            _script += _model.replace(/require\(/g, "_require($parent,");
-            _script += "\n return exports;\n";
-            _script += "})({});" + "//@ sourceURL=" + _myUrl;
+            _script += _model.replace(/need\(/g, "$need($parent,");
+            _script += "\n return out;\n";
+            _script += "})({});" + "//@ sourceURL=" + _path;
             _model = eval(_script);
         }
         return _model;
     }
-    window.require = function (path) {
-        return _require("", path);
+    var getPath = function(){
+        var jsPath = document.currentScript ? document.currentScript.src : function(){
+            var js = document.scripts
+                ,last = js.length - 1
+                ,src;
+            for(var i = last; i > 0; i--){
+                if(js[i].readyState === 'interactive'){
+                    src = js[i].src;
+                    break;
+                }
+            }
+            return src || js[last].src;
+        }();
+        return jsPath.substring(0, jsPath.lastIndexOf('/') + 1);
+    }
+    window.need = function (path) {
+        console.log(path)
+        return $need(getPath(), path);
     };
-})( qc);
-/**
- * Created by zhangyan on 2016/4/5.
- * component.js
- */
-
-/*UIComponent需要依赖*/
-;(function (qc) {
-    if(!window.require){
-        window.console&&window.console("找不到commonjs模块");
-    }
-    //创建组件
-    qc.UIComponent = function (config) {
-        var url = config.url;
-        var id = config.id;
-        var data = config.data;
-        var element = document.getElementById(id);
-        element.setAttribute(qc.PREFIX + "-view", id);
-        return require(url)(document.getElementById(id), id, data);
-    }
-})(qc);
-
-/**
- * Created by 张岩 on 2016/3/31.
- * 动画模块
- * animate.js
- */
-
-;(function () {
-    /*
-     * requestAnimationFrame兼容写法
-     * */
-    var _requestAnimationFrame = (function () {
-        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
-                window.setTimeout(callback, 16)
-            };
-    })();
-    /*
-     * 获取运行时样式
-     * */
-    var _getComputedStyle = function (obj, unit) {
-        if (unit !== undefined) {
-            return window.getComputedStyle(obj, null)[unit];
-        } else {
-            return window.getComputedStyle(obj, null);
-        }
-    }
-
-    /*
-     * 简单动画函数实现
-     * */
-    var animate = function (obj, config, callback) {
-        var name = config.name;
-        var unit = config.unit;
-        var start = (_getComputedStyle(obj, name) + "").replace(unit, "") * 1;
-        var end = config.value * 1;
-        var easeOut = function (t, b, c, d) {
-            return -c * ((t = t / d - 1) * t * t * t - 1) + b;
-        }
-        var t = 1;
-        var animate = function () {
-            if (name.indexOf("scroll") === 0) {
-                obj[name] = easeOut(t, start, end - start, 20);
-            } else {
-                obj.style[name] = easeOut(t, start, end - start, 20) + unit;
-            }
-            t++;
-            if (t <= 20) {
-                _requestAnimationFrame(animate);
-            } else {
-                if (typeof callback === "function") {
-                    callback();
-                }
-            }
-        }
-        _requestAnimationFrame(animate);
-    }
-
-    var hasClass = function (obj, cls) {
-        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-    }
-
-    var addClass = function (obj, cls) {
-        if (!hasClass(obj, cls)) obj.className += " " + cls;
-    }
-
-    var removeClass = function (obj, cls) {
-        if (hasClass(obj, cls)) {
-            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-            obj.className = obj.className.replace(reg, ' ');
-        }
-    }
-
-    /*淡入淡出*/
-    qc.animate.fade = function (action, run) {
-        if (action == "enter") {
-            this.style.opacity = 0;
-            animate(this, {
-                name: "opacity",
-                value: 1,
-                unit: ""
-            })
-        } else if (action == "leave") {
-            this.style.opacity = 1;
-            animate(this, {
-                name: "opacity",
-                value: 0,
-                unit: ""
-            }, run);
-        }
-    }
-    qc.animate.fadeIn = function (action, run) {
-        if (action == "enter") {
-            this.style.opacity = 0;
-            animate(this, {
-                name: "opacity",
-                value: 1,
-                unit: ""
-            })
-        } else {
-            run();
-        }
-    }
-    qc.animate.fadeOut = function (action, run) {
-        if (action == "leave") {
-            this.style.opacity = 1;
-            animate(this, {
-                name: "opacity",
-                value: 0,
-                unit: ""
-            }, run);
-        }
-    }
-    /*上拉下拉*/
-    qc.animate.slide = function (action, run) {
-        var overflow = this.style.overflow;
-        var height = _getComputedStyle(this, "height").replace("px", "") * 1;
-        this.style.overflow = "hidden";
-        var _this = this;
-        if (action == "enter") {
-            this.style.height = "0px";
-            animate(this, {
-                name: "height",
-                value: height,
-                unit: "px"
-            }, function () {
-                _this.style.overflow = overflow;
-                _this.style.height = "";
-            })
-        } else if (action == "leave") {
-            animate(this, {
-                name: "height",
-                value: 0,
-                unit: "px"
-            }, run);
-        }
-    }
-    qc.animate.slideUp = function (action, run) {
-        var overflow = this.style.overflow;
-        var height = _getComputedStyle(this, "height");
-        this.style.overflow = "hidden";
-        var _this = this;
-        if (action == "enter") {
-            this.style.height = "0px";
-            animate(this, {
-                name: "height",
-                value: height,
-                unit: "px"
-            }, function () {
-                _this.style.overflow = overflow;
-                _this.style.height = "";
-            })
-        } else {
-            run();
-        }
-    }
-    qc.animate.slideDown = function (action, run) {
-        if (action == "leave") {
-            var height = _getComputedStyle(this, "height");
-            this.style.opacity = 1;
-            animate(this, {
-                name: "height",
-                value: 0,
-                unit: "px"
-            }, run);
-        }
-    }
-})()
-/*移动端事件扩展
- * 2016-3-30
- * event.js
- * */
-;(function (qc) {
-    function hasClass(obj, cls) {
-        return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-    }
-
-    function addClass(obj, cls) {
-        if (!hasClass(obj, cls)) obj.className += " " + cls;
-    }
-
-    function removeClass(obj, cls) {
-        if (hasClass(obj, cls)) {
-            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-            obj.className = obj.className.replace(reg, ' ');
-        }
-    }
-
-    /*点击事件*/
-    qc.extendEvent({
-        name: "tap",
-        touchstart: function (run, event, element) {
-            this.y = event.touches[0].pageY;
-            this.x = event.touches[0].pageX;
-            addClass(element, "active");
-            this.run = true;
-        },
-        touchmove: function (run, event, element) {
-            if (this.run) {
-                if (Math.abs(event.touches[0].pageY - this.y) > 12 || Math.abs(event.touches[0].pageX - this.x) > 12) {
-                    this.run = false;
-                    removeClass(element, "active");
-                } else {
-                    event.preventDefault();//修复touchend不执行bug\
-                }
-            }
-        },
-        touchend: function (run, event, element) {
-            removeClass(element, "active");
-            if (this.run) {
-                run();
-            }
-        },
-        touchcancel: function (run, event, element) {
-            removeClass(element, "active");
-        }
-    });
-    /*长按事件
-     * 说明:因为长按时间要屏蔽掉系统的默认事件，
-     * 所以在需要系统默认事件(比如滚动)的时候，不能使用长按时间
-     * */
-    qc.extendEvent({
-        name: "longtap",
-        touchstart: function (run, event, element) {
-            event.preventDefault();//修复touchend不执行bug
-            addClass(element, "active");
-            this.timer = setTimeout(function () {
-                run();
-            }, 750)
-        },
-        touchend: function (run, event, element) {
-            removeClass(element, "active");
-            clearTimeout(run);
-        },
-        touchcancel: function (run, event, element) {
-            removeClass(element, "active");
-            clearTimeout(run);
-        }
-    });
-    /*滑动事件
-     * 只有左滑(action=left)右滑(action=right)和点击(action=tap)
-     * 和点击
-     * */
-    qc.extendEvent({
-        name: "tapswipe",
-        touchstart: function (run, event, element) {
-            this.y = event.touches[0].pageY;
-            this.x = event.touches[0].pageX;
-            this.endX = event.touches[0].pageX;
-            addClass(element, "active");
-            this.run = true;
-        },
-        touchmove: function (run, event, element) {
-            if (this.run) {
-                if (Math.abs(event.touches[0].pageY - this.y) <= 12) {
-                    event.preventDefault();//修复touchend不执行bug
-                    this.endX = event.touches[0].pageX;
-                } else {
-                    this.run = false;
-                    removeClass(element, "active");
-                }
-            }
-        },
-        touchend: function (run, event, element) {
-            removeClass(element, "active");
-            if (this.run) {
-                if (this.endX - this.x > 12) {
-                    run("right");
-                } else if (this.endX - this.x < -12) {
-                    run("left");
-                } else {
-                    run("tap");
-                }
-            }
-        },
-        touchcancel: function (run, event, element) {
-            removeClass(element, "active");
-        }
-    });
-})(qc)
+})();;

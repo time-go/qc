@@ -137,15 +137,25 @@
                         }
                         else if (k === "check") {
                             if (document.activeElement !== dom) {
-                                if (myValue) {
-                                    dom.checked = true;
+                                var qtrue = dom.getAttribute("qtrue");
+                                var qfalse = dom.getAttribute("qfalse");
+                                if (qtrue == undefined || qtrue == null) {
+                                    if (myValue == qtrue) {
+                                        dom.checked = true;
+                                    } else {
+                                        dom.checked = false;
+                                    }
                                 } else {
-                                    dom.checked = false;
+                                    if (myValue) {
+                                        dom.checked = true;
+                                    } else {
+                                        dom.checked = false;
+                                    }
                                 }
                             }
                         } else if (k === "radio") {
                             if (document.activeElement !== dom) {
-                                if (myValue === dom.value) {
+                                if (myValue == dom.value) {
                                     dom.checked = true;
                                 } else {
                                     dom.checked = false;
@@ -450,7 +460,7 @@
                             var textValue = vDom[PREFIX][PREFIX + "-radio"];
                             var text = textValue[0];
                             text = text.substr(1, text.length - 2);
-                            if (qclib.expEval(vm, textValue, uuid, "radio") === value) {
+                            if (qclib.expEval(vm, textValue, uuid, "radio") == value) {
                                 html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                             } else {
                                 html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
@@ -483,7 +493,7 @@
                                 var textValue = vDom[PREFIX][PREFIX + "-radio"];
                                 var text = textValue[0];
                                 text = text.substr(1, text.length - 2);
-                                if (qclib.expEval(vm, textValue, uuid, "radio") === value) {
+                                if (qclib.expEval(vm, textValue, uuid, "radio") == value) {
                                     html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                                 } else {
                                     html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
@@ -518,7 +528,7 @@
                         var textValue = vDom[PREFIX][PREFIX + "-radio"];
                         var text = textValue[0];
                         text = text.substr(1, text.length - 2);
-                        if (qclib.expEval(vm, textValue, uuid, "radio") === tempValue) {
+                        if (qclib.expEval(vm, textValue, uuid, "radio") == tempValue) {
                             html.push(" checked onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
                         } else {
                             html.push(" onchange=qc.bindRadio(\"" + path + "." + text + "\",this)");
@@ -561,10 +571,20 @@
                 var textValue = vDom[PREFIX][PREFIX + "-check"];
                 var text = textValue[0];
                 text = text.substr(1, text.length - 2);
-                if (qclib.expEval(vm, textValue, uuid, "check")) {
-                    html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
-                } else {
-                    html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                var qtrue = vDom.attributes.qtrue;
+                var qfalse = vDom.attributes.qfalse;
+                if(qtrue==undefined||qtrue==null){
+                    if (qclib.expEval(vm, textValue, uuid, "check")) {
+                        html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    } else {
+                        html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    }
+                }else{
+                    if (qclib.expEval(vm, textValue, uuid, "check")==qtrue) {
+                        html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    } else {
+                        html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
+                    }
                 }
             }
             //绑定事件
@@ -832,8 +852,8 @@
                     var text = vDom[PREFIX][PREFIX + "-text"];
                     var bindText = qclib.expEval(vm, text, uuid, "text");
                     html.push(qclib.innerText(bindText));
-                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
-                    var text = vDom[PREFIX][PREFIX + "-html"];
+                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-test")) {
+                    var text = vDom[PREFIX][PREFIX + "-test"];
                     var bindText = qclib.expEval(vm, text, uuid, "html");
                     html.push(bindText);
                 } else {

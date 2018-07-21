@@ -42,11 +42,22 @@
     qc.bindCheck = function (path, obj) {
         if (document.activeElement === obj) {
             var v = getValue(path);
-            if (obj.checked) {
-                v.vm.setValue(v.pro, true);
+            var qtrue = obj.getAttribute("qtrue");
+            var qfalse = obj.getAttribute("qfalse");
+            if (qtrue == undefined || qtrue == null) {
+                if (obj.checked) {
+                    v.vm.setValue(v.pro, true);
+                } else {
+                    v.vm.setValue(v.pro, false);
+                }
             } else {
-                v.vm.setValue(v.pro, false);
+                if (obj.checked) {
+                    v.vm.setValue(v.pro, qtrue);
+                } else {
+                    v.vm.setValue(v.pro, qfalse);
+                }
             }
+
         }
     }
     qc.bindRadio = function (path, obj) {

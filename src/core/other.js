@@ -56,7 +56,7 @@
      *moudel 属性所在模型
      * 属性p 有可能为 xxx.xxx
      * uuid 属性唯一id
-     * type 类型$visible attr css prop textarea value class text html select radio check widget
+     * type 类型$visible attr css prop textarea value class text test select radio check widget
      * exp 表达式 比如{name}+':'+{age}
      * widget 是否为控件
      * */
@@ -174,7 +174,7 @@
     /* //在biandata调用 比getValue高一级
      *moudel 属性所在模型
      * uuid 属性唯一id
-     * type 类型$visible attr css prop textarea value class text html select radio check widget
+     * type 类型$visible attr css prop textarea value class text test select radio check widget
      * exp 表达式 比如{name}+':'+{age}
      * widget 是否为控件
      * */

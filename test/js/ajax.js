@@ -6,7 +6,7 @@
 /*
  * 来自https://github.com/ForbesLindesay/ajax/blob/master/index.js
  * */
-;
+qc={};
 (function (qc) {;
     var type = function (t) {
         return typeof (t);
@@ -19,7 +19,7 @@
         scriptTypeRE = /^(?:text|application)\/javascript/i,
         xmlTypeRE = /^(?:text|application)\/xml/i,
         jsonType = 'application/json',
-        htmlType = 'text/html',
+        htmlType = 'text/test',
         blankRE = /^\s*$/
 
     var ajax = function (options) {
