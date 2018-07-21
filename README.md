@@ -28,8 +28,9 @@
 
 ### 感谢名单
 + QQ5759125(发现q-html指令bug)
-<span id = "index"></span>
-# 使用文档
+
+<span id = "index">使用文档</span>
+-
 - [hello word!](#index1)
 - [绑定数组](#index2)
 - [绑定事件](#index3)
@@ -644,7 +645,7 @@
    
   ###  <span id = "index16">自定义控件</span> [返回目录](#index)
   ~~~ html
-     <demo bind:name="person.name" sex="男"></demo>
+  <demo bind:name="person.name" sex="男"></demo>
   <!--"bind:"开头的值 是绑定父元素的值
   没有"bind:"的值 不绑定数据-->
   <script>
