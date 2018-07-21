@@ -338,3 +338,289 @@
 </script>
 ~~~
 - **$p.xxx** 绑定父元素，当有多级数字 **$p.$p.xxx** 可以无限级向上传递
+
+### 表达式与函数调用
+
+~~~ html
+<div q-view="myview">
+    <div>
+        <ul q-each="list">
+            <li>
+                <span>职位:</span><span q-text="{name}==['张三','李四']?['元帅','将军','其他']"></span>--
+                <span>姓名:</span><span q-text="{name}"></span>---
+                <span>性别:</span><span q-text="sex({sex})"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    qc.fun.sex = function (v) {
+        if (v == "0") {
+            return "男";
+        } else {
+            return "女";
+        }
+    }
+    qc.view("myview", function (vm, ve) {
+        vm.list = [
+            {"name": "张三", "sex": "0"}
+            ,
+            {"name": "李四", "sex": "0"}
+            ,
+            {"name": "王五", "sex": "1"}
+        ];
+    })
+</script>
+~~~
+- 表达式支持示例上的“多目”运算
+- **qc.fun** 是定义调用函数的位置
+
+### 外面更新视图
+~~~ html
+<div q-view="myview">
+    <div q-each="list">
+        <div>
+            索引:<span q-text="{$key}+1"></span>
+            姓名:<span q-text="{$p.home}+':'+{name}"></span>
+            性别:<span q-text="{sex}"></span>
+        </div>
+    </div>
+</div>
+<button onclick="update()">更新</button>
+<script>
+    var m = qc.view("myview", function (vm, ve) {
+        vm.home = "深圳";
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+
+    })
+    function update() {
+        m.setValue("home","广东")
+    }
+</script>
+~~~
+
+### 键盘事件
+
+~~~ html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="qc.min.js"></script>
+</head>
+<body>
+<div q-view="myview">
+    <input type="text" q-keyup="mykey" q-value-change="say">
+</div>
+</body>
+</html>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.say = "hello";
+        ve.mykey = function ($self, event) {
+            window.console && console.log(event);
+        }
+    })
+</script>
+~~~
+- q-keyup
+- q-keydown
+
+### 事件参数
+
+~~~ html
+<div q-view="myview">
+    <div q-each="list">
+        <div>
+            索引:<span q-text="{$key}+1"></span>
+            姓名:<span q-text="{name}"></span>
+            性别:<span q-text="{sex}"></span>
+            <input q-click="mysplice" type="button" value="splice">
+        </div>
+    </div>
+
+    <input q-click="mypush" type="button" value="push">
+</div>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+        ve.mypush = function () {
+            vm.listpush({name: "王五", sex: "男"})
+        }
+        ve.mysplice = function ($self, event, action) {
+            vm.listsplice($self.$key,1);
+            window.console&&window.console.log(this)
+        }
+
+    })
+</script>
+~~~
+- **$self** 为当前事件所在的vm,数组通过$key这个系统属性可以取到数组索引
+- **event** 为普通事件参数里面包含了事件发生的各种状态
+- **action** 自定义组合事件用到
+- **this** 当前事件发生的element对象
+
+### 变量监控
+~~~ html
+   <div q-view="myview">
+    <input type="text" q-value-change="say">
+    <span q-text="{say}+{person.name}"></span>
+</div>
+
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.say = "hello";
+        vm.person = {
+            name: "张三"
+        }
+        ve.$watch("say", function (newValue, oldValue, $self) {
+            window.console && console.log(newValue, oldValue);
+            window.console && console.log($self)
+        })
+    })
+</script>
+~~~
+- 如果要监控person里面的 **name**， **$watch("person.name"**
+- 监控数组里面的变量，**$watch("list.xxx",list** 是数组,xxx数组里面对象属性
+- **newValue** , **oldValue** , **$self** 三个参数,新值、旧值、监控的属性所在的vm
+
+### 自定义动画
+~~~ html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动画</title>
+    <style>
+        .rect {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+    </style>
+    <script src="jquery-1.11.2.min.js"></script>
+    <script src="qc.min.js"></script>
+</head>
+<body>
+<div q-view="myview">
+    <div q-visible="{show}" q-animate="testAnimate" class="rect"></div>
+    <input q-click="veAnimate" type="button" value="动画">
+    <br>
+    <ul q-each="list">
+        <li q-animate="testAnimate"><span q-text="{text}"></span></li>
+    </ul>
+    <input q-click="add" type="button" value="添加一行">
+    <input q-click="remove" type="button" value="删除第一行">
+</div>
+</body>
+</html>
+<script>
+    /*
+    *
+     *1.这里需要引用jquery模块，因为动画demo是基于jquery做的为代码简介
+     * 2.系统内置动画是不需要jquery的
+    * */
+    /*//自定义动画 这里action 有两个值
+     *action 为enter 显示状态的动画 leave隐藏状态的动画
+     * run 在action为leave的时候 执行完动画要调用callback
+     * */
+    qc.animate.testAnimate = function (action, run) {
+        if (action == "enter") {
+            $(this).hide();
+            $(this).slideDown();
+        } else if (action == "leave") {
+            $(this).slideUp(function () {
+                run();
+            })
+        }
+    }
+    qc.view("myview", function (vm, ve) {
+        vm.show = true;
+        vm.list = [{text: "动画测试" + qc.getRandom()}];
+        ve.veAnimate = function () {
+            vm.setValue("show", !vm.show);
+        }
+        ve.add = function () {
+            //vm.listpush({text: "动画测试" + qc.getRandom()})
+            vm.listconcat([{text: "动画测试" + qc.getRandom()}, {text: "动画测试" + qc.getRandom()}])
+            //vm.listunshift({text: "动画测试" + qc.getRandom()});
+        }
+        ve.remove = function () {
+            vm.listsplice(0, 1);
+            //vm.listpop();
+            //vm.listshift()
+        }
+    })
+</script>
+~~~
+**说明**
+- q-animate="动画名称"绑定动画指令
+- 动画必须定义在qc.animate下面
+- enter元素插入到页面，leave元素从页面移走
+- run定移除动画是，动画执行完要调用这个函数，这个函数作用是改变数据模型，shift数据模型和当前视图对应
+
+**支持动画的指令**
+- q-visible
+- 数组的相关操作方法
+
+### 自定义事件
+~~~ javascript
+    /*点击事件*/
+    qc.extendEvent({
+        name: "tap",
+        touchstart: function (run, event, element) {
+            this.data = "张三";
+            //省略
+            //event 事件参数
+            //element 事件发生的element对应
+            //run 指定绑定的事件可以带参数 比如run("xxx");
+            /*
+             * <span q-tap="myenent"></span>
+             * ve.mtevent=function($self,event,action){
+             * action值为xxx
+             *
+             * }
+             * */
+        },
+        touchmove: function (run, event, element) {
+            //省略
+            window.console && console.log(this.data);
+            /*要传递的参数可以放在this传递*/
+        },
+        touchend: function (run, event, element) {
+            //省略
+        },
+        touchcancel: function (run, event, element) {
+            //省略
+        }
+    });
+   ~~~
+   **说明**
+   pc端的定义就是和mouse有关即 mousedown mouseup mousemove mouseout mouseleave mouseover mouseenter
+   
+   **自定义事件q-tapswipe用法（源码event.js有这个自定义事件）**
+   ~~~ html
+    <ul q-each="list" class="ui-list ui-list-link ui-border-tb">
+       <li q-tapswipe="action" q-animate="slide" class="ui-border-t">
+           <div class="ui-list-img">
+               <img width="100" height="68" src="img/mp.jpeg"/>
+           </div>
+           <div class="ui-list-info">
+               <h4 class="ui-nowrap" q-text="{title}"></h4>
+               <p class="ui-nowrap" q-text="{descript}"></p>
+           </div>
+       </li>
+   </ul>
+   <script>
+       //省略...
+       ve.action = function ($self, event, action) {
+           if (action === "tap") {
+               mobile.loadPage("two");
+           } else if (action == "right") {
+               mobile.dialog("确认要删除吗？", function () {
+                   vm.listsplice($self.$key, 1);
+               })
+           }
+       }
+       //省略...
+   </script>
+   ~~~
