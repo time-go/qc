@@ -28,9 +28,8 @@
 
 ### 感谢名单
 + QQ5759125(发现q-html指令bug)
-
-<span id = "index">使用文档</span>
--
+<span id = "index"></span>
+# 使用文档
 - [hello word!](#index1)
 - [绑定数组](#index2)
 - [绑定事件](#index3)
@@ -678,7 +677,7 @@
   ~~~
   **createWidget** 第一个参数是控件名称
   
-  ###  <span id = "index17">系统常用API</span> [返回目录](#index)
+  ###  <span id = "index17">系统常用API
   |api|作用|
   |-|-|
   |qc.getModel()|把vm对象转换为json 去掉系统生成的的属性|
