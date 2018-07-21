@@ -274,3 +274,5 @@
 |q-class|绑定样式q-css="class1:{xx}+{xx};class2:表达式;..."， 当表达式值为true即绑定改样式，为false移除该样式
 |q-prop|用法同q-calss,用于绑定 readonly disabled等
 |q-visible|q-visible="{xx}+{xx}"当绑定的值为true时元素显示，为false是元素隐藏
+
+### 数组操作
