@@ -595,7 +595,7 @@
     });
    ~~~
    **说明**
-   pc端的定义就是和mouse有关即 mousedown mouseup mousemove mouseout mouseleave mouseover mouseenter
+   - pc端的定义就是和mouse有关即 mousedown mouseup mousemove mouseout mouseleave mouseover mouseenter
    
    **自定义事件q-tapswipe用法（源码event.js有这个自定义事件）**
    ~~~ html
@@ -624,3 +624,44 @@
        //省略...
    </script>
    ~~~
+   
+  ###自定义控件
+  ~~~ html
+     <demo bind:name="person.name" sex="男"></demo>
+  <!--"bind:"开头的值 是绑定父元素的值
+  没有"bind:"的值 不绑定数据-->
+  <script>
+      //创建控件
+      qc.createWidget("demo", {
+          templete: "<div><span q-text='{name}'></span></div>",
+          view: function (vm, ve) {
+              vm.name = "hello"
+              window.console && console.log(this.props);
+              var _this = this;
+              setTimeout(function () {
+                  _this.updateParent("name", "张三");//更新父元素"name" 对应data-name 的name，此处
+                  //父元素person.name的值变为张三
+              }, 3000)
+          },
+          load: function () {
+              window.console && console.log("控件加载完毕...");
+              this.getElement()//获取控件的element元素
+          },
+          update: function (key, value) {
+              //此控件绑定了 父元素 person.name,当  person.name 变化时
+              //此函数被调用
+              window.console && console.log(this.props);
+              //this.props//获取父元素 属性上绑定的值 即从父元素传来的值
+              //this.viewModel//控件的vm对象
+              //this.getElement 获取控件element对象
+  
+          }
+      });
+  ~~~
+  **createWidget** 第一个参数是控件名称
+  
+  ### 系统常用API
+  |api|作用|
+  |-|-|
+  |qc.getModel()|把vm对象转换为json 去掉系统生成的的属性|
+  |qc.collection()|手动回收垃圾，一般做单页面应用会用到|
