@@ -276,3 +276,44 @@
 |q-visible|q-visible="{xx}+{xx}"当绑定的值为true时元素显示，为false是元素隐藏
 
 ### 数组操作
+~~~ html
+<div q-view="myview">
+    <div q-each="list">
+        <div>
+            索引:<span q-text="{$key}+1"></span>
+            姓名:<span q-text="{name}"></span>
+            性别:<span q-text="{sex}"></span>
+        </div>
+    </div>
+
+    <input q-click="mypush" type="button" value="push">
+    <input q-click="mypop" type="button" value="pop">
+    <input q-click="mysplice" type="button" value="splice">
+    <input q-click="myshift" type="button" value="shift">
+    <input q-click="myunshift" type="button" value="unshift">
+    <input q-click="myconcat" type="button" value="concat">
+</div>
+<script>
+    qc.view("myview", function (vm, ve) {
+        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+        ve.mypush=function(){
+            vm.listpush({name: "王五", sex: "男"})
+        }
+        ve.mypop=function(){
+            
+        }
+        ve.mysplice=function(){
+
+        }
+        ve.myunshift=function(){
+
+        }
+        ve.myconcat=function(){
+
+        }
+
+    })
+</script>
+~~~
+- 数组操作就是 ***属性名+方法** 像示一样，方法的参数和原生数组方法相同
+- 还有个整体更新数组的方法setValue，在“更新视图”哪一章
