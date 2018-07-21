@@ -12,14 +12,14 @@
 + 6.自动特殊字符转义
 + 7.动画模块和动画自定义接口
 
-### 目录结构
+### 源码目录结构
 - build
     - qc.js 合并后的文件
     - qc.min.js 合并编译后的文件
     - qc.js.JSCompress 打包配置文件
 - demo 一些简单的应用事例
 - src 代码文件
-    + core 核心代码文件
+    + core 核心代码目录
     - animate.js 自定义一个动画
     - commonjs.js 自定义的模块加载器
     - event.js 扩展的一个移动端事件
@@ -29,4 +29,34 @@
 ### 感谢名单
 + QQ5759125(发现q-html指令bug)
 
-##使用文档
+# 使用文档
+
+### hello word
+
+~~~ html
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="qc.min.js"></script>
+</head>
+<body>
+<div q-view="myview">
+    <span q-text="{say}+{person.name}"></span>
+</div>
+</body>
+</html>
+<script>
+    qc.view("myview", function (vm) {
+        vm.say = "hello";
+        vm.person = {
+            name: "张三"
+        }
+    })
+</script>
+~~~
+- 在qc里面绑定变量用“{}”里面是变量名称
+- 如果是对象，那我们就是{xxx.xxx}
+- vm上放外面的数据
+- q-view="***myview***"和javascript里面的 qc.view("***myview***",是对应的，大家可以叫别的名字，只要相同就可以了
+- 变量是可以进行运算的
