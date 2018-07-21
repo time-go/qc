@@ -216,5 +216,9 @@
 
 |表单类型|指令|作用|
 |-|-|-|
-|input ,textarear|q-value-change,q-value-blur|第一个指令 但文本框变化同步到数据模型，第一个指令当文本框失去焦点同步到数据模型
+|input ,textarear|q-value-change,q-value-blur|第一个指令 但文本框变化同步到数据模型，第一个指令当文本框失去焦点同步到数据模型|
+|radio|q-radio|当绑定的值和value值相等的时候 绑定|
+|checkbox|q-check|当绑定值得为true的时候绑定|
+|select|q-select|选中的值同步到数据模型|
+***表单对属性的绑定没有“{}”，所以只能绑定单一属性，不能绑定表达式***
 
