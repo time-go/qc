@@ -215,7 +215,6 @@
 ~~~
 
 |表单类型|指令|作用|
-|--|--|--|
 |input ,textarear|q-value-change,q-value-blur|第一个指令 但文本框变化同步到数据模型，第一个指令当文本框失去焦点同步到数据模型|
 |radio|q-radio|当绑定的值和value值相等的时候 绑定|
 |checkbox|q-check|当绑定值得为true的时候绑定|
@@ -266,7 +265,6 @@
 </script>
 ~~~
 |指令|作用|
-|--|--|
 |q-text|绑定的时候特殊字符会被转义，比如html片段会被转义
 |q-html|原始数据是什么样就会输出什么样，可能是html片段
 |q-css|绑定style，可绑定多个q-css="color:{xx}+{xx};top:表达式;..."
