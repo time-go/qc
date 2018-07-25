@@ -221,28 +221,33 @@
                     var oldValue = qc.getModel(vm[key]);
                     var each = this["$" + PREFIX + "-each-" + key];
                     vm[key] = value;
-                    for (var _k = each.length - 1; _k >= 0; _k--) {
-                        var html = [];
-                        for (var l = 0; l < vm[key].length; l++) {
-                            vm[key][l].$p = vm;
-                            vm[key][l].$key = l;
-                            vm[key][l].$path = vm.$path + "." + key + "[" + l + "]";
-                            html.push(bindData(vm[key][l], each[_k].vDom));
-                            if (html.length > 1000) {//数组进行性能优化
-                                html = [html.join("")];
+                    for (var l = 0; l < vm[key].length; l++){
+                        vm[key][l].$p = vm;
+                        vm[key][l].$key = l;
+                        vm[key][l].$path = vm.$path + "." + key + "[" + l + "]";
+                    }
+                    if(qclib.isArray(each)){
+                        for (var _k = each.length - 1; _k >= 0; _k--) {
+                            var html = [];
+                            for (var l = 0; l < vm[key].length; l++) {
+                                html.push(bindData(vm[key][l], each[_k].vDom));
+                                if (html.length > 1000) {//数组进行性能优化
+                                    html = [html.join("")];
+                                }
+                            }
+                            var s = document.querySelector("[" + PREFIX + "-id=\"" + each[_k].uuid + "\"" + "]");
+                            if (s === null) {
+                                each.splice(_k, 1);
+                            } else {
+                                try {
+                                    s.innerHTML = html.join("");
+                                } catch (e) {
+                                    qclib.setTBodyInnerHTML(s, html.join(""));
+                                }
+                                qclib.load();
                             }
                         }
-                        var s = document.querySelector("[" + PREFIX + "-id=\"" + each[_k].uuid + "\"" + "]");
-                        if (s === null) {
-                            each.splice(_k, 1);
-                        } else {
-                            try {
-                                s.innerHTML = html.join("");
-                            } catch (e) {
-                                qclib.setTBodyInnerHTML(s, html.join(""));
-                            }
-                            qclib.load();
-                        }
+
                     }
                     //更新数组长度绑定
                     render(this["$map"][key]);

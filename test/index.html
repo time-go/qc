@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="js/ajax.js"></script>
     <script src="js/jquery-1.11.2.min.js"></script>
 
-    <script src="build/qc.js"></script>
-    <script src="js/test3.js"></script>
+    <script src="../build/qc.js"></script>
 </head>
 <body>
-
+ <div q-view="model">
+     <span q-text="{list.length}"></span>
+     <ul q-each="list">
+         <li q-text="{name}+{}"></li>
+     </ul>
+     <button q-click="zzz">xxxx</button>
+ </div>
 </body>
 </html>
 <script>
-   // need("mod/test1")()
+  qc.view("model",function (vm,ve) {
+      vm.list=[];
+      ve.zzz=function () {
+          vm.setValue("list",[{name:"eee"}])
+      }
+  })
 </script>
