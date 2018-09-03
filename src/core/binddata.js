@@ -11,7 +11,7 @@
      * */
     var PREFIX = qc.PREFIX;
     var render = function (maps, dub) {
-        for (var _map in  maps) {
+        for (var _map in maps) {
             var map = maps[_map];
             var dom = document.querySelector("[" + PREFIX + "-id=\"" + _map + "\"" + "]");
             var comDom = qclib.getCommentNodes(_map);//获取注释节点
@@ -191,7 +191,7 @@
             if (!vm.hasOwnProperty("$map")) {
                 vm.$map = {};
             }
-            vm.setValue = function (key, value, dub) {
+            vm.$set =vm.setValue = function (key, value, dub) {
                 function getMypath(path) {
                     path = path.replace(/\[\d+\]/g, "");
                     var view = vm.$path;
@@ -221,12 +221,12 @@
                     var oldValue = qc.getModel(vm[key]);
                     var each = this["$" + PREFIX + "-each-" + key];
                     vm[key] = value;
-                    for (var l = 0; l < vm[key].length; l++){
+                    for (var l = 0; l < vm[key].length; l++) {
                         vm[key][l].$p = vm;
-                        vm[key][l].$key = l;
+                        vm[key][l].$index = vm[key][l].$key = l;
                         vm[key][l].$path = vm.$path + "." + key + "[" + l + "]";
                     }
-                    if(qclib.isArray(each)){
+                    if (qclib.isArray(each)) {
                         for (var _k = each.length - 1; _k >= 0; _k--) {
                             var html = [];
                             for (var l = 0; l < vm[key].length; l++) {
@@ -258,11 +258,11 @@
                     }
                 } else if (typeof key === "object") {
                     function setObject(map, data) {
-                        for (var m in  map) {
+                        for (var m in map) {
                             if (typeof map[m] !== "function" && m.indexOf("$") < 0) {
                                 if (map.hasOwnProperty("$" + PREFIX + "-each-" + m)) {
                                     if (data[m] !== undefined) {
-                                        map.setValue(m, data[m]);
+                                        map.$set(m, data[m]);
                                     }
                                     continue;
                                 }
@@ -275,7 +275,7 @@
                                 }
                             }
                         }
-                        for (var m in  map) {
+                        for (var m in map) {
                             if (typeof map[m] !== "function" && m.indexOf("$") < 0) {
                                 if (map.hasOwnProperty("$" + PREFIX + "-each-" + m)) {
                                     continue;
@@ -297,7 +297,7 @@
                         watch(key, oldValue, this.$p);
                     }
                 } else if (typeof value === "object") {
-                    vm[key].setValue(value);
+                    vm[key].$set(value);
                 }
                 else {
                     if (this[key] === value) {
@@ -368,7 +368,7 @@
                         }
 
                         var vmValue = getValue(this.parent[key]);
-                        vmValue.vm.setValue(vmValue.pro, value);
+                        vmValue.vm.$set(vmValue.pro, value);
                     },
                     view: implement.view
                 }
@@ -376,7 +376,7 @@
                 qc.vms[uuid].$ve = {};
                 qc.vms[uuid].$watch = [];
                 qc.vms[uuid].$ve.$watch = function (path, callback) {
-                    qc.vms[uuid].$watch.push({path: uuid + "." + path, callback: callback})
+                    qc.vms[uuid].$watch.push({ path: uuid + "." + path, callback: callback })
                 }
                 if (vDom.hasOwnProperty("attributes")) {
                     for (var ar in vDom.attributes) {
@@ -578,14 +578,14 @@
                 text = text.substr(1, text.length - 2);
                 var qtrue = vDom.attributes.qtrue;
                 var qfalse = vDom.attributes.qfalse;
-                if(qtrue==undefined||qtrue==null){
+                if (qtrue == undefined || qtrue == null) {
                     if (qclib.expEval(vm, textValue, uuid, "check")) {
                         html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
                     } else {
                         html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
                     }
-                }else{
-                    if (qclib.expEval(vm, textValue, uuid, "check")==qtrue) {
+                } else {
+                    if (qclib.expEval(vm, textValue, uuid, "check") == qtrue) {
                         html.push(" checked onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
                     } else {
                         html.push(" onchange=qc.bindCheck(\"" + path + "." + text + "\",this)");
@@ -608,7 +608,7 @@
                     html.push(" " + PREFIX + "-vename=\"" + veName + "\"");
                 }
             }
-            for (var veType in  qc.ve) {//扩展事件绑定
+            for (var veType in qc.ve) {//扩展事件绑定
                 if (vDom[PREFIX].hasOwnProperty(PREFIX + "-" + veType + "")) {
                     var veName = vDom[PREFIX][PREFIX + "-" + veType + ""];
                     veName = veName[0];
@@ -713,7 +713,7 @@
                     })
                     for (var l = 0; l < list.length; l++) {
                         list[l].$p = $parent;
-                        list[l].$key = l;
+                        list[l].$index = list[l].$key = l;
                         list[l].$path = path + "." + arr + "[" + l + "]";
                         if (selectValue === null) {
                             html.push(bindData(list[l], vDom.childNodes[i]));
@@ -730,7 +730,7 @@
                         var start = list.length;
                         list.push(value)
                         list[start].$p = $parent;
-                        list[start].$key = start;
+                        list[start].$index = list[start].$key = start;
                         list[start].$path = path + "." + arr + "[" + start + "]";
                         for (var k = divObject.length - 1; k >= 0; k--) {
                             var divText = [];
@@ -763,7 +763,7 @@
                         var list = qc.getModel($parent[$prop]);
                         var remove = function () {
                             list.pop();
-                            $parent.setValue($prop, list);
+                            $parent.$set($prop, list);
                         }
                         removeAnimate(list.length - 1, remove);
                     }
@@ -775,7 +775,7 @@
                             k--;
                             if (k < 0) {
                                 list.splice.apply(list, args);
-                                $parent.setValue($prop, list);
+                                $parent.$set($prop, list);
                             }
                         }
                         if (arguments.length == 2) {
@@ -793,14 +793,14 @@
                         var list = qc.getModel($parent[$prop]);
                         var remove = function () {
                             list.shift();
-                            $parent.setValue($prop, list)
+                            $parent.$set($prop, list)
                         }
                         removeAnimate(0, remove);
                     }
                     $parent[$prop + "unshift"] = function (value) {
                         var list = qc.getModel($parent[$prop]);
                         list.unshift(value);
-                        $parent.setValue($prop, list);
+                        $parent.$set($prop, list);
                         addAnimate(0);
                     }
                     $parent[$prop + "concat"] = function (value) {
@@ -814,7 +814,7 @@
                             var divText = [];
                             for (var l = start; l < value.length + start; l++) {
                                 list[l].$p = $parent;
-                                list[l].$key = l;
+                                list[l].$index = list[l].$key = l;
                                 list[l].$path = path + "." + arr + "[" + l + "]";
                                 divText.push(bindData(list[l], divObject[k].vDom));
                             }
@@ -857,8 +857,8 @@
                     var text = vDom[PREFIX][PREFIX + "-text"];
                     var bindText = qclib.expEval(vm, text, uuid, "text");
                     html.push(qclib.innerText(bindText));
-                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-test")) {
-                    var text = vDom[PREFIX][PREFIX + "-test"];
+                } else if (vDom[PREFIX].hasOwnProperty(PREFIX + "-html")) {
+                    var text = vDom[PREFIX][PREFIX + "-html"];
                     var bindText = qclib.expEval(vm, text, uuid, "html");
                     html.push(bindText);
                 } else {

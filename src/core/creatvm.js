@@ -79,7 +79,7 @@
                 for (var a = 0; a < d.attributes.length; a++) {
                     var _node = d.attributes[a]
                     if (_node.nodeName.indexOf(PREFIX + "-") == 0 && _node.nodeName !== PREFIX + "-view") {
-                        if (_node.nodeName === PREFIX + "-text" || _node.nodeName === PREFIX + "-test") {//text文本
+                        if (_node.nodeName === PREFIX + "-text" || _node.nodeName === PREFIX + "-html") {//text文本
                             o[PREFIX][_node.nodeName] = expresssion(_node.value);
                         } else if (_node.nodeName === PREFIX + "-css") {//style
                             o[PREFIX][_node.nodeName] = exp(_node.value);

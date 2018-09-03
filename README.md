@@ -93,7 +93,7 @@
 
     <div q-each="list">
         <div>
-            索引:<span q-text="{$key}+1"></span>
+            索引:<span q-text="{$index}+1"></span>
             姓名:<span q-text="{name}"></span>
             性别:<span q-text="{sex}"></span>
         </div>
@@ -112,12 +112,12 @@
 - 数组里的内容要放在一个**闭合的标签里**,下面代码是错误的
 ~~~ html
  <div q-each="list">
-    索引:<span q-text="{$key}+1"></span>
+    索引:<span q-text="{$index}+1"></span>
     姓名:<span q-text="{name}"></span>
     性别:<span q-text="{sex}"></span>
 </div>
 ~~~
-- $key是数组的索引，是框架生成的
+- $index是数组的索引，是框架生成的
 - 绑定数组没有“{}”，所以只能绑定单一属性，不能绑定表达式
 
 ### 绑定事件 [返回目录](#使用文档)
@@ -161,7 +161,7 @@
  
      <div q-each="list">
          <div>
-             <span q-text="{$key}+1"></span>.
+             <span q-text="{$index}+1"></span>.
              姓名:<span q-text="{name}"></span>
              性别:<span q-text="{sex}"></span>
          </div>
@@ -175,13 +175,13 @@
          }
          vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
          ve.add = function () {
-             vm.setValue("list", [{name: "王五", sex: "男"}, {name: "赵六", sex: "女"}])
+             vm.$set("list", [{name: "王五", sex: "男"}, {name: "赵六", sex: "女"}])
          }
          ve.change = function () {
-             vm.book.setValue("price", "40");
+             vm.book.$set("price", "40");
          }
          ve.changeAll = function () {
-             vm.book.setValue({
+             vm.book.$set({
                  name: "AngularJS权威教程",
                  price: 99
              });
@@ -189,8 +189,8 @@
      })
  </script>
  ~~~
-**setValue**
- - 每一个对象都有一个setValue
+**$set**
+ - 每一个对象都有一个$set
  - 可以更新单个属性
  - 可以更新整个对象和数组
  - 直接 **vm.xxx=** 值是不改变视图的
@@ -262,8 +262,8 @@
     <input type="text" q-prop="disabled:{uid}=='123'" value="q-prop" />
     <div>
         <ul q-each="list">
-            <li q-class="back0:{$key} % 2 ==0;back1:{$index} % 2==1">
-                <span q-text="{$key}+1"></span>
+            <li q-class="back0:{$index} % 2 ==0;back1:{$index} % 2==1">
+                <span q-text="{$index}+1"></span>
                 <span>姓名:</span><span q-text="{name}"></span>---
                 <span>性别:</span><span q-text="{sex}"></span>
             </li>
@@ -301,7 +301,7 @@
 <div q-view="myview">
     <div q-each="list">
         <div>
-            索引:<span q-text="{$key}+1"></span>
+            索引:<span q-text="{$index}+1"></span>
             姓名:<span q-text="{name}"></span>
             性别:<span q-text="{sex}"></span>
         </div>
@@ -337,14 +337,14 @@
 </script>
 ~~~
 - 数组操作就是 **属性名+方法** 像示一样，方法的参数和原生数组方法相同
-- 还有个整体更新数组的方法setValue，在“更新视图”哪一章
+- 还有个整体更新数组的方法$set，在“更新视图”哪一章
 
 ### 绑定父元素 [返回目录](#使用文档)
 ~~~ html
 <div q-view="myview">
     <div q-each="list">
         <div>
-            索引:<span q-text="{$key}+1"></span>
+            索引:<span q-text="{$index}+1"></span>
             姓名:<span q-text="{$p.home}+':'+{name}"></span>
             性别:<span q-text="{sex}"></span>
         </div>
@@ -401,7 +401,7 @@
 <div q-view="myview">
     <div q-each="list">
         <div>
-            索引:<span q-text="{$key}+1"></span>
+            索引:<span q-text="{$index}+1"></span>
             姓名:<span q-text="{$p.home}+':'+{name}"></span>
             性别:<span q-text="{sex}"></span>
         </div>
@@ -415,7 +415,7 @@
 
     })
     function update() {
-        m.setValue("home","广东")
+        m.$set("home","广东")
     }
 </script>
 ~~~
@@ -453,7 +453,7 @@
 <div q-view="myview">
     <div q-each="list">
         <div>
-            索引:<span q-text="{$key}+1"></span>
+            索引:<span q-text="{$index}+1"></span>
             姓名:<span q-text="{name}"></span>
             性别:<span q-text="{sex}"></span>
             <input q-click="mysplice" type="button" value="splice">
@@ -469,14 +469,14 @@
             vm.listpush({name: "王五", sex: "男"})
         }
         ve.mysplice = function ($self, event, action) {
-            vm.listsplice($self.$key,1);
+            vm.listsplice($self.$index,1);
             window.console&&window.console.log(this)
         }
 
     })
 </script>
 ~~~
-- **$self** 为当前事件所在的vm,数组通过$key这个系统属性可以取到数组索引
+- **$self** 为当前事件所在的vm,数组通过$index这个系统属性可以取到数组索引
 - **event** 为普通事件参数里面包含了事件发生的各种状态
 - **action** 自定义组合事件用到
 - **this** 当前事件发生的element对象
@@ -558,7 +558,7 @@
         vm.show = true;
         vm.list = [{text: "动画测试" + qc.getRandom()}];
         ve.veAnimate = function () {
-            vm.setValue("show", !vm.show);
+            vm.$set("show", !vm.show);
         }
         ve.add = function () {
             //vm.listpush({text: "动画测试" + qc.getRandom()})
@@ -638,7 +638,7 @@
                mobile.loadPage("two");
            } else if (action == "right") {
                mobile.dialog("确认要删除吗？", function () {
-                   vm.listsplice($self.$key, 1);
+                   vm.listsplice($self.$index, 1);
                })
            }
        }

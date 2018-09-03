@@ -16,7 +16,7 @@
 
     <div q-each="list">
         <div>
-            <span q-text="{$key}+1"></span>.
+            <span q-text="{$index}+1"></span>.
             姓名:<span q-text="{name}"></span>
             性别:<span q-text="{sex}"></span>
         </div>
@@ -35,10 +35,10 @@
             vm.listpush({name: "张三", sex: "男"})
         }
         ve.change = function () {
-            vm.book.setValue("price", "40");
+            vm.book.$set("price", "40");
         }
         ve.changeAll = function () {
-            vm.book.setValue({
+            vm.book.$set({
                 name: "AngularJS权威教程",
                 price: 99
             });

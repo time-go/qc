@@ -1,0 +1,15 @@
+﻿<jscompress public="http://www.jscompress.cn/" command="import-combineset">
+<combinefile path="qc.js">
+    <auto value="0" />
+    <sourcefile path="..\src\core\head.js" />
+    <sourcefile path="..\src\core\ie.js" />
+    <sourcefile path="..\src\core\parse.js" />
+    <sourcefile path="..\src\core\creatvm.js" />
+    <sourcefile path="..\src\core\other.js" />
+    <sourcefile path="..\src\core\binddata.js" />
+    <sourcefile path="..\src\core\sweep.js" />
+    <sourcefile path="..\src\core\dbevent.js" />
+    <sourcefile path="..\src\core\extent.js" />
+    <sourcefile path="..\src\commonjs.js" />
+</combinefile>
+</jscompress>

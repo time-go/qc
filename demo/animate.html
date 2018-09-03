@@ -10,7 +10,7 @@
             background: red;
         }
     </style>
-    <script src="../tool/jquery-1.11.2.min.js"></script>
+    <script src="jquery-1.11.2.min.js"></script>
     <script src="../build/qc.min.js"></script>
 </head>
 <body>
@@ -41,7 +41,7 @@
         vm.show = true;
         vm.list = [{text: "动画测试" + qc.getRandom()}];
         ve.veAnimate = function () {
-            vm.setValue("show", !vm.show);
+            vm.$set("show", !vm.show);
         }
         ve.add = function () {
             //vm.listpush({text: "动画测试" + qc.getRandom()})

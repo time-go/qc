@@ -27,13 +27,13 @@
     }
     qc.bindText = function (path, obj) {
         var v = getValue(path);
-        v.vm.setValue(v.pro, obj.value, obj);
+        v.vm.$set(v.pro, obj.value, obj);
     }
     qc.bindSelect = function (path, obj) {
         if (document.activeElement === obj) {
             var v = getValue(path);
             if (obj.selectedIndex < obj.options.length) {
-                v.vm.setValue(v.pro, obj.options[obj.selectedIndex].value);
+                v.vm.$set(v.pro, obj.options[obj.selectedIndex].value);
             } else {
                 obj.selectedIndex = -1;
             }
@@ -46,15 +46,15 @@
             var qfalse = obj.getAttribute("qfalse");
             if (qtrue == undefined || qtrue == null) {
                 if (obj.checked) {
-                    v.vm.setValue(v.pro, true);
+                    v.vm.$set(v.pro, true);
                 } else {
-                    v.vm.setValue(v.pro, false);
+                    v.vm.$set(v.pro, false);
                 }
             } else {
                 if (obj.checked) {
-                    v.vm.setValue(v.pro, qtrue);
+                    v.vm.$set(v.pro, qtrue);
                 } else {
-                    v.vm.setValue(v.pro, qfalse);
+                    v.vm.$set(v.pro, qfalse);
                 }
             }
 
@@ -64,7 +64,7 @@
         if (document.activeElement === obj) {
             var v = getValue(path);
             if (obj.checked) {
-                v.vm.setValue(v.pro, obj.value);
+                v.vm.$set(v.pro, obj.value);
             }
         }
     }

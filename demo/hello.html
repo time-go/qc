@@ -8,13 +8,13 @@
 <body>
 <div q-view="myview">
     <input type="text" q-value-change="say">
-    <span q-html="{say}+{person.name}"></span>
+    <span q-text="{say}+{person.name}"></span>
 </div>
 </body>
 </html>
 <script>
     qc.view("myview", function (vm, ve) {
-        vm.say = "hello";
+        vm.say = "hello<span></span>";
         vm.person = {
             name: "张三"
         }

@@ -21,9 +21,8 @@
             <option value="李四">李四</option>
         </select>
         <demo bind:name="person.name"></demo>
-        张三:<input type="radio" q-radio="person.name" value="张三"><br>
-        李四:<input type="radio" q-radio="person.name" value="李四"><br>
-        <test id="test"></test>
+        张三:<input type="radio" q-radio="person.name" value="张三"><br />
+        李四:<input type="radio" q-radio="person.name" value="李四"><br />
         <button q-click="add">增加</button>
         <div q-visible="{person.name}!=='张三'" q-each="person.list">
             <div>
@@ -34,7 +33,6 @@
             </div>
         </div>
     </div>
-    <div id="compent"></div>
 </body>
 </html>
 <script>
@@ -52,10 +50,4 @@
             vm.person.listpush({v: 0, str: "增加"});
         }
     })
-    qc.UIComponent({
-        url: "component/myComt",
-        id: "compent",
-        name: "list",
-        data: "王五"
-    });
 </script>
