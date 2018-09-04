@@ -1,6 +1,6 @@
 # Introduction
 ### What is qc.js?
-QC is a lightweight javascript framework for building complex web applications.It supports IE8+ and modern browse.All the code is only about 2000 lines.Unlike other monolithic frameworks,you can build your web applications without webpack.Simplicity is the eternal subject.If you’d like to learn more about Vue before diving in,you may browse http://time-go.github.io/qc.
+QC is a lightweight javascript framework for building complex web applications.It supports IE8+ and modern browse.All the code is only about 2000 lines.Unlike other monolithic frameworks,you can build your web applications without webpack.Simplicity is the eternal subject.If you’d like to learn more about QC before diving in,you may browse http://time-go.github.io/qc.
 + author:time-go@163.com
 + QQ Group:330603020
 + course and api:http://time-go.github.io/qc/
