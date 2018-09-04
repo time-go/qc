@@ -17,7 +17,7 @@ QC is a lightweight javascript framework for building complex web applications,U
     - commonjs.js (Module management need an ajax library)
     - event.js (An extended mobile terminal event)
 - test (Development of some test files for mode adjustment)
-- Design outline of QC.doc(Design outline点)
+- Design outline of QC.doc(Design outline)
 
 ### Thanks
 + QQ5759125
