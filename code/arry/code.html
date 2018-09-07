@@ -1,9 +1,9 @@
 <div q-view="myview">
     <div q-each="list">
         <div>
-            索引:<span q-text="{$key}+1"></span>
-            姓名:<span q-text="{name}"></span>
-            性别:<span q-text="{sex}"></span>
+            index:<span q-text="{$index}+1"></span>
+            name:<span q-text="{name}"></span>
+            sex:<span q-text="{sex}"></span>
         </div>
     </div>
 
@@ -16,21 +16,22 @@
 </div>
 <script>
     qc.view("myview", function (vm, ve) {
-        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+        vm.list = [{name: "Andy", sex: "male"}, {name: "lily", sex: "female"}];
         ve.mypush=function(){
-            vm.listpush({name: "王五", sex: "男"})
+            //array name+method
+            vm.listpush({name: "Charles", sex: "male"})
         }
         ve.mypop=function(){
-
+            //vm.listpop
         }
         ve.mysplice=function(){
-
+            //vm.listsplice
         }
         ve.myunshift=function(){
-
+             //vm.listunshift
         }
         ve.myconcat=function(){
-
+            //vm.listconcat
         }
 
     })

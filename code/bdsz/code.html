@@ -10,9 +10,9 @@
 
     <div q-each="list">
         <div>
-            索引:<span q-text="{$key}+1"></span>
-            姓名:<span q-text="{name}"></span>
-            性别:<span q-text="{sex}"></span>
+            index:<span q-text="{$index}+1"></span>
+            name:<span q-text="{name}"></span>
+            sex:<span q-text="{sex}"></span>
         </div>
     </div>
 </div>
@@ -20,6 +20,6 @@
 </html>
 <script>
     qc.view("myview", function (vm, ve) {
-        vm.list = [{name: "张三", sex: "男"}, {name: "李四", sex: "女"}];
+        vm.list = [{name: "Andy", sex: "male"}, {name: "Lily", sex: "female"}];
     })
 </script>

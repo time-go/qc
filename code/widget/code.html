@@ -1,30 +1,27 @@
-<demo bind:name="person.name" sex="男"></demo>
-<!--"bind:"开头的值 是绑定父元素的值
-没有"bind:"的值 不绑定数据-->
+<demo bind:myname="person.name" sex="Male"></demo>
 <script>
-    //创建控件
+    //define components
     qc.createWidget("demo", {
         templete: "<div><span q-text='{name}'></span></div>",
         view: function (vm, ve) {
-            vm.name = "hello"
+            vm.name = this.props.myname;
             window.console && console.log(this.props);
             var _this = this;
             setTimeout(function () {
-                _this.updateParent("name", "张三");//更新父元素"name" 对应data-name 的name，此处
-                //父元素person.name的值变为张三
+                _this.updateParent("myname", "Lucy");//update parent "person.name"
             }, 3000)
         },
         load: function () {
-            window.console && console.log("控件加载完毕...");
-            this.getElement()//获取控件的element元素
+            window.console && console.log("load finish...");
+            this.getElement()//get element
         },
         update: function (key, value) {
-            //此控件绑定了 父元素 person.name,当  person.name 变化时
-            //此函数被调用
+            //when name change
             window.console && console.log(this.props);
-            //this.props//获取父元素 属性上绑定的值 即从父元素传来的值
-            //this.viewModel//控件的vm对象
-            //this.getElement 获取控件element对象
+            this.viewModel.$set('name',this.props.myname);
+            //this.props
+            //this.viewModel//component vm
+            //this.getElement get element
 
         }
     });

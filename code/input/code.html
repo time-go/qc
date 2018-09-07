@@ -1,19 +1,19 @@
 <div q-view="myview">
     <div>
-        <input q-radio="name" type="radio" value="张三">
-        <input q-radio="name" type="radio" value="李四">
-        <input q-radio="name" type="radio" value="王五">
+        <input q-radio="name" type="radio" value="Andy">Andy
+        <input q-radio="name" type="radio" value="Lucy">Lucy
+        <input q-radio="name" type="radio" value="Lily">Lily
     </div>
     <div>
-        <input q-check="check1" type="checkbox">check1
-        <input q-check="check2" type="checkbox">check2
-        <input q-check="check3" type="checkbox">check3
+        <input q-check="check1" type="checkbox">check1--<span q-text="{check1}"></span><br />
+        <input q-check="check2" type="checkbox">check2--<span q-text="{check2}"></span><br />
+        <input q-check="check3" qtrue='1' qfalse='0' type="checkbox">check3--<span q-text="{check3}"></span><br />
     </div>
     <div>
         <select q-select="name">
-            <option value="张三">张三</option>
-            <option value="李四">李四</option>
-            <option value="王五">王五</option>
+            <option value="Andy">Andy</option>
+            <option value="Lucy">Lucy</option>
+            <option value="Lily">Lily</option>
         </select>
     </div>
     <div>
@@ -22,11 +22,11 @@
 </div>
 <script>
     qc.view("myview", function (vm, ve) {
-        vm.text="hello";
-        vm.name = "李四";
+        vm.text = "hello";
+        vm.name = "Andy";
         vm.check1 = false;
         vm.check2 = true;
-        vm.check3 = false;
+        vm.check3 = '0';
 
     })
 </script>

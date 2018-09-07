@@ -1,16 +1,16 @@
 <div q-view="myview">
     <span q-text="{say}+{person.name}"></span>
-    <button q-click="alert">点击</button>
+    <button q-click="alert">click</button>
 </div>
 
 <script>
     qc.view("myview", function (vm, ve) {
         vm.say = "hello";
         vm.person = {
-            name: "张三"
+            name: "Andy"
         }
         ve.alert = function () {
-            alert("你好");
+            alert("hello");
         }
     })
 </script>

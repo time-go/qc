@@ -1,20 +1,16 @@
 <div class="bs-docs-section">
-    <a href="http://runjs.cn/code/l95ykbrv" target="_blank">演示</a>
 <pre class="html">
     <code id="bdsz">
     </code>
 </pre>
     <h3>q-each</h3>
-    <ul>
-        <li>q-each绑定数组</li>
-        <li>数组里的内容要放在一个<code>闭合的标签里</code>,下面代码是错误的</li>
+    you need a closed label, such as blow is not allowed
         <pre class="html">
-            <code id="error">
+<code id="error">
             </code>
         </pre>
-        <li>$key是数组的索引，是框架生成的</li>
-    </ul>
-    <code>绑定数组没有“{}”，所以只能绑定单一属性，不能绑定表达式</code>
+        $index is the index of the array,it is created by the framework
+    <code>you allowed bind onley one variables and expression is not allowed</code>
     </p>
 </div>
 <script>

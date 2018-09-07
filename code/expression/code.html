@@ -2,9 +2,9 @@
     <div>
         <ul q-each="list">
             <li>
-                <span>职位:</span><span q-text="{name}==['张三','李四']?['元帅','将军','其他']"></span>--
-                <span>姓名:</span><span q-text="{name}"></span>---
-                <span>性别:</span><span q-text="sex({sex})"></span>
+                <span>position:</span><span q-text="{name}==['Andy','Lucy']?['Teacher','Police','other']"></span>--
+                <span>name:</span><span q-text="{name}"></span>---
+                <span>sex:</span><span q-text="sex({sex})"></span>
             </li>
         </ul>
     </div>
@@ -12,18 +12,18 @@
 <script>
     qc.fun.sex = function (v) {
         if (v == "0") {
-            return "男";
+            return "Male";
         } else {
-            return "女";
+            return "Fmale";
         }
     }
     qc.view("myview", function (vm, ve) {
         vm.list = [
-            {"name": "张三", "sex": "0"}
+            {"name": "Andy", "sex": "0"}
             ,
-            {"name": "李四", "sex": "0"}
+            {"name": "Lucy", "sex": "0"}
             ,
-            {"name": "王五", "sex": "1"}
+            {"name": "Lily", "sex": "1"}
         ];
     })
 </script>

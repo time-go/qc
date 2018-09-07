@@ -1,9 +1,8 @@
 <div class="bs-docs-section">
-    <a href="http://runjs.cn/code/m0puynqz" target="_blank">演示</a>
-    <h3>编译好的qc地址</h3>
+    <!--<a href="http://runjs.cn/code/m0puynqz" target="_blank">演示</a>-->
     <p>
-        打开项目地址http://github.com/time-go/qc，找到一个叫"Download ZIP"的按钮，把代码就会下载的到本地。
-        build文件夹，这里面有两个文件，qc.min.js 就是我们要用的文件
+       <a href='https://github.com/time-go/qc/archive/master.zip'>download</a> the zip,and find the file named 'qc.min.js',include the file in your page such as:
+    
     </p>
 
 <pre class="html">
@@ -12,11 +11,10 @@
 </pre>
     <p>
     <ul>
-        <li>在qc里面绑定变量用“{}”里面是变量名称</li>
-        <li>如果是对象，那我们就是{xxx.xxx}</li>
-        <li>vm上放外面的数据</li>
-        <li><code>q-view="myview"</code>和javascript里面的<code>qc.view("myview",</code>,是对应的，大家可以叫别的名字，只要相同就可以了</li>
-        <li>变量是可以进行运算的</li>
+        <li>In QC, variables usally need  wrapped with "{}" and expression is also supported such as '{aa}+{bb}'</li>
+        <li>we also can bing properties of an Object by {xxx.xxx}</li>
+        <li>vm is the ModeView</li>
+        <li><code>q-view="myview"</code> and <code>qc.view("myview"</code> are corresponding relation </li>
     </ul>
     </p>
 </div>

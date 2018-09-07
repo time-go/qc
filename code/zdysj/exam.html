@@ -10,15 +10,15 @@
     </li>
 </ul>
 <script>
-    //省略...
+    //...
     ve.action = function ($self, event, action) {
         if (action === "tap") {
-            mobile.loadPage("two");
+            mobile.loadPage("two");e
         } else if (action == "right") {
-            mobile.dialog("确认要删除吗？", function () {
-                vm.listsplice($self.$key, 1);
+            mobile.dialog("sure to remove？", function () {
+                vm.listsplice($self.$index, 1);
             })
         }
     }
-    //省略...
+    //...
 </script>

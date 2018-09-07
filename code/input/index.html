@@ -1,42 +1,74 @@
 <div class="bs-docs-section">
-    <a href="http://runjs.cn/code/vyjit6xn" target="_blank">演示</a>
 <pre class="html">
     <code id="input">
     </code>
 </pre>
-    <h3>说明</h3>
+<P></P>
+<div q-view="myview">
+        <div>
+            <input q-radio="name" type="radio" value="Andy">Andy
+            <input q-radio="name" type="radio" value="Lucy">Lucy
+            <input q-radio="name" type="radio" value="Lily">Lily
+        </div>
+        <div>
+            <input q-check="check1" type="checkbox">check1--<span q-text="{check1}"></span><br />
+            <input q-check="check2" type="checkbox">check2--<span q-text="{check2}"></span><br />
+            <input q-check="check3" qtrue='1' qfalse='0' type="checkbox">check3--<span q-text="{check3}"></span><br />
+        </div>
+        <div>
+            <select q-select="name">
+                <option value="Andy">Andy</option>
+                <option value="Lucy">Lucy</option>
+                <option value="Lily">Lily</option>
+            </select>
+        </div>
+        <div>
+            <input type="text" q-value-change="text"><span q-text="{text}"></span>
+        </div>
+    </div>
+    <script>
+        qc.view("myview", function (vm, ve) {
+            vm.text = "hello";
+            vm.name = "Andy";
+            vm.check1 = false;
+            vm.check2 = true;
+            vm.check3 = '0';
+    
+        })
+    </script>
+    <h3>directive</h3>
     <table class="table">
         <thead>
         <tr>
-            <th>表单类型</th>
-            <th>指令</th>
-            <th>作用</th>
+            <th>form</th>
+            <th>directive</th>
+            <th>action</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>input ,textarear</td>
             <td>q-value-change,q-value-blur</td>
-            <td>第一个指令 但文本框变化同步到数据模型，第一个指令当文本框失去焦点同步到数据模型</td>
+            <td>first when input change the data value change，secend when the input blur the data value change</td>
         </tr>
         <tr>
             <td>radio</td>
             <td>q-radio</td>
-            <td>当<code>绑定的值</code>和<code>value值</code>相等的时候 绑定</td>
+            <td>when<code>data</code>equal<code>radio value</code>,the radio checked</td>
         </tr>
         <tr>
             <td>checkbox</td>
             <td>q-check</td>
-            <td>当绑定值得为<code>true</code>的时候绑定</td>
+            <td>when<code>data equal qtrue</code>,the checkbox checked</td>
         </tr>
         <tr>
             <td>select</td>
             <td>q-select</td>
-            <td>选中的值同步到数据模型</td>
+            <td>the option it value equal data is selected</select></td>
         </tr>
         </tbody>
     </table>
-    <code>表单对属性的绑定没有“{}”，所以只能绑定单一属性，不能绑定表达式</code>
+    <code>you allowed bind onley one variables and expression is not allowed</code>
     </p>
 </div>
 <script>

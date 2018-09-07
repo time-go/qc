@@ -1,48 +1,47 @@
 <div class="bs-docs-section">
-    <a href="http://runjs.cn/code/nphnnlua" target="_blank">演示</a>
 <pre class="html">
     <code id="bdys">
     </code>
 </pre>
-    <h3>说明</h3>
+    <h3>Introduction</h3>
     <table class="table">
         <thead>
         <tr>
-            <th style="width: 100px">指令</th>
-            <th>作用</th>
+            <th style="width: 100px">directive</th>
+            <th>action</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>q-text</td>
-            <td>绑定的时候特殊字符会被转义，比如html片段会被转义</td>
+            <td>When binding, special characters will be escaped, for example, HTML fragments will be transferred.</td>
         </tr>
         <tr>
             <td>q-html</td>
-            <td>原始数据是什么样就会输出什么样，可能是html片段</td>
+            <td>What the raw data will export is probably HTML fragment.</td>
         </tr>
         <tr>
             <td>q-css</td>
-            <td>绑定style，可绑定多个<code>q-css="color:{xx}+{xx};top:表达式;..."</code></td>
+            <td>Binding style can bind more than one.<code>q-css="color:{xx}+{xx};top:expression;..."</code></td>
         </tr>
         <tr>
             <td>q-attr</td>
-            <td>绑定属性 用法同<code>q-css</code></td>
+            <td>Binding property usage<code>q-css</code></td>
         </tr>
         <tr>
             <td>q-class</td>
             <td>
-                绑定样式<code>q-css="class1:{xx}+{xx};class2:表达式;..."</code>，
-                当表达式值为true即绑定改样式，为false移除该样式
+                Binding style<code>q-css="class1:{xx}+{xx};class2:expression;..."</code>，
+                When the expression value is true, bind to change the style, remove the style for false.
             </td>
         </tr>
         <tr>
             <td>q-prop</td>
-            <td>用法同<code>q-calss</code>,用于绑定 readonly disabled等</td>
+            <td>Usage and same<code>q-calss</code>,For binding readonly disabled etc.</td>
         </tr>
         <tr>
             <td>q-visible</td>
-            <td><code>q-visible="{xx}+{xx}"</code>当绑定的值为true时元素显示，为false是元素隐藏</td>
+            <td><code>q-visible="{xx}+{xx}"</code>When the binding value is true, the element shows that false is element hiding.</td>
         </tr>
         </tbody>
     </table>

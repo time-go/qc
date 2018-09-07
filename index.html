@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>简明教程</title>
+    <title>qc</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
@@ -12,14 +12,14 @@
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/base.css">
-    <script src="js/common.js"></script>
+    <script src="js/qc.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
     <div class="container">
         <ul class="nav navbar-nav">
             <li>
-                <a href="/">QC交流QQ群:330603020</a>
+                <a href="/">QQ Group:330603020</a>
             </li>
         </ul>
     </div>
@@ -28,25 +28,24 @@
     <div class="row">
         <div class="col-sm-3">
             <ul id="learn-sider" class="list-group">
-                <li data-index="introduce" class="list-group-item active">QC介绍</li>
+                <li data-index="introduce" class="list-group-item active">QC Introduction</li>
                 <li data-index="hello" class="list-group-item">hello word!</li>
-                <li data-index="bdsz" class="list-group-item">绑定数组</li>
-                <li data-index="bdsj" class="list-group-item">绑定事件</li>
-                <li data-index="gxst" class="list-group-item">更新视图</li>
-                <li data-index="input" class="list-group-item">form表单</li>
-                <li data-index="bdys" class="list-group-item">属性绑定</li>
-                <li data-index="arry" class="list-group-item">数组操作</li>
-                <li data-index="parent" class="list-group-item">绑定父元素</li>
-                 <li data-index="expression" class="list-group-item">表达式与函数调用</li>
-                <li data-index="out" class="list-group-item">外面更新视图</li>
-                <li data-index="key" class="list-group-item">键盘事件</li>
-                <li data-index="event" class="list-group-item">事件参数</li>
-                 <li data-index="watch" class="list-group-item">变量监控</li>
-                <li data-index="animate" class="list-group-item">自定义动画</li>
-                <li data-index="zdysj" class="list-group-item">自定义事件</li>
-                <li data-index="widget" class="list-group-item">自定义控件</li>
-                <li data-index="component" class="list-group-item">自定义组件</li>
-                <li data-index="api" class="list-group-item">系统常用API</li>
+                <li data-index="bdsz" class="list-group-item">Array Bindings</li>
+                <li data-index="bdsj" class="list-group-item">Event Handling</li>
+                <li data-index="gxst" class="list-group-item">Update View</li>
+                <li data-index="input" class="list-group-item">Form Input Bindings</li>
+                <li data-index="bdys" class="list-group-item">Class And Style</li>
+                <li data-index="arry" class="list-group-item">Update Array</li>
+                <li data-index="parent" class="list-group-item">About $p</li>
+                 <li data-index="expression" class="list-group-item">Expression And function</li>
+                <li data-index="out" class="list-group-item">Update View Outside</li>
+                <li data-index="key" class="list-group-item">Keyboard Events</li>
+                <li data-index="event" class="list-group-item">$self</li>
+                 <li data-index="watch" class="list-group-item">$watch</li>
+                <li data-index="animate" class="list-group-item">animation</li>
+                <li data-index="zdysj" class="list-group-item">Custom events</li>
+                <li data-index="widget" class="list-group-item">Components</li>
+                <li data-index="api" class="list-group-item">System API</li>
             </ul>
         </div>
         <div class="col-sm-9">
@@ -68,11 +67,11 @@
         return $('<div/>').html(value).text();
     }
     function loadcode(id, page, code) {
-        $("#" + id).html(htmlEncode(require("./code/" + page + "/" + code + "!text")));
+        $("#" + id).html(htmlEncode(need("./code/" + page + "/" + code + "!text")));
     }
     (function () {
         function init(fname, type) {
-            var _intTxt = require("./code/" + fname + "/index.html!text");
+            var _intTxt = need("./code/" + fname + "/index.html!text");
             $("#txt-code").html(_intTxt);
             $("#txt-code").find("pre").each(function (i, block) {
                 hljs.highlightBlock(block);

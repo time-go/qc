@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>动画</title>
+    <title>animate</title>
     <style>
         .rect {
             width: 200px;
@@ -16,25 +16,24 @@
 <body>
 <div q-view="myview">
     <div q-visible="{show}" q-animate="testAnimate" class="rect"></div>
-    <input q-click="veAnimate" type="button" value="动画">
+    <input q-click="veAnimate" type="button" value="click">
     <br>
     <ul q-each="list">
         <li q-animate="testAnimate"><span q-text="{text}"></span></li>
     </ul>
-    <input q-click="add" type="button" value="添加一行">
-    <input q-click="remove" type="button" value="删除第一行">
+    <input q-click="add" type="button" value="add">
+    <input q-click="remove" type="button" value="remove">
 </div>
 </body>
 </html>
 <script>
     /*
     *
-     *1.这里需要引用jquery模块，因为动画demo是基于jquery做的为代码简介
-     * 2.系统内置动画是不需要jquery的
+     *Here we need to refer to the jQuery module, because animation demo is based on jQuery for code introduction.
     * */
-    /*//自定义动画 这里action 有两个值
-     *action 为enter 显示状态的动画 leave隐藏状态的动画
-     * run 在action为leave的时候 执行完动画要调用callback
+    /*//Custom animation here action has two values.
+     *Action hides the animation of the state for the enter leave that displays the status of the state.
+     * Run executes animation when action is leave and calls callback.
      * */
     qc.animate.testAnimate = function (action, run) {
         if (action == "enter") {
@@ -48,14 +47,14 @@
     }
     qc.view("myview", function (vm, ve) {
         vm.show = true;
-        vm.list = [{text: "动画测试" + qc.getRandom()}];
+        vm.list = [{text: "test" + qc.getRandom()}];
         ve.veAnimate = function () {
             vm.setValue("show", !vm.show);
         }
         ve.add = function () {
-            //vm.listpush({text: "动画测试" + qc.getRandom()})
-            vm.listconcat([{text: "动画测试" + qc.getRandom()}, {text: "动画测试" + qc.getRandom()}])
-            //vm.listunshift({text: "动画测试" + qc.getRandom()});
+            //vm.listpush({text: "test" + qc.getRandom()})
+            vm.listconcat([{text: "test" + qc.getRandom()}, {text: "test" + qc.getRandom()}])
+            //vm.listunshift({text: "test" + qc.getRandom()});
         }
         ve.remove = function () {
             vm.listsplice(0, 1);
