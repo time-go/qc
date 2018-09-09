@@ -1,1 +1,1 @@
-need("../mod/test1")();
+need("$url:../mod/test1")();

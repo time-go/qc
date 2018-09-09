@@ -1,4 +1,4 @@
 out=function () {
     console.log(111);
-    need("test2")();
+    need("$url:test2")();
 }
