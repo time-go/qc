@@ -77,11 +77,11 @@
         return $('<div/>').html(value).text();
     }
     function loadcode(id, page, code) {
-        $("#" + id).html(htmlEncode(need("$url:/code/" + page + "/" + code + "!text")));
+        $("#" + id).html(htmlEncode(need("$url:code/" + page + "/" + code + "!text")));
     }
     (function () {
         function init(fname, type) {
-            var _intTxt = need("$url:/code/" + fname + "/index.html!text");
+            var _intTxt = need("$url:code/" + fname + "/index.html!text");
             $("#txt-code").html(_intTxt);
             $("#txt-code").find("pre").each(function (i, block) {
                 hljs.highlightBlock(block);
