@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,85 +8,91 @@
     <title>qc</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
+    <link rel="stylesheet" href="css/vs2015.css">
     <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/base.css">
     <script src="js/qc.min.js"></script>
+    <style>
+        .font16 {
+            font-size: 16px !important;
+        }
+
+        .active {
+            background: rgba(255, 255, 255, .05)
+        }
+        .reward{
+            width: 100px;
+            display: inline-block;
+            margin-left: 50px;
+        }
+    </style>
 </head>
+
 <body>
-<nav class="navbar navbar-inverse">
-    <div class="container">
-        <ul class="nav navbar-nav">
-            <li>
-                <a href="/">QQ Group:330603020</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <ul id="learn-sider" class="list-group">
-                <li data-index="introduce" class="list-group-item active">QC Introduction</li>
-                <li data-index="hello" class="list-group-item">hello word!</li>
-                <li data-index="bdsz" class="list-group-item">Array Bindings</li>
-                <li data-index="bdsj" class="list-group-item">Event Handling</li>
-                <li data-index="gxst" class="list-group-item">Update View</li>
-                <li data-index="input" class="list-group-item">Form Input Bindings</li>
-                <li data-index="bdys" class="list-group-item">Class And Style</li>
-                <li data-index="arry" class="list-group-item">Update Array</li>
-                <li data-index="parent" class="list-group-item">About $p</li>
-                 <li data-index="expression" class="list-group-item">Expression And function</li>
-                <li data-index="out" class="list-group-item">Update View Outside</li>
-                <li data-index="key" class="list-group-item">Keyboard Events</li>
-                <li data-index="event" class="list-group-item">$self</li>
-                 <li data-index="watch" class="list-group-item">$watch</li>
-                <li data-index="animate" class="list-group-item">animation</li>
-                <li data-index="zdysj" class="list-group-item">Custom events</li>
-                <li data-index="widget" class="list-group-item">Components</li>
-                <li data-index="api" class="list-group-item">System API</li>
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/">QC</a>
+                </li>
+                <li class="active">
+                    <a class="font16" href="/">Home</a>
+                </li>
+                <li>
+                    <a class="font16" href="/api.html">API</a>
+                </li>
+                <li>
+                    <a class="font16" href="/module.html">Module</a>
+                </li>
+                <li>
+                    <a class="font16" target="_blank" href="/example/">Example</a>
+                </li>
             </ul>
         </div>
-        <div class="col-sm-9">
+    </nav>
+    <div class="container">
+        <div class="col-sm-12">
             <div class="row">
                 <div class="panel-body" id="txt-code">
+                    <div class="jumbotron">
+                        <h1>Hello,QC!</h1>
+
+                        <p>Simplicity is the eternal subject</p>
+
+                        <p><a class="btn btn-success btn-lg" href="https://github.com/time-go/qc/archive/master.zip" role="button">download</a>
+                        </p>
+                    </div>
+                    <div class="bs-docs-section">
+                        <h3>Introduction</h3>
+
+                        <p>
+                            QC is a lightweight javascript framework for building complex web applications.It supports IE8+ and modern browse.All the
+                            code is only about 2000 lines.Unlike other monolithic frameworks,you can build your web applications
+                            without webpack.Simplicity is the eternal subject.welcome to join us.
+                        </p>
+                        <ul>
+                            <li>author:time-go@163.com</li>
+                            <li>QQ Group:330603020</li>
+                            <li>download:<a href='https://github.com/time-go/qc/archive/master.zip'>https://github.com/time-go/qc/archive/master.zip</a></li>
+                            <li>github:<a href="http://github.com/time-go/qc">http://github.com/time-go/qc</a></li>
+                        </ul>
+                    </div>
+                    <br />
+                    <div class="bs-docs-section">
+                            <h3>Reward</h3>
+    
+                            <p>
+                                <img class="reward" src="img/wx.jpg" />
+                                <img class="reward" src="img/zfb.jpg" />
+                            </p>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
+    </div>
+    </div>
 </body>
-</html>
-<script>
-    function htmlEncode(value) {
-        return $('<div/>').text(value).html();
-    }
-    function htmlDecode(value) {
-        return $('<div/>').html(value).text();
-    }
-    function loadcode(id, page, code) {
-        $("#" + id).html(htmlEncode(need("./code/" + page + "/" + code + "!text")));
-    }
-    (function () {
-        function init(fname, type) {
-            var _intTxt = need("./code/" + fname + "/index.html!text");
-            $("#txt-code").html(_intTxt);
-            $("#txt-code").find("pre").each(function (i, block) {
-                hljs.highlightBlock(block);
-            })
-        }
 
-        init("introduce", "html");//初始化;
-        $("#learn-sider").on("click", ">li", function () {
-            if (!$(this).hasClass("active")) {
-                $("#learn-sider").find(">li").removeClass("active");
-                $(this).addClass("active");
-                init($(this).attr("data-index"))
-            }
-        });
-    })();
-    hljs.initHighlightingOnLoad();
-</script>
+</html>

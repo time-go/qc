@@ -1,71 +1,39 @@
 <div class="bs-docs-section">
-<pre class="html">
+    <pre class="html">
     <code id="input">
     </code>
 </pre>
-<P></P>
-<div q-view="myview">
-        <div>
-            <input q-radio="name" type="radio" value="Andy">Andy
-            <input q-radio="name" type="radio" value="Lucy">Lucy
-            <input q-radio="name" type="radio" value="Lily">Lily
-        </div>
-        <div>
-            <input q-check="check1" type="checkbox">check1--<span q-text="{check1}"></span><br />
-            <input q-check="check2" type="checkbox">check2--<span q-text="{check2}"></span><br />
-            <input q-check="check3" qtrue='1' qfalse='0' type="checkbox">check3--<span q-text="{check3}"></span><br />
-        </div>
-        <div>
-            <select q-select="name">
-                <option value="Andy">Andy</option>
-                <option value="Lucy">Lucy</option>
-                <option value="Lily">Lily</option>
-            </select>
-        </div>
-        <div>
-            <input type="text" q-value-change="text"><span q-text="{text}"></span>
-        </div>
-    </div>
-    <script>
-        qc.view("myview", function (vm, ve) {
-            vm.text = "hello";
-            vm.name = "Andy";
-            vm.check1 = false;
-            vm.check2 = true;
-            vm.check3 = '0';
-    
-        })
-    </script>
+    <P></P>
     <h3>directive</h3>
     <table class="table">
         <thead>
-        <tr>
-            <th>form</th>
-            <th>directive</th>
-            <th>action</th>
-        </tr>
+            <tr>
+                <th>form</th>
+                <th>directive</th>
+                <th>action</th>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>input ,textarear</td>
-            <td>q-value-change,q-value-blur</td>
-            <td>first when input change the data value change，secend when the input blur the data value change</td>
-        </tr>
-        <tr>
-            <td>radio</td>
-            <td>q-radio</td>
-            <td>when<code>data</code>equal<code>radio value</code>,the radio checked</td>
-        </tr>
-        <tr>
-            <td>checkbox</td>
-            <td>q-check</td>
-            <td>when<code>data equal qtrue</code>,the checkbox checked</td>
-        </tr>
-        <tr>
-            <td>select</td>
-            <td>q-select</td>
-            <td>the option it value equal data is selected</select></td>
-        </tr>
+            <tr>
+                <td>input ,textarear</td>
+                <td>q-value-change,q-value-blur</td>
+                <td>first when input change the data value change，secend when the input blur the data value change</td>
+            </tr>
+            <tr>
+                <td>radio</td>
+                <td>q-radio</td>
+                <td>when<code>data</code>equal<code>radio value</code>,the radio checked</td>
+            </tr>
+            <tr>
+                <td>checkbox</td>
+                <td>q-check</td>
+                <td>when<code>data equal qtrue</code>,the checkbox checked</td>
+            </tr>
+            <tr>
+                <td>select</td>
+                <td>q-select</td>
+                <td>the option it value equal data is selected</select></td>
+            </tr>
         </tbody>
     </table>
     <code>you allowed bind onley one variables and expression is not allowed</code>

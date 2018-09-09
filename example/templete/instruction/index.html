@@ -1,0 +1,35 @@
+<div class="panel margin-big-top">
+        <div class="panel-head">
+                Module Development
+        </div>
+        <div class="panel-body">
+            <ul class="list-text">
+                <li>qc use "need" to inlude a file</li>
+                <li>relative path:need("$url:xxxxx"),need("$url:../xxxxx") </li>
+                <li>absolute path:need("$url:/xxxxx")</li>
+                <li>include text:need("$url:xxxxx!text")</li>
+                <li>out means export</li>
+            </ul>
+<br />
+<pre>
+    out=function () {
+        console.log("hello")
+    }
+</pre>
+<pre>
+    var Test = need("$url:test.js");
+    Test();
+</pre>
+        </div>
+    </div>
+    <div class="panel margin-big-top">
+        <div class="panel-head">
+            Remark
+        </div>
+        <div class="panel-body">
+            <ul class="list-text">
+                <li>examples include module,compontent and pop</li>
+                <li>you can <a style="color:#0ae" href="example.zip">download</a> them</li>
+            </ul>
+        </div>
+    </div>

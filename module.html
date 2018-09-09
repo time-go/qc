@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>qc</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/vs2015.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/qc.min.js"></script>
+    <style>
+        .font16{
+            font-size: 16px!important;
+        }
+        .active{
+            background: rgba(255, 255, 255, .05)
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="/">QC</a>
+            </li>
+            <li>
+                <a class="font16" href="/">Home</a>
+            </li>
+            <li>
+                <a class="font16" href="/api.html">API</a>
+            </li>
+            <li class="active">
+                <a class="font16" href="/module.html">Module</a>
+             </li>
+            <li>
+                <a class="font16" target="_blank" href="/example/">Example</a>
+             </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+        <div class="col-sm-12">
+            <div class="row">
+<div class="panel-body" id="txt-code">
+    <h5>QC has a module Loader,you may <a style="color:#0ae" href="example/example.zip">dowmload</a> the example</h5>
+    <pre>
+    out=function () {
+        console.log("hello")
+    }
+    var Test = need("$url:test.js");
+    Test();
+    </pre>
+<h5>you can also include a text file such as</h5>              
+<pre>
+    var str = need("$url:xxxxx!text")
+</pre>
+<br />
+<ul>
+    <li><h5>relative path:need("$url:xxxxx"),need("$url:../xxxxx")</h5></li>
+    <li><h5>absolute path:need("$url:/xxxxx")</h5></li>
+    <li><h5>"$url:" is obligato</h5></li>
+</ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+<script>
+    function htmlEncode(value) {
+        return $('<div/>').text(value).html();
+    }
+    function htmlDecode(value) {
+        return $('<div/>').html(value).text();
+    }
+    function loadcode(id, page, code) {
+        $("#" + id).html(htmlEncode(need("$url:/code/" + page + "/" + code + "!text")));
+    }
+    $("#txt-code").find("pre").each(function (i, block) {
+        hljs.highlightBlock(block);
+    })
+    hljs.initHighlightingOnLoad();
+</script>

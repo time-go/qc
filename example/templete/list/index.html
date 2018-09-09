@@ -1,0 +1,49 @@
+<div q-view="list">
+    <div class="form-inline margin-top">
+            <div class="form-group">
+                <div class="field">
+                    <div class="button bg-sub" q-click="add">add</div>
+                    <div class="button bg-sub" q-click="pop">pop</div>
+                </div>
+            </div>
+    </div>
+    <div class="table-responsive margin-top margin-bottom">
+        <table class="table table-hover table-bordered table-vertical-middle">
+            <thead>
+                <tr>
+                    <th width="68px">profile </th>
+                    <th width="200px">sex</th>
+                    <th>instruction</th>
+                    <th width="130px">option</th>
+                </tr>
+            </thead>
+            <tbody q-each="list">
+                <tr>
+                    <td><img height="50px" width="50px" q-attr="src:{img}"></td>
+                    <td>
+                        <span q-visible="!{sexState}" q-text="{sex}==['0']?['Male','Fmale']"></span>
+                        <select q-visible="{sexState}" q-select="sex" class="input input-auto">
+                            <option value="0">Male</option>
+                            <option value="1">Fmale</option>
+                        </select>
+                        <span q-visible="!{sexState}" class="button" q-click="upSex">modify</span>
+                        <span q-visible="{sexState}" class="button bg-sub" gq-click="submitSex">save</span>
+                        <span q-visible="{sexState}" class="button" q-click="submitSex">cancel</span>
+                    </td>
+                    <td>
+                        <span q-visible="!{infoState}" q-text={info}></span>
+                        <span q-visible="!{infoState}" class="button" q-click="upInfo">modify</span>
+                        <input q-visible="{infoState}" q-value-change="info" style="width: 70%" class="input input-auto" type="text">
+                        <span q-visible="{infoState}" class="button bg-sub" q-click="submitInfo">save</span>
+                        <span q-visible="{infoState}" class="button" q-click="submitInfo">cancel</span>
+                    </td>
+                    <td>
+                        <span class="button-group button-group-little-l">
+                            <button type="button" class="button bg-red" q-click="remove">delete</button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

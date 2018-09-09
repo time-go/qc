@@ -1,0 +1,35 @@
+<style>
+ .form-width{
+     width: 600px;
+     background-color: white;
+ }
+</style>
+<div q-view="pop"  class="dialog open form-width">
+    <div class="dialog-head drag" style="cursor: move;"><span q-click="cancel" class="close" title="close"></span><strong>hello!!!</strong></div>
+    <div class="dialog-body">  
+        <div class="form">
+            <div class="form-x">
+                <div class="form-group">
+                    <div class="label">
+                        <label>email</label>
+                    </div>
+                    <div class="field">
+                        <input q-value-change="email" type="text" class="input input-auto" size="30" placeholder="email"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="label">
+                        <label>Date</label>
+                    </div>
+                    <div class="field">              
+                        <date-time bind:value="date" placeholder="请输入时间..."></date-time>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-foot">
+        <button q-click="save" class="button bg-sub" type="submit">save</button>
+        <button q-click="cancel" class="button" type="submit">cancel</button>
+    </div>
+</div>

@@ -14,8 +14,8 @@
     <input type="text" q-prop="disabled:{uid}=='123'" value="q-prop" />
     <div>
         <ul q-each="list">
-            <li q-class="back0:{$key} % 2 ==0;back1:{$index} % 2==1">
-                <span q-text="{$key}+1"></span>
+            <li q-class="back0:{$index} % 2 ==0;back1:{$index} % 2==1">
+                <span q-text="{$index}+1"></span>
                 <span>name:</span><span q-text="{name}"></span>---
                 <span>sex:</span><span q-text="{sex}"></span>
             </li>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <title>example</title>
+    <link href="css/pintu.css" type="text/css" rel="stylesheet">
+    <link href="css/ui.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
+    <script src="js/qc.js"></script>
+    <script src="js/ui.js"></script>
+</head>
+
+<body>
+    <div id="head" class="layout bg-sub bg-inverse fixed-top" style="z-index:1;min-width:1000px">
+        <div class="container">
+            <div class="navbar">
+                <div class="navbar-head" style="padding: 0 2px;margin-right: 70px">
+                    <stron class="text-big">example</stron>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="head-top"></div>
+    <div class="container">
+        <ul q-view="model" class="nav nav-menu nav-inline nav-tabs">
+            <li q-click="handelInstruction" q-class="active:{nav}=='instruction'">
+                <a href="javascript:;">instruction</a>
+            </li>
+            <li q-click="handelList" q-class="active:{nav}=='list'">
+                <a href="javascript:;">list</a>
+            </li>
+        </ul>
+        <div class="line">
+
+        </div>
+    </div>
+    <div id="container" class="container">
+
+    </div>
+</body>
+
+</html>
+<script>
+        qc.view("model", function (vm, ve) {
+        vm.nav = "instruction";
+        ve.handelInstruction=function(){
+            if( vm.nav == "list"){
+                vm.$set("nav","instruction");
+                $("#container").html(need("$url:templete/instruction/index.html!text"));
+            }
+        }
+        ve.handelList=function(){
+            if( vm.nav == "instruction"){
+                vm.$set("nav","list");
+                need("$url:templete/list/index")($("#container"));
+            }
+        }
+    })
+    $("#container").html(need("$url:templete/instruction/index.html!text"));
+</script>
