@@ -2225,8 +2225,8 @@
 		}
         var basePath = path.substr(0, path.lastIndexOf("/") + 1);
         if (path.lastIndexOf("!") > -1) {
-            type = path.substr(_path.lastIndexOf("!") + 1);
-            path = path.substr(0, _path.lastIndexOf("!"));
+            type = path.substr(path.lastIndexOf("!") + 1);
+            path = path.substr(0, path.lastIndexOf("!"));
         } else {
             if (path.lastIndexOf(".js") < 0) {
                 path = path + ".js";
