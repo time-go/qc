@@ -36,7 +36,15 @@
             }
             return src || js[last].src;
         }();
-        return jsPath.substring(0, jsPath.lastIndexOf('/') + 1);
+        if(!jsPath){
+            var jsPath=window.location.href;
+            if(jsPath[jsPath.length-1]!='/'){
+                jsPath=jsPath.substring(0, jsPath.lastIndexOf('/') + 1);
+            }
+        }else{
+            jsPath=jsPath.substring(0, jsPath.lastIndexOf('/') + 1);
+        }
+        return jsPath;
     }
 	window.needStack=[];
     window.need = function (path) {
