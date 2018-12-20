@@ -203,7 +203,7 @@
             $(element).find(".submit").on("click", function (e) {
                 var d = calendar.secDate;
                 $this.updateParent("value",d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
-                dialog.fadeOut("value",);
+                dialog.fadeOut("fast");
             });
             $(element).find(".today").on("click", function (e) {
                 e.stopPropagation();
