@@ -33,7 +33,7 @@ out = function (element) {
             })  
         }
         ve.pop=function(){
-            openModel("$url:../pop/index",{email:"time-go@163.com",date:"2018-9-7"},function(info){
+            window.openModel("$url:../pop/index",{email:"time-go@163.com",date:"2018-9-7"},function(info){
                 console.log(info);
             })
         }
